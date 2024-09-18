@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "trainingprogram"
+version = "0.1.0"
+description = "Training Program including backend frontend and all the data pipelines"
+authors = ["nacho.corcuera <ignacio.cplatas@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.0"
+uvicorn = "^0.30.6"
+black = "^24.8.0"
+ruff = "^0.6.5"
+pytest = "^8.3.3"
+pre-commit = "^3.8.0"
+sqlalchemy = "^2.0.35"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+[tool.black]
+skip-string-normalization = true
+line-length = 120
+
+[tool.ruff]
+# Same as Black.
+line-length = 120
+
+select = [
+    "E",  # pycodestyle errors (settings from FastAPI)
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "C901",  # too complex
+]
+
+[tool.ruff.isort]
+order-by-type = true
+relative-imports-order = "closest-to-furthest"
+extra-standard-library = ["typing"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+known-first-party = []
