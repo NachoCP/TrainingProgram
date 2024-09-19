@@ -1,13 +1,12 @@
 from typing import List
 
-from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 from backend.interfaces.repository import IRepository
 from backend.models.department import Department
 
 
-class DepartmenteRepository(IRepository[Department, UUID4]):
+class DepartmenteRepository(IRepository[Department, id]):
     def __init__(self, db: Session) -> None:
         self.db = db
 
@@ -17,19 +16,19 @@ class DepartmenteRepository(IRepository[Department, UUID4]):
         self.db.refresh(instance)
         return instance
 
-    def get(self, id: UUID4) -> Department:
+    def get(self, id: id) -> Department:
         return self.db.get(Department, id)
 
     def list(self, limit: int, start: int) -> List[Department]:
         return self.db.query(Department).offset(start).limit(limit).all()
 
-    def update(self, id: UUID4, instance: Department) -> Department:
+    def update(self, id: id, instance: Department) -> Department:
         instance.id = id
         self.db.merge(instance)
         self.db.commit()
         return instance
 
-    def delete(self, id: UUID4) -> None:
+    def delete(self, id: id) -> None:
         instance = self.get(id)
         if instance:
             self.db.delete(instance)

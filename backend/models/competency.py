@@ -7,7 +7,7 @@ from backend.models.base import EntityMeta
 class Competency(EntityMeta):
     __tablename__ = "competency"
 
-    competency_id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     description = Column(String)
 

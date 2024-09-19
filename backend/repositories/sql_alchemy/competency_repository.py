@@ -1,13 +1,12 @@
 from typing import List
 
-from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 from backend.interfaces.repository import IRepository
 from backend.models.competency import Competency
 
 
-class CompetencyRepository(IRepository[Competency, UUID4]):
+class CompetencyRepository(IRepository[Competency, id]):
     def __init__(self, db: Session) -> None:
         self.db = db
 
@@ -17,19 +16,19 @@ class CompetencyRepository(IRepository[Competency, UUID4]):
         self.db.refresh(instance)
         return instance
 
-    def get(self, id: UUID4) -> Competency:
+    def get(self, id: id) -> Competency:
         return self.db.get(Competency, id)
 
     def list(self, limit: int, start: int) -> List[Competency]:
         return self.db.query(Competency).offset(start).limit(limit).all()
 
-    def update(self, id: UUID4, instance: Competency) -> Competency:
+    def update(self, id: id, instance: Competency) -> Competency:
         instance.id = id
         self.db.merge(instance)
         self.db.commit()
         return instance
 
-    def delete(self, id: UUID4) -> None:
+    def delete(self, id: id) -> None:
         instance = self.get(id)
         if instance:
             self.db.delete(instance)
