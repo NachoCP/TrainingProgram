@@ -16,6 +16,7 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
 
     def create(self, schema: EmployeeSchema) -> Employee:
         employee = Employee(**schema.model_dump(exclude_none=True))
+        print(employee)
         return self.repository.create(employee)
 
     def delete(self, id: UUID4) -> None:

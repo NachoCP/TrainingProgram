@@ -1,0 +1,57 @@
+from typing import List
+
+from fastapi import APIRouter, Depends, status
+from pydantic import UUID4
+from sqlalchemy.orm import Session
+
+from backend.config.database import get_db_connection
+from backend.schemas.employee import Employee
+from backend.services.employee_service import EmployeeService
+
+router = APIRouter(
+    prefix="/employee",
+    tags=["employee"]
+)
+
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=Employee)
+def create(
+    data: Employee,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeService(db)
+    return _service.create(data)
+
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Employee)
+def get(
+    id: UUID4,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeService(db)
+    return _service.get(id)
+
+@router.get("", status_code=201, response_model=List[Employee])
+def list(
+    pageSize: int = 100,
+    startIndex: int = 0,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeService(db)
+    return _service.list(pageSize, startIndex)
+
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete(
+    id: UUID4,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeService(db)
+    return _service.delete(id)
+
+@router.put("/{id}", status_code=201, response_model=Employee)
+def update(
+    id: UUID4,
+    data: Employee,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeService(db)
+    return _service.update(id, data)

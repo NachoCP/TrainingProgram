@@ -9,7 +9,7 @@ from backend.repositories.sql_alchemy.employee_department_repository import Empl
 from backend.schemas.employee_department import EmployeeDepartment as EmployeeDepartmentSchema
 
 
-class DepartmentEmployeeService(IService[EmployeeDepartment, EmployeeDepartmentSchema]):
+class EmployeeDepartmentService(IService[EmployeeDepartment, EmployeeDepartmentSchema]):
 
     def __init__(self, db: Session) -> None:
         self.repository = EmployeeDepartmentRepository(db)

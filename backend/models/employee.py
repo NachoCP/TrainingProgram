@@ -15,4 +15,4 @@ class Employee(EntityMeta):
 
     # Relationships
     competencies = relationship("EmployeeCompetency", back_populates="employee")
-    departments = relationship("DepartmentEmployee", back_populates="employee")
+    departments = relationship("EmployeeDepartment", back_populates="employee")

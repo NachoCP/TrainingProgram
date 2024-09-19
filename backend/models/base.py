@@ -1,5 +1,6 @@
-from config.database import Engine
 from sqlalchemy.ext.declarative import declarative_base
+
+from backend.config.database import engine
 
 Base = declarative_base()
 
@@ -14,4 +15,4 @@ class EntityMeta(Base):
         }
 
 def init_db():
-    EntityMeta.metadata.create_all(bind=Engine)
+    EntityMeta.metadata.create_all(bind=engine)

@@ -8,7 +8,7 @@ from backend.utils.vocabulary import RequiredLevelEnum
 
 
 class CompetencyLevel(EntityMeta):
-    __tablename__ = "rules"
+    __tablename__ = "competency_level"
 
     id = Column(UUID, primary_key=True, default=uuid.uuid4)
     competency_id = Column(UUID, ForeignKey("competency.competency_id"), nullable=False)
@@ -16,4 +16,4 @@ class CompetencyLevel(EntityMeta):
     num_workers = Column(Integer, nullable=False)
 
     # Relationships
-    competency = relationship("Competency", back_populates="rules")
+    competency = relationship("Competency", back_populates="competency_level")
