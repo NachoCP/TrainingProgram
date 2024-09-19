@@ -1,7 +1,6 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status
-from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
@@ -23,7 +22,7 @@ def create(
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Competency)
 def get(
-    id: UUID4,
+    id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = CompetencyService(db)
@@ -41,7 +40,7 @@ def list(
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(
-    id: UUID4,
+    id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = CompetencyService(db)
@@ -49,7 +48,7 @@ def delete(
 
 @router.put("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=Competency)
 def update(
-    id: UUID4,
+    id: int,
     data: Competency,
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
