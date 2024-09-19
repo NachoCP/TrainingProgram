@@ -1,6 +1,4 @@
-import uuid
-
-from sqlalchemy import UUID, Column, Date, Enum, ForeignKey
+from sqlalchemy import Column, Date, Enum, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
@@ -10,9 +8,9 @@ from backend.utils.vocabulary import RoleEnum
 class EmployeeDepartment(EntityMeta):
     __tablename__ = "department_employee"
 
-    id = Column(UUID, primary_key=True, default=uuid.uuid4)
-    employee_id = Column(UUID, ForeignKey("employee.id"), nullable=False)
-    department_id = Column(UUID, ForeignKey("department.id"), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    employee_id = Column(Integer, ForeignKey("employee.id"), nullable=False)
+    department_id = Column(Integer, ForeignKey("department.id"), nullable=False)
     role = Column(Enum(RoleEnum), nullable=False)
     expiration_date = Column(Date)
     effective_date = Column(Date, nullable=False)
