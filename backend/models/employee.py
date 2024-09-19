@@ -1,13 +1,15 @@
-from sqlalchemy import Column, Date, Integer, String
+import uuid
+
+from sqlalchemy import UUID, Column, Date, String
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
 
 
 class Employee(EntityMeta):
-    __tablename__ = 'employee'
+    __tablename__ = "employee"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID, primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     hire_date = Column(Date, nullable=False)
 

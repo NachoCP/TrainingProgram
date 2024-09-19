@@ -10,12 +10,12 @@ env = get_environment_variables()
 DATABASE_URL = f"{env.DATABASE_DIALECT}://{env.DATABASE_USERNAME}:{env.DATABASE_PASSWORD}@{env.DATABASE_HOSTNAME}:{env.DATABASE_PORT}/{env.DATABASE_NAME}"
 
 # Create Database Engine
-Engine = create_engine(
+engine = create_engine(
     DATABASE_URL, echo=env.DEBUG_MODE, future=True
 )
 
 SessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=Engine
+    autocommit=False, autoflush=False, bind=engine
 )
 
 

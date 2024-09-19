@@ -5,10 +5,6 @@ class RoleEnum(str, Enum):
     manager = "Manager"
     worker = "Worker"
 
-class TypeEnum(str, Enum):
-    global_level = "Global"
-    team_level = "Team"
-
 class RequiredLevelEnum(str, Enum):
     # Enum for the competency levels
     basic = "Basic"  # Entry-level knowledge

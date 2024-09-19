@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import UUID4, BaseModel, Field
 
 
 class Department(BaseModel):
-    id: int = Field(..., description="Unique identifier for the department", example=201)
+    id: UUID4 = Field(..., description="Unique identifier for the department", example=201)
     name: str = Field(..., description="Name of the department", example="Engineering")

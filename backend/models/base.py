@@ -13,5 +13,5 @@ class EntityMeta(Base):
             for attr in vars(self)
         }
 
-def init():
+def init_db():
     EntityMeta.metadata.create_all(bind=Engine)
