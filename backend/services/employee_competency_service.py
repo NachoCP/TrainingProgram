@@ -1,6 +1,5 @@
 from typing import List
 
-from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 from backend.interfaces.service import IService
@@ -18,15 +17,15 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
         employee_competency = EmployeeCompetency(**schema.model_dump(exclude_none=True))
         return self.repository.create(employee_competency)
 
-    def delete(self, id: UUID4) -> None:
+    def delete(self, id: id) -> None:
         self.repository.delete(id)
 
-    def get(self, id: UUID4) -> EmployeeCompetency:
+    def get(self, id: id) -> EmployeeCompetency:
         return self.repository.get(id)
 
     def list(self, pageSize: int = 100, startIndex: int = 0) -> List[EmployeeCompetency]:
         return self.repository.list(pageSize, startIndex)
 
-    def update(self, id: UUID4, schema: EmployeeCompetencySchema) -> EmployeeCompetency:
+    def update(self, id: id, schema: EmployeeCompetencySchema) -> EmployeeCompetency:
         employee_competency = EmployeeCompetency(**schema.model_dump(exclude_none=True))
         return self.repository.update(id, employee_competency)

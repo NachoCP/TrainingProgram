@@ -1,6 +1,5 @@
 from typing import List
 
-from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 from backend.interfaces.service import IService
@@ -19,15 +18,15 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
         print(employee)
         return self.repository.create(employee)
 
-    def delete(self, id: UUID4) -> None:
+    def delete(self, id: id) -> None:
         self.repository.delete(id)
 
-    def get(self, id: UUID4) -> Employee:
+    def get(self, id: id) -> Employee:
         return self.repository.get(id)
 
     def list(self, pageSize: int = 100, startIndex: int = 0) -> List[Employee]:
         return self.repository.list(pageSize, startIndex)
 
-    def update(self, id: UUID4, schema: EmployeeSchema) -> Employee:
+    def update(self, id: id, schema: EmployeeSchema) -> Employee:
         employee = Employee(**schema.model_dump(exclude_none=True))
         return self.repository.update(id, employee)

@@ -1,7 +1,5 @@
 from typing import List
 
-from pydantic import UUID4
-
 from backend.interfaces.service import IService
 from backend.models.competency_level import CompetencyLevel
 from backend.repositories.sql_alchemy.competency_level_repository import CompetencyLevelRepository
@@ -17,15 +15,15 @@ class RulesService(IService[CompetencyLevel, CompetencyLevelSchema]):
         rule = CompetencyLevel(**schema.model_dump(exclude_none=True))
         return self.rulesRepository.create(rule)
 
-    def delete(self, id: UUID4) -> None:
+    def delete(self, id: id) -> None:
         self.rulesRepository.delete(id)
 
-    def get(self, id: UUID4) -> CompetencyLevel:
+    def get(self, id: id) -> CompetencyLevel:
         return self.rulesRepository.get(id)
 
     def list(self, pageSize: int = 100, startIndex: int = 0) -> List[CompetencyLevel]:
         return self.rulesRepository.list(pageSize, startIndex)
 
-    def update(self, id: UUID4, schema: CompetencyLevelSchema) -> CompetencyLevel:
+    def update(self, id: id, schema: CompetencyLevelSchema) -> CompetencyLevel:
         rule = CompetencyLevel(**schema.model_dump(exclude_none=True))
         return self.rulesRepository.update(id, rule)
