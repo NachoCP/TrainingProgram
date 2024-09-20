@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, Date, Integer, String, func
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
@@ -9,8 +9,9 @@ class Employee(EntityMeta):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
-    hire_date = Column(Date, nullable=False)
+    expiration_date = Column(Date)
+    effective_date = Column(Date, nullable=False, default=func.current_date())
 
     # Relationships
-    competencies = relationship("EmployeeCompetency", back_populates="employee")
-    departments = relationship("EmployeeDepartment", back_populates="employee")
+    employee_competency = relationship("EmployeeCompetency", back_populates="employee")
+    employee_department = relationship("EmployeeDepartment", back_populates="employee")

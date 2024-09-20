@@ -12,5 +12,5 @@ class Competency(EntityMeta):
     description = Column(String)
 
     # Relationships
-    employees = relationship("EmployeeCompetency", back_populates="competency")
+    employee_competency = relationship("EmployeeCompetency", back_populates="competency")
     competency_level = relationship("CompetencyLevel", back_populates="competency")

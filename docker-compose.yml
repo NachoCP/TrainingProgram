@@ -12,7 +12,7 @@ services:
             interval: 600s
             timeout: 5s
             retries: 3
-            start_period: 3s
+            start_period: 15s
         volumes:
           - ./backend:/app/backend
         ports:
@@ -30,6 +30,7 @@ services:
         container_name: database
         volumes:
             - ./data/db:/var/lib/postgresql/data
+            - ./sql/marketing_company:/docker-entrypoint-initdb.d
         ports:
             - "${DATABASE_PORT}:5432"
         env_file:
