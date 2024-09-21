@@ -23,8 +23,9 @@ class EnvironmentSettings(BaseSettings):
     DATABASE_USERNAME: str
 
     MILVUS_LITTLE: str
-    EMBEDDING_DIMENSION: str
-    OPEN_API_KEY: str
+    EMBEDDING_DIMENSION: int
+
+    OPENAI_API_KEY: str
 
     @property
     def database_url(self) -> str:
