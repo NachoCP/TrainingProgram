@@ -41,3 +41,10 @@ class EnvironmentSettings(BaseSettings):
 @lru_cache
 def get_environment_variables():
     return EnvironmentSettings()
+
+
+index_params_milvus = {
+            "index_type": "IVF_FLAT",
+            "metric_type": "IP",        # Cosine similarity is achieved using the Inner Product (IP)
+            "params": {"nlist": 128}    # Number of clusters for the index
+        }

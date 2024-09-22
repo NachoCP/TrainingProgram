@@ -11,6 +11,7 @@ from recommender.llm.factory import LLMProviderFactory
 from recommender.models.course import CourseModel
 from recommender.prompts.prompt_template import PromptTemplate
 from recommender.schema.courses import get_course_schema
+from recommender.utils import preprocess_data
 
 env = get_environment_variables()
 
@@ -63,11 +64,13 @@ class CoursePipeline(IPipeline):
             if len(enrich_course["matching_competencies"]) == 0:
                 continue
             enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
-            data_output.append({**course, **enrich_course})
+
+            data_output.append(preprocess_data({**course, **enrich_course}))
             batch += 1
 
             if batch % 50 == 0:
                 print(f"Number batch {batch}")
+        return data_output
 
     def load(self,
              data: list[dict[str, Any]],
@@ -82,4 +85,19 @@ class CoursePipeline(IPipeline):
         self._milvus_client.insert(
             collection_name=COURSE_COLLECTION,
             data=data
+        )
+
+        #Create index after each load in order to refresh it
+        index_params = self._milvus_client.prepare_index_params()
+        index_params.add_index(
+            field_name="embedding",
+            metric_type="IP",
+            index_type="FLAT",
+            index_name="vector_index",
+            params={ "nlist": 128 }
+        )
+
+        self._milvus_client.create_index(
+            collection_name=COURSE_COLLECTION,
+            index_params=index_params
         )
