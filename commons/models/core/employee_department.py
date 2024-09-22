@@ -7,7 +7,7 @@ from backend.utils.vocabulary import RoleEnum
 
 
 class EmployeeDepartment(BaseModel):
-    id: Optional[int] = Field(description="Unique identifier for the department-employee relation", example=301, default=None)
+    id: Optional[int] = Field(description="Unique identifier for the department-employee relation", example=301)
     employee_id: int = Field(..., description="The ID of the employee", example=1)
     department_id: int = Field(..., description="The ID of the department", example=201)
     role: RoleEnum = Field(..., description="Role of the employee in the department", example="Manager")

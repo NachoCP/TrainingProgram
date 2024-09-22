@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class EmployeeCompetency(BaseModel):
-    id: Optional[int] = Field(description="Unique identifier for the employee competency", example=101, default=None)
+    id: Optional[int] = Field(description="Unique identifier for the employee competency", example=101)
     employee_id: int = Field(..., description="The ID of the employee", example=1)
     competency_id: int = Field(..., description="The ID of the competency", example=1001)
     current_level: str = Field(..., description="The current level of the competency for the employee", example="Intermediate")

@@ -20,7 +20,7 @@ def create(
     _service = CompetencyLevelRepository(db)
     return _service.create(data)
 
-@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevel)
+@router.get("/id/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevel)
 def get(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
@@ -38,7 +38,7 @@ def list(
     return _service.list(pageSize, startIndex)
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/id/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
@@ -46,7 +46,7 @@ def delete(
     _service = CompetencyLevelRepository(db)
     return _service.delete(id)
 
-@router.put("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=CompetencyLevel)
+@router.put("/id/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=CompetencyLevel)
 def update(
     id: int,
     data: CompetencyLevel,
