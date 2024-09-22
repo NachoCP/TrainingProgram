@@ -2,10 +2,10 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from backend.interfaces.service import IService
 from backend.models.employee import Employee
 from backend.repositories.sql_alchemy.employee_repository import EmployeeRepository
-from backend.schemas.employee import Employee as EmployeeSchema
+from commons.interfaces.service import IService
+from commons.models.core.employee import Employee as EmployeeSchema
 
 
 class EmployeeService(IService[Employee, EmployeeSchema]):
@@ -15,7 +15,6 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
 
     def create(self, schema: EmployeeSchema) -> Employee:
         employee = Employee(**schema.model_dump(exclude_none=True))
-        print(employee)
         return self.repository.create(employee)
 
     def delete(self, id: id) -> None:
@@ -30,3 +29,7 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
     def update(self, id: id, schema: EmployeeSchema) -> Employee:
         employee = Employee(**schema.model_dump(exclude_none=True))
         return self.repository.update(id, employee)
+
+    def bulk(self, schemas: List[EmployeeSchema]) -> List[Employee]:
+        schema_objects = [Employee(**schema.model_dump(exclude_none=True)) for schema in schemas]
+        return self.repository.bulk(schema_objects)

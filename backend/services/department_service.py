@@ -2,10 +2,10 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from backend.interfaces.service import IService
 from backend.models.department import Department
 from backend.repositories.sql_alchemy.department_repository import DepartmenteRepository
-from backend.schemas.department import Department as DepartmentSchema
+from commons.interfaces.service import IService
+from commons.models.core.department import Department as DepartmentSchema
 
 
 class DepartmentService(IService[Department, DepartmentSchema]):
@@ -29,3 +29,7 @@ class DepartmentService(IService[Department, DepartmentSchema]):
     def update(self, id: id, schema: DepartmentSchema) -> Department:
         department = Department(**schema.model_dump(exclude_none=True))
         return self.repository.update(id, department)
+
+    def bulk(self, schemas: List[DepartmentSchema]) -> List[Department]:
+        schema_objects = [Department(**schema.model_dump(exclude_none=True)) for schema in schemas]
+        return self.repository.bulk(schema_objects)

@@ -2,8 +2,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from backend.interfaces.repository import IRepository
 from backend.models.department import Department
+from commons.interfaces.repository import IRepository
 
 
 class DepartmenteRepository(IRepository[Department, id]):
@@ -33,3 +33,9 @@ class DepartmenteRepository(IRepository[Department, id]):
         if instance:
             self.db.delete(instance)
             self.db.commit()
+
+    def bulk(self, instances: List[Department]) -> List[Department]:
+
+        self.db.bulk_save_objects(instances)
+        self.db.commit()
+        return instances

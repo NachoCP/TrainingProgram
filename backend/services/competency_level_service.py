@@ -1,9 +1,9 @@
 from typing import List
 
-from backend.interfaces.service import IService
 from backend.models.competency_level import CompetencyLevel
 from backend.repositories.sql_alchemy.competency_level_repository import CompetencyLevelRepository
-from backend.schemas.competency_level import CompetencyLevel as CompetencyLevelSchema
+from commons.interfaces.service import IService
+from commons.models.core.competency_level import CompetencyLevel as CompetencyLevelSchema
 
 
 class RulesService(IService[CompetencyLevel, CompetencyLevelSchema]):
@@ -27,3 +27,7 @@ class RulesService(IService[CompetencyLevel, CompetencyLevelSchema]):
     def update(self, id: id, schema: CompetencyLevelSchema) -> CompetencyLevel:
         rule = CompetencyLevel(**schema.model_dump(exclude_none=True))
         return self.rulesRepository.update(id, rule)
+
+    def bulk(self, schemas: List[CompetencyLevelSchema]) -> List[CompetencyLevel]:
+        schema_objects = [CompetencyLevel(**schema.model_dump(exclude_none=True)) for schema in schemas]
+        return self.repository.bulk(schema_objects)

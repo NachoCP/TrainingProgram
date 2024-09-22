@@ -2,10 +2,10 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from backend.interfaces.service import IService
 from backend.models.employee_competency import EmployeeCompetency
 from backend.repositories.sql_alchemy.employee_competency_repository import EmployeeCompetencyRepository
-from backend.schemas.employee_competency import EmployeeCompetency as EmployeeCompetencySchema
+from commons.interfaces.service import IService
+from commons.models.core.employee_competency import EmployeeCompetency as EmployeeCompetencySchema
 
 
 class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencySchema]):
@@ -29,3 +29,7 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
     def update(self, id: id, schema: EmployeeCompetencySchema) -> EmployeeCompetency:
         employee_competency = EmployeeCompetency(**schema.model_dump(exclude_none=True))
         return self.repository.update(id, employee_competency)
+
+    def bulk(self, schemas: List[EmployeeCompetencySchema]) -> List[EmployeeCompetency]:
+        schema_objects = [EmployeeCompetency(**schema.model_dump(exclude_none=True)) for schema in schemas]
+        return self.repository.bulk(schema_objects)

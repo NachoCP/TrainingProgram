@@ -2,8 +2,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from backend.interfaces.repository import IRepository
 from backend.models.competency import Competency
+from commons.interfaces.repository import IRepository
 
 
 class CompetencyRepository(IRepository[Competency, id]):
@@ -33,3 +33,9 @@ class CompetencyRepository(IRepository[Competency, id]):
         if instance:
             self.db.delete(instance)
             self.db.commit()
+
+    def bulk(self, instances: List[Competency]) -> List[Competency]:
+
+        self.db.bulk_save_objects(instances)
+        self.db.commit()
+        return instances

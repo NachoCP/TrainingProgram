@@ -4,14 +4,14 @@ from commons.config import get_environment_variables
 from commons.constants import DEFAULT_LLM_MODEL, SYNTHETHIC_PROMPT
 from commons.enum import LLMFactory
 from commons.llm.factory import LLMProviderFactory
-from commons.models.core.competency import Competency
+from commons.models.core.department import Department
 from commons.prompts.prompt_template import PromptTemplate
 from frontend.synthetic.synthetic_llm import ISyntheticService
 
 env = get_environment_variables()
 
 
-class CompetencySyntheticService(ISyntheticService):
+class DepartmentSyntheticService(ISyntheticService):
 
     def __init__(self,
                  llm_model: str =DEFAULT_LLM_MODEL,
@@ -20,16 +20,16 @@ class CompetencySyntheticService(ISyntheticService):
                  ):
 
         self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(List[Competency])
+        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(List[Department])
         self._prompt = PromptTemplate(prompt_path)
 
-    def create(self, num: int, preamble: str, **kwargs) -> List[Competency]:
+    def create(self, num: int, preamble: str, **kwargs) -> List[Department]:
         content = self._prompt.text(**{"num": num,
                                     "preamble": preamble})
         synthetic_data = self._llm_runner.run(content=content)
 
         return synthetic_data
 
-    def send(self, data: List[Competency]) -> None:
+    def send(self, data: List[Department]) -> None:
 
         pass
