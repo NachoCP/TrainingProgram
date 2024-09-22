@@ -4,6 +4,7 @@ from typing import Any
 from pymilvus import MilvusClient
 
 from commons.config import get_environment_variables
+from commons.constants import COURSE_COLLECTION, COURSE_PROMPT, DEFAULT_EMBEDDING_MODEL, DEFAULT_LLM_MODEL
 from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.enum import EmbeddingFactory, LLMFactory
 from commons.interfaces.pipeline import IPipeline
@@ -15,17 +16,16 @@ from commons.utils import preprocess_data
 
 env = get_environment_variables()
 
-COURSE_COLLECTION = "course_collection"
 
 class CoursePipeline(IPipeline):
 
     def __init__(self,
                  competencies_data: dict[str, str],
-                 llm_model: str ="gpt-3.5-turbo",
+                 llm_model: str =DEFAULT_LLM_MODEL,
                  llm_provider: str = LLMFactory.openai.value,
                  embedding_provider: str = EmbeddingFactory.openai.value,
-                 embedding_model: str = "text-embedding-3-small",
-                 prompt_path: str = "recommender/prompts/template.prompt"
+                 embedding_model: str = DEFAULT_EMBEDDING_MODEL,
+                 prompt_path: str = COURSE_PROMPT
                  ):
 
         dynamic_competencies = [c["name"] for c in competencies_data]

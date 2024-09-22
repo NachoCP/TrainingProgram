@@ -3,7 +3,14 @@ from typing import Any
 from pymilvus import MilvusClient
 
 from commons.config import get_environment_variables
-from commons.constants import COURSE_COLLECTION, COURSE_OUTPUT_FIELDS, EMBEDDING_COLUMN
+from commons.constants import (
+    COURSE_COLLECTION,
+    COURSE_OUTPUT_FIELDS,
+    DEFAULT_EMBEDDING_MODEL,
+    EMBEDDING_COLUMN,
+    SEARCH_PARAMS,
+    WEIGHTS_SCORING,
+)
 from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.enum import EmbeddingFactory
 from commons.interfaces.recommender import IRecommender
@@ -12,20 +19,12 @@ from commons.models.recommender.course import CourseModelOutput
 
 env = get_environment_variables()
 
-WEIGHTS_SCORING = {
-        "matching_competencies": 0.30,
-        "matching_skills": 0.30,
-        "rating": 0.20,
-        "number_of_reviews": 0.10,
-        "number_of_viewers": 0.10
-    }
-
 
 class CourseRecommender(IRecommender):
 
     def __init__(self,
                 embedding_provider: str = EmbeddingFactory.openai.value,
-                embedding_model: str = "text-embedding-3-small"):
+                embedding_model: str = DEFAULT_EMBEDDING_MODEL):
 
         self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model, env.EMBEDDING_DIMENSION)
         self._milvus_client = MilvusClient(env.MILVUS_LITTLE)
@@ -37,7 +36,7 @@ class CourseRecommender(IRecommender):
             collection_name=COURSE_COLLECTION,
             data=[query_embedding],
             anns_field=EMBEDDING_COLUMN,
-            search_params={"metric_type": "IP", "params": {}},
+            search_params=SEARCH_PARAMS,
             limit=30,
             output_fields=list(COURSE_OUTPUT_FIELDS)
         )

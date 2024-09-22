@@ -3,6 +3,7 @@ from typing import Any
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
+from commons.constants import DEFAULT_LLM_MODEL
 from commons.interfaces.llm import ILLM
 
 load_dotenv()
@@ -13,7 +14,7 @@ class InstructorLLM(ILLM):
     def __init__(self,
                  client: Any,
                  model: BaseModel,
-                 llm_model_name: str = "gpt-3.5-turbo"):
+                 llm_model_name: str = DEFAULT_LLM_MODEL):
 
         self._client = client
         self._model = model
