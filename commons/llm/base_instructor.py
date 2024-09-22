@@ -3,7 +3,7 @@ from typing import Any
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from recommender.interfaces.llm import ILLM
+from commons.interfaces.llm import ILLM
 
 load_dotenv()
 

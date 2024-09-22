@@ -2,13 +2,13 @@ from typing import Any
 
 from pymilvus import MilvusClient
 
-from recommender.config import get_environment_variables
-from recommender.constants import COURSE_COLLECTION, COURSE_OUTPUT_FIELDS, EMBEDDING_COLUMN
-from recommender.embeddings.factory import EmbeddingProviderFactory
-from recommender.enum import EmbeddingFactory
-from recommender.interfaces.recommender import IRecommender
-from recommender.math import cosine_similarity, normalize
-from recommender.models.course import CourseModelOutput
+from commons.config import get_environment_variables
+from commons.constants import COURSE_COLLECTION, COURSE_OUTPUT_FIELDS, EMBEDDING_COLUMN
+from commons.embeddings.factory import EmbeddingProviderFactory
+from commons.enum import EmbeddingFactory
+from commons.interfaces.recommender import IRecommender
+from commons.math import cosine_similarity, normalize
+from commons.models.course import CourseModelOutput
 
 env = get_environment_variables()
 

@@ -1,8 +1,8 @@
 from typing import Type
 
-from recommender.embeddings.openai import OpenAIEmbeddingProvider
-from recommender.enum import EmbeddingFactory
-from recommender.interfaces.embedding import IEmbedding
+from commons.embeddings.openai import OpenAIEmbeddingProvider
+from commons.enum import EmbeddingFactory
+from commons.interfaces.embedding import IEmbedding
 
 FACTORY = {
         EmbeddingFactory.openai.value: OpenAIEmbeddingProvider

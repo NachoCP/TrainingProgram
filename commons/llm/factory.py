@@ -1,8 +1,8 @@
 from typing import Type
 
-from recommender.enum import LLMFactory
-from recommender.interfaces.llm import ILLM
-from recommender.llm.openai import OpenAIRunner
+from commons.enum import LLMFactory
+from commons.interfaces.llm import ILLM
+from commons.llm.openai import OpenAIRunner
 
 FACTORY = {
         LLMFactory.openai.value: OpenAIRunner

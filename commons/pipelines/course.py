@@ -3,15 +3,15 @@ from typing import Any
 
 from pymilvus import MilvusClient
 
-from recommender.config import get_environment_variables
-from recommender.embeddings.factory import EmbeddingProviderFactory
-from recommender.enum import EmbeddingFactory, LLMFactory
-from recommender.interfaces.pipeline import IPipeline
-from recommender.llm.factory import LLMProviderFactory
-from recommender.models.course import CourseModel
-from recommender.prompts.prompt_template import PromptTemplate
-from recommender.schema.courses import get_course_schema
-from recommender.utils import preprocess_data
+from commons.config import get_environment_variables
+from commons.embeddings.factory import EmbeddingProviderFactory
+from commons.enum import EmbeddingFactory, LLMFactory
+from commons.interfaces.pipeline import IPipeline
+from commons.llm.factory import LLMProviderFactory
+from commons.models.course import CourseModel
+from commons.prompts.prompt_template import PromptTemplate
+from commons.schema.courses import get_course_schema
+from commons.utils import preprocess_data
 
 env = get_environment_variables()
 

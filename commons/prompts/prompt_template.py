@@ -1,6 +1,6 @@
 import os
 
-from recommender.utils import identify_prompt_variables, read_text_file
+from commons.utils import identify_prompt_variables, read_text_file
 
 
 class PromptTemplate():

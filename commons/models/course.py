@@ -3,7 +3,7 @@ from typing import List, Literal, Optional
 
 from pydantic import Field
 
-from recommender.models.base_dynamic_model import BaseDynamicModel
+from commons.models.base_dynamic_model import BaseDynamicModel
 
 
 class CourseModel(BaseDynamicModel):

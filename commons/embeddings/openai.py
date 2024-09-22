@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from recommender.interfaces.embedding import IEmbedding
+from commons.interfaces.embedding import IEmbedding
 
 load_dotenv()
 

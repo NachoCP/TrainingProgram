@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 
-from recommender.llm.base_instructor import InstructorLLM
+from commons.llm.base_instructor import InstructorLLM
 
 load_dotenv()
 
