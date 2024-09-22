@@ -4,9 +4,8 @@ from typing import Generic, List, TypeVar
 from pydantic import BaseModel
 
 # Type Definitions
-M = TypeVar("M")  # Model Type
-S = TypeVar("S", bound=BaseModel)  # Pydantic Schema Type
-K = TypeVar("K")  # Key Type (e.g., ID)
+M = TypeVar("M")
+S = TypeVar("S", bound=BaseModel)
 
 class IService(ABC, Generic[M, S]):
 
@@ -16,12 +15,12 @@ class IService(ABC, Generic[M, S]):
         pass
 
     @abstractmethod
-    def delete(self, id: K) -> None:
+    def delete(self, id: int) -> None:
 
         pass
 
     @abstractmethod
-    def get(self, id: K) -> M:
+    def get(self, id: int) -> M:
 
         pass
 
@@ -31,6 +30,6 @@ class IService(ABC, Generic[M, S]):
         pass
 
     @abstractmethod
-    def update(self, id: K, schema: S) -> M:
+    def update(self, id: int, schema: S) -> M:
 
         pass
