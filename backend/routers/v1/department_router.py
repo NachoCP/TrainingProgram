@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
-from backend.schemas.department import Department
 from backend.services.department_service import DepartmentService
+from commons.models.core.department import Department
 
 router = APIRouter(
     prefix="/department",
@@ -54,3 +54,11 @@ def update(
 ):
     _service = DepartmentService(db)
     return _service.update(id, data)
+
+@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[Department])
+def bulk(
+    data: List[Department],
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = DepartmentService(db)
+    return _service.bulk(data)

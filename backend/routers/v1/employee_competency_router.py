@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
-from backend.schemas.employee_competency import EmployeeCompetency
 from backend.services.employee_competency_service import EmployeeCompetencyService
+from commons.models.core.employee_competency import EmployeeCompetency
 
 router = APIRouter(
     prefix="/employee-competencies",
@@ -54,3 +54,11 @@ def update(
 ):
     _service = EmployeeCompetencyService(db)
     return _service.update(id, data)
+
+@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeCompetency])
+def bulk(
+    data: List[EmployeeCompetency],
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeCompetencyService(db)
+    return _service.bulk(data)

@@ -31,3 +31,4 @@ class RulesService(IService[CompetencyLevel, CompetencyLevelSchema]):
     def bulk(self, schemas: List[CompetencyLevelSchema]) -> List[CompetencyLevel]:
         schema_objects = [CompetencyLevel(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
+
