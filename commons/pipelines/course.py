@@ -8,9 +8,9 @@ from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.enum import EmbeddingFactory, LLMFactory
 from commons.interfaces.pipeline import IPipeline
 from commons.llm.factory import LLMProviderFactory
-from commons.models.course import CourseModel
+from commons.models.milvus.courses import get_course_schema
+from commons.models.recommender.course import CourseModel
 from commons.prompts.prompt_template import PromptTemplate
-from commons.schema.courses import get_course_schema
 from commons.utils import preprocess_data
 
 env = get_environment_variables()

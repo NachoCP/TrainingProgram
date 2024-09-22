@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from backend.config.enviroment import get_environment_variables
+from commons.config import get_environment_variables
 
 # Runtime Environment Configuration
 env = get_environment_variables()

@@ -8,7 +8,7 @@ from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.enum import EmbeddingFactory
 from commons.interfaces.recommender import IRecommender
 from commons.math import cosine_similarity, normalize
-from commons.models.course import CourseModelOutput
+from commons.models.recommender.course import CourseModelOutput
 
 env = get_environment_variables()
 

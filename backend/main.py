@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from backend.config.enviroment import get_environment_variables
 from backend.lifespan import lifespan
 from backend.routers.api import router
+from commons.config import get_environment_variables
 
 env = get_environment_variables()
 
