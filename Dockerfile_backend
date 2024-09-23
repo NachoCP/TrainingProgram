@@ -1,16 +1,12 @@
 # Use an official Python image as the base (can also use python:3.12 if required)
 FROM python:3.12-slim
 
+RUN pip install poetry
+
 COPY ./backend /app/backend
 COPY ./commons /app/commons
 COPY ./sample /app/sample
 COPY poetry.lock pyproject.toml /app/
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc curl && \
-    curl -sSL https://install.python-poetry.org | python3 - && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/root/.local/bin:$PATH"
 

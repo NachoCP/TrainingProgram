@@ -8,6 +8,7 @@ from backend.routers.v1 import (
     employee_competency_router,
     employee_department_router,
     employee_router,
+    feedback_router,
     health,
 )
 
@@ -19,6 +20,7 @@ router.include_router(competency_level_router.router)
 router.include_router(competency_router.router)
 router.include_router(course_router.router)
 router.include_router(department_router.router)
+router.include_router(feedback_router.router)
 router.include_router(employee_competency_router.router)
 router.include_router(employee_department_router.router)
 router.include_router(employee_router.router)

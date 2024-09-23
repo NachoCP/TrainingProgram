@@ -15,3 +15,5 @@ class Employee(EntityMeta):
     # Relationships
     employee_competency = relationship("EmployeeCompetency", back_populates="employee")
     employee_department = relationship("EmployeeDepartment", back_populates="employee")
+    feedback_received = relationship("Feedback", foreign_keys="[Feedback.employee_id]", back_populates="employee")
+    feedback_given = relationship("Feedback", foreign_keys="[Feedback.feedback_by]", back_populates="feedback_giver")

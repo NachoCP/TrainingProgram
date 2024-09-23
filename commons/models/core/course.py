@@ -29,7 +29,7 @@ class Course(BaseModel):
     embedding: List[float] = Field(..., description="Embedding vector for the course")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "title": "Introduction to Machine Learning",
                 "url": "https://example.com/course/intro-to-ml",
