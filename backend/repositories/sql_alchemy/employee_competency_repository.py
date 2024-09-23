@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.models.competency import Competency
 from backend.models.employee_competency import EmployeeCompetency
+from backend.models.employee_department import EmployeeDepartment
 from commons.interfaces.repository import IRepository
 
 
@@ -46,11 +47,16 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
         feedbacks = self.db.query(EmployeeCompetency).filter_by(employee_id=employee_id).all()
         return feedbacks
 
-    def group_competency_level_by_employee_ids(self, employee_ids: List[int]) -> List[Any]:
+    def group_competency_level_by_employee_ids(self, department_id: int) -> List[Any]:
         result = (self.db.query(Competency.name, EmployeeCompetency.current_level,
-                                func.count(EmployeeCompetency.id).label("num_employees"))
+                                func.count(EmployeeCompetency.id).label("num_workers"))
                   .join(Competency,Competency.id == EmployeeCompetency.competency_id)
-                  .filter(EmployeeCompetency.employee_id.in_(employee_ids))
-                  .group_by(EmployeeCompetency.competency_id, EmployeeCompetency.current_level)
+                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.department_id)
+                  .filter(EmployeeDepartment.department_id == department_id)
+                  .group_by(Competency.name, EmployeeCompetency.current_level)
                   .all())
+
+        result = [{"name": name, "required_level": required_level, "num_workers": num_workers}
+                  for name, required_level, num_workers in result]
+
         return result

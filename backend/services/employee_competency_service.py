@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from backend.models.employee_competency import EmployeeCompetency
 from backend.repositories.sql_alchemy.employee_competency_repository import EmployeeCompetencyRepository
 from commons.interfaces.service import IService
+from commons.models.core.competency_level import CompetencyLevelOutput
 from commons.models.core.employee_competency import EmployeeCompetency as EmployeeCompetencySchema
 
 
@@ -36,3 +37,6 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
 
     def get_all_by_employee(self, employee_id: id) -> List[EmployeeCompetency]:
         return self.repository.get_all_by_employee(employee_id)
+
+    def group_competency_level_by_employee_ids(self, department_id: id) -> List[CompetencyLevelOutput]:
+        return [CompetencyLevelOutput(**d) for d in self.repository.group_competency_level_by_employee_ids(department_id)]

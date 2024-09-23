@@ -5,10 +5,11 @@ from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
 from backend.services.employee_competency_service import EmployeeCompetencyService
+from commons.models.core.competency_level import CompetencyLevelOutput
 from commons.models.core.employee_competency import EmployeeCompetency
 
 router = APIRouter(
-    prefix="/employee-competencies",
+    prefix="/employee_competencies",
     tags=["employee-competency"]
 )
 
@@ -70,3 +71,11 @@ def get_all_by_employee(
 ):
     _service = EmployeeCompetencyService(db)
     return _service.get_all_by_employee(id)
+
+@router.get("/department_id/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
+def group_competency_level_by_employee_ids(
+    department_id: int,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeCompetencyService(db)
+    return _service.group_competency_level_by_employee_ids(department_id)
