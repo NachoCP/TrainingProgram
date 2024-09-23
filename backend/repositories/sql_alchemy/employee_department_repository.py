@@ -39,3 +39,7 @@ class EmployeeDepartmentRepository(IRepository[EmployeeDepartment, id]):
         self.db.bulk_save_objects(instances)
         self.db.commit()
         return instances
+
+    def get_all_by_department(self, department_id: int) -> List[EmployeeDepartment]:
+        employee_department = self.db.query(EmployeeDepartment).filter_by(department_id=department_id).all()
+        return employee_department

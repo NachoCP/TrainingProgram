@@ -14,11 +14,13 @@ class InstructorLLM(ILLM):
     def __init__(self,
                  client: Any,
                  model: BaseModel,
+                 system_message: str,
                  llm_model_name: str = DEFAULT_LLM_MODEL):
 
         self._client = client
         self._model = model
         self._llm_model_name = llm_model_name
+        self._system_message = system_message
 
     def run(self, **kwargs: Any) -> BaseModel:
         # Extract specific parameters from kwargs for flexibility
@@ -33,6 +35,7 @@ class InstructorLLM(ILLM):
             model=self._llm_model_name,
             response_model=self._model,
             messages=[
+                {"role": "system", "content": self._system_message},
                 {"role": role, "content": content},
             ],
         )

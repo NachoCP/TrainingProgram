@@ -13,10 +13,12 @@ class OpenAIRunner(InstructorLLM):
 
     def __init__(self,
                  model: BaseModel,
+                 system_message: str,
                  llm_model_name: str = DEFAULT_LLM_MODEL):
 
         openai_client = instructor.from_openai(OpenAI())
         super().__init__(client=openai_client,
                        model=model,
+                       system_message=system_message,
                        llm_model_name=llm_model_name)
 

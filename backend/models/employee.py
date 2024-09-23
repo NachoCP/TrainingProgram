@@ -9,7 +9,7 @@ class Employee(EntityMeta):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
-    expiration_date = Column(Date)
+    expiration_date = Column(Date, nullable=True, default=None)
     effective_date = Column(Date, nullable=False, default=func.current_date())
 
     # Relationships

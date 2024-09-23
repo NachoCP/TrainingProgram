@@ -6,7 +6,13 @@ from pymilvus import MilvusClient
 
 from backend.models.milvus.courses import get_course_schema
 from commons.config import get_environment_variables
-from commons.constants import COURSE_COLLECTION, COURSE_PROMPT, DEFAULT_EMBEDDING_MODEL, DEFAULT_LLM_MODEL
+from commons.constants import (
+    COURSE_COLLECTION,
+    COURSE_PROMPT,
+    DEFAULT_EMBEDDING_MODEL,
+    DEFAULT_LLM_MODEL,
+    SYSTEM_MESSAGE_COURSE,
+)
 from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.enum import EmbeddingFactory, LLMFactory
 from commons.interfaces.pipeline import IPipeline
@@ -37,8 +43,10 @@ class CoursePipeline(IPipeline):
         self._competencies = '\n'.join([f"- {c.name}: {c.description}" for c in competencies_data])
 
         self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(CourseModelLLM)
-        self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model, env.EMBEDDING_DIMENSION)
+        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(model=CourseModelLLM,
+                                                                         system_message=SYSTEM_MESSAGE_COURSE)
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model,
+                                                                                           env.EMBEDDING_DIMENSION)
         self._prompt = PromptTemplate(prompt_path)
         self._milvus_client = MilvusClient(env.MILVUS_LITTLE)
         self._parallel_processing = 10

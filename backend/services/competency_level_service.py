@@ -6,6 +6,7 @@ from backend.models.competency_level import CompetencyLevel
 from backend.repositories.sql_alchemy.competency_level_repository import CompetencyLevelRepository
 from commons.interfaces.service import IService
 from commons.models.core.competency_level import CompetencyLevel as CompetencyLevelSchema
+from commons.models.core.competency_level import CompetencyLevelOutput
 
 
 class CompetencyLevelService(IService[CompetencyLevel, CompetencyLevelSchema]):
@@ -34,3 +35,5 @@ class CompetencyLevelService(IService[CompetencyLevel, CompetencyLevelSchema]):
         schema_objects = [CompetencyLevel(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
 
+    def get_all_by_department(self, department_id: id) -> List[CompetencyLevelOutput]:
+        return [CompetencyLevelOutput(**d) for d in self.repository.get_all_by_department(department_id)]

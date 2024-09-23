@@ -24,19 +24,10 @@ class IPipeline(ABC):
         """
         pass
 
-    @abstractmethod
-    def load(self, data: Any, **kwargs) -> None:
-        """
-        Load the transformed data into a destination.
-        :param data: The data to be loaded.
-        """
-        pass
-
-    def run(self, **kwargs) -> None:
+    def run(self, **kwargs) -> Any:
         """
         Run the pipeline by orchestrating the extract, transform, and load steps.
         """
 
         data = self.extract(**kwargs)
-        transformed_data = self.transform(data, **kwargs)
-        self.load(transformed_data, **kwargs)
+        return self.transform(data, **kwargs)

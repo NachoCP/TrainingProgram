@@ -1,5 +1,5 @@
 -- Optional: Enum definitions
-CREATE TYPE required_level_enum AS ENUM ('Beginner', 'Intermediate', 'Advanced', 'Expert');
+CREATE TYPE required_level_enum AS ENUM ('basic', 'intermediate', 'advanced', 'expert');
 CREATE TYPE role_enum AS ENUM ('Manager', 'Worker');
 
 -- Table: competency
@@ -40,7 +40,6 @@ CREATE TABLE employee_department (
     id INTEGER PRIMARY KEY,
     employee_id INTEGER NOT NULL,
     department_id INTEGER NOT NULL,
-    role role_enum NOT NULL,  -- Using PostgreSQL enum
     expiration_date DATE,
     effective_date DATE NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (employee_id) REFERENCES employee(id),

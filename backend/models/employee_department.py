@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Date, Enum, ForeignKey, Integer, func
+from sqlalchemy import Column, Date, ForeignKey, Integer, func
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
-from backend.utils.vocabulary import RoleEnum
 
 
 class EmployeeDepartment(EntityMeta):
@@ -11,8 +10,7 @@ class EmployeeDepartment(EntityMeta):
     id = Column(Integer, primary_key=True, autoincrement=True)
     employee_id = Column(Integer, ForeignKey("employee.id"), nullable=False)
     department_id = Column(Integer, ForeignKey("department.id"), nullable=False)
-    role = Column(Enum(RoleEnum), nullable=False)
-    expiration_date = Column(Date)
+    expiration_date = Column(Date, nullable=True, default=None)
     effective_date = Column(Date, nullable=False, default=func.current_date())
 
     # Relationships

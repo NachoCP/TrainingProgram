@@ -2,6 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
+from backend.models.competency import Competency
 from backend.models.competency_level import CompetencyLevel
 from commons.interfaces.repository import IRepository
 
@@ -39,3 +40,13 @@ class CompetencyLevelRepository(IRepository[CompetencyLevel, id]):
         self.db.bulk_save_objects(instances)
         self.db.commit()
         return instances
+
+    def get_all_by_department(self, department_id: int) -> List[dict[str, str]]:
+        competency_levels = (self.db.query(Competency.name, CompetencyLevel.required_level, CompetencyLevel.num_workers)
+                             .join(Competency,CompetencyLevel.competency_id == Competency.id)
+                             .filter(CompetencyLevel.department_id==department_id).all())
+
+        result = [{"name": name, "required_level": required_level, "num_workers": num_workers}
+                  for name, required_level, num_workers in competency_levels]
+
+        return result

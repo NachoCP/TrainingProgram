@@ -2,7 +2,7 @@ from sqlalchemy import Column, Enum, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
-from backend.utils.vocabulary import RequiredLevelEnum
+from commons.enum import RequiredLevelEnum
 
 
 class CompetencyLevel(EntityMeta):

@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Date, ForeignKey, Integer, String, func
+from sqlalchemy import Column, Date, Enum, ForeignKey, Integer, func
 from sqlalchemy.orm import relationship
 
 from backend.models.base import EntityMeta
+from commons.enum import RequiredLevelEnum
 
 
 class EmployeeCompetency(EntityMeta):
@@ -10,8 +11,8 @@ class EmployeeCompetency(EntityMeta):
     id = Column(Integer, primary_key=True, autoincrement=True)
     employee_id = Column(Integer, ForeignKey("employee.id"), nullable=False)
     competency_id = Column(Integer, ForeignKey("competency.id"), nullable=False)
-    current_level = Column(String, nullable=False)
-    expiration_date = Column(Date)
+    current_level = Column(Enum(RequiredLevelEnum), nullable=False)
+    expiration_date = Column(Date, nullable=True, default=None)
     effective_date = Column(Date, nullable=False, default=func.current_date())
 
     # Relationships

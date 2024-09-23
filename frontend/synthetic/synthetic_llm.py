@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from commons.constants import DEFAULT_LLM_MODEL, SYNTHETHIC_PROMPT
+from commons.constants import DEFAULT_LLM_MODEL, SYNTHETHIC_PROMPT, SYSTEM_MESSAGE_SYNTHETIC
 from commons.enum import LLMFactory
 from commons.llm.factory import LLMProviderFactory
 from commons.prompts.prompt_template import PromptTemplate
@@ -19,7 +19,8 @@ class DataSyntheticLLM:
                  ):
 
         self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(List[model])
+        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(model=List[model],
+                                                                         system_message=SYSTEM_MESSAGE_SYNTHETIC)
         self._prompt = PromptTemplate(prompt_path)
 
     def create(self, num: int, preamble: str, **kwargs) -> List[BaseModel]:
