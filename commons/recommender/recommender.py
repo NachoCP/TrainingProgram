@@ -83,6 +83,6 @@ class CourseRecommender(IRecommender):
             course.final_score = final_score
         return filtered_data
 
-    def ordering(self, scored_data: list[CourseModelOutput]) -> list:
+    def ordering(self, scored_data: list[CourseModelOutput]) -> list[CourseModelOutput]:
         # Order items by their scores
         return sorted(scored_data, key=lambda curso: curso.final_score, reverse=True)

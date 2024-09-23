@@ -1,5 +1,6 @@
+import concurrent.futures
 import json
-from typing import Any
+from typing import Any, Dict, List
 
 from pymilvus import MilvusClient
 
@@ -40,6 +41,7 @@ class CoursePipeline(IPipeline):
         self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model, env.EMBEDDING_DIMENSION)
         self._prompt = PromptTemplate(prompt_path)
         self._milvus_client = MilvusClient(env.MILVUS_LITTLE)
+        self._parallel_processing = 10
 
     def extract(self, path) -> list[dict[str, Any]]:
 
@@ -49,30 +51,55 @@ class CoursePipeline(IPipeline):
         return data_json
 
     def transform(self,
-                  data: list[Course],
-                  **kwargs) -> Any:
+                  data: List[Dict[str, str]],
+                  **kwargs) -> List[Course]:
 
         data_output = []
-        batch = 0
-        for course in data:
-            input_text = (f"Title: {course['title']}, Category: {course['category']},"
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self._parallel_processing) as executor:
+            futures = [executor.submit(self._enrich_course, course) for course in data]
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    result = future.result()
+                    data_output.append(result)
+                except Exception as exc:
+                    print(f"Generated an exception: {exc}")
+                    raise exc
+            #for course in data:
+        #    input_text = (f"Title: {course['title']}, Category: {course['category']},"
+        #                  f"Sub-Category: {course['sub_category']}, Short Intro: {course['short_intro']}"
+        #                  f", Skills: {course['skills']}")
+        #    content = self._prompt.text(**{"competencies": self._competencies,
+        #                             "courses": input_text})
+        #    enrich_course = self._llm_runner.run(content=content)
+        #    enrich_course = enrich_course.model_dump()
+#
+        #    if len(enrich_course["matching_competencies"]) == 0:
+        #        continue
+        #    enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
+#
+        #    data_output.append(Course(**preprocess_data({**course, **enrich_course})))
+        #    batch += 1
+#
+        #    if batch % 50 == 0:
+        #        print(f"Number batch {batch}")
+        return data_output
+
+    def _enrich_course(self,
+                       course: dict[str, str]) -> Course:
+
+        input_text = (f"Title: {course['title']}, Category: {course['category']},"
                           f"Sub-Category: {course['sub_category']}, Short Intro: {course['short_intro']}"
                           f", Skills: {course['skills']}")
-            content = self._prompt.text(**{"competencies": self._competencies,
-                                     "courses": input_text})
-            enrich_course = self._llm_runner.run(content=content)
-            enrich_course = enrich_course.model_dump()
+        content = self._prompt.text(**{"competencies": self._competencies,
+                                    "courses": input_text})
+        enrich_course = self._llm_runner.run(content=content)
+        enrich_course = enrich_course.model_dump()
 
-            if len(enrich_course["matching_competencies"]) == 0:
-                continue
-            enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
+        if len(enrich_course["matching_competencies"]) == 0:
+            return None
+        enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
 
-            data_output.append(Course(**preprocess_data({**course, **enrich_course})))
-            batch += 1
-
-            if batch % 50 == 0:
-                print(f"Number batch {batch}")
-        return data_output
+        return Course(**preprocess_data({**course, **enrich_course}))
 
     def load(self,
              data: list[dict[str, Any]],
