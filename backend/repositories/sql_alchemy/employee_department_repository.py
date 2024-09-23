@@ -40,6 +40,6 @@ class EmployeeDepartmentRepository(IRepository[EmployeeDepartment, id]):
         self.db.commit()
         return instances
 
-    def get_all_by_department(self, department_id: int) -> List[EmployeeDepartment]:
-        employee_department = self.db.query(EmployeeDepartment).filter_by(department_id=department_id).all()
-        return employee_department
+    def get_id_by_employee(self, department_id: int) -> int:
+        employee_department = self.db.query(EmployeeDepartment).filter_by(department_id=department_id).first()
+        return employee_department.id

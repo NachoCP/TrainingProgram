@@ -22,4 +22,5 @@ class CourseService():
         pipeline = CoursePipeline(competencies_data=competency_data)
         input_data = pipeline.extract(path=COURSE_DEFAULT_DIR_DATA)
         transformed_data = pipeline.transform(input_data)
-        return self.repository.bulk(transformed_data)
+
+        return self.repository.bulk([d for d in transformed_data if d is not None])

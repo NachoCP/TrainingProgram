@@ -39,9 +39,7 @@ class CoursePipeline(IPipeline):
 
         dynamic_competencies = [c.name for c in competencies_data]
         CourseModelLLM.set_dynamic_example("matching_competencies", dynamic_competencies)
-
         self._competencies = '\n'.join([f"- {c.name}: {c.description}" for c in competencies_data])
-
         self._llm_model = llm_model
         self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(model=CourseModelLLM,
                                                                          system_message=SYSTEM_MESSAGE_COURSE)

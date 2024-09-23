@@ -7,16 +7,6 @@ class EmbeddingFactory(str, Enum):
 class LLMFactory(str, Enum):
     openai = "openai"
 
-class Priority(Enum):
-    low: 0
-    medium: 1
-    high: 2
-    urgent: 3
-
-class Scope(Enum):
-    company: 0
-    feedback: 1
-
 class RequiredLevelEnum(str, Enum):
     # Enum for the competency levels
     basic = "basic"  # Entry-level knowledge

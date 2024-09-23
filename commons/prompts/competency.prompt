@@ -1,0 +1,20 @@
+Giving all the data, please calculate all the competencies with their priority and 
+if the decision of the competency comes from the feedback, company or both.
+
+Feedback
+
+{feedback_reviews}
+
+Company Competencies Rules Levels
+
+{competency_level_text}
+
+Department Actual Competencies
+
+{department_competency_level_text}
+
+Employee Actual Competencies Levels
+
+{employee_competency_text}
+
+

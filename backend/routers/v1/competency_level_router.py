@@ -63,7 +63,7 @@ def bulk(
     _service = CompetencyLevelService(db)
     return _service.bulk(data)
 
-@router.get("/department_id/{id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
+@router.get("/department/{id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
 def get_all_by_department(
     department_id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008

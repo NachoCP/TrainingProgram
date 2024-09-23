@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 from pymilvus import MilvusClient
 
@@ -8,6 +8,7 @@ from commons.constants import (
     COURSE_OUTPUT_FIELDS,
     DEFAULT_EMBEDDING_MODEL,
     EMBEDDING_COLUMN,
+    MAX_PRIORITY,
     SEARCH_PARAMS,
     WEIGHTS_SCORING,
 )
@@ -30,6 +31,8 @@ class CourseRecommender(IRecommender):
         self._milvus_client = MilvusClient(env.MILVUS_LITTLE)
 
     def candidate_generation(self, input_data: str) -> list[CourseModelOutput]:
+
+        self._milvus_client.load_collection(COURSE_COLLECTION)
 
         query_embedding = self._embeddign_runner.get_embedding(input_data)
         results = self._milvus_client.search(
@@ -54,7 +57,9 @@ class CourseRecommender(IRecommender):
         # Filter candidates (e.g., remove items the user has already seen)
         return [candidate for candidate in candidates if candidate.title not in courses_title]
 
-    def scoring(self, filtered_data: list[CourseModelOutput]) -> list[dict[ str, Any]]:
+    def scoring(self,
+                competencies_priority: dict[str, int],
+                filtered_data: list[CourseModelOutput]) -> list[dict[ str, Any]]:
 
         ratings = [course.rating for course in filtered_data]
         reviews = [course.number_of_reviews for course in filtered_data]
@@ -63,8 +68,16 @@ class CourseRecommender(IRecommender):
         max_rating, min_rating = max(ratings), min(ratings)
         max_reviews, min_reviews = max(reviews), min(reviews)
         max_viewers, min_viewers = max(viewers), min(viewers)
+        max_possible_score = len(competencies_priority) * MAX_PRIORITY
 
         for course in filtered_data:
+
+            coeff_priority = sum([competencies_priority[competency] for competency in
+                                     course.matching_competencies.split(",")
+                                     if competency in competencies_priority])
+
+            coeff_priority = normalize(coeff_priority, 0, max_possible_score)
+
             skills_embedding = self._embeddign_runner.get_embedding(course.skills)
             query_embedding = course.query_embedding
             skills_similarity = cosine_similarity(skills_embedding, query_embedding)
@@ -74,6 +87,7 @@ class CourseRecommender(IRecommender):
             normalized_viewers = normalize(course.number_of_viewers, min_viewers, max_viewers)
 
             final_score = (
+                WEIGHTS_SCORING["coeff_priority"] * coeff_priority +
                 WEIGHTS_SCORING["matching_competencies"] * course.metric_coefficient +
                 WEIGHTS_SCORING["rating"] * normalized_rating +
                 WEIGHTS_SCORING["number_of_reviews"] * normalized_reviews +
@@ -83,6 +97,6 @@ class CourseRecommender(IRecommender):
             course.final_score = final_score
         return filtered_data
 
-    def ordering(self, scored_data: list[CourseModelOutput]) -> list[CourseModelOutput]:
+    def ordering(self, scored_data: List[CourseModelOutput]) -> List[CourseModelOutput]:
         # Order items by their scores
         return sorted(scored_data, key=lambda curso: curso.final_score, reverse=True)

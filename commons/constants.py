@@ -25,10 +25,11 @@ COMPETENCY_PROMPT="commons/prompts/competency.prompt"
 DEFAULT_LLM_MODEL="gpt-3.5-turbo"
 DEFAULT_EMBEDDING_MODEL="text-embedding-3-small"
 WEIGHTS_SCORING = {
-        "matching_competencies": 0.30,
-        "matching_skills": 0.30,
-        "rating": 0.20,
-        "number_of_reviews": 0.10,
+        "coeff_priority": 0.30,
+        "matching_competencies": 0.20,
+        "matching_skills": 0.20,
+        "rating": 0.15,
+        "number_of_reviews": 0.05,
         "number_of_viewers": 0.10
     }
 SEARCH_PARAMS = {"metric_type": "IP", "params": {}}
@@ -39,9 +40,10 @@ SYSTEM_MESSAGE_COURSE=("You are a world class AI that excels at identifying topi
                        "You are about to be given a list of competencies as topics and a text snippet describing a course "
                        "and asked to identify which competencies are present in the course."
                        "Make sure to chose only competencies that are present in the list.")
-SYSTEM_MESSAGE_COURSE=("You are a world class AI that excels at improve patterns from descriptions"
+SYSTEM_MESSAGE_COMPETENCY=("You are a world class AI that excels at improve patterns from descriptions"
                        "You are about to be given a list of competencies as the pattern and a text snippet describing an employee performance which "
-                       "will include its competency levels and the feedback giving by different people."
+                       "will include feedback review, company rules about competencies per department, competencies of the department and competencies of the employee"
                        "Your task is to identify which competenies needs to be improved by the employee."
                        "Provide them ordered by priority"
                        "Make sure to chose only competencies that are present in the list.")
+MAX_PRIORITY=4

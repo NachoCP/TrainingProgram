@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
 from backend.services.employee_competency_service import EmployeeCompetencyService
-from commons.models.core.competency_level import CompetencyLevelOutput
+from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
 from commons.models.core.employee_competency import EmployeeCompetency
 
 router = APIRouter(
@@ -64,7 +64,7 @@ def bulk(
     _service = EmployeeCompetencyService(db)
     return _service.bulk(data)
 
-@router.get("/employee_id/{id}", status_code=status.HTTP_200_OK, response_model=EmployeeCompetency)
+@router.get("/employee_id/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevelEmployeeOutput)
 def get_all_by_employee(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008

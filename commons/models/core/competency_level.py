@@ -21,6 +21,11 @@ class CompetencyLevelOutput(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class CompetencyLevelEmployeeOutput(BaseModel):
+    name: str = Field(..., description="Name of the competency", example="Leadership")
+    required_level: RequiredLevelEnum = Field(..., description="Required level of competency", example="Advanced")
+
+    model_config = ConfigDict(from_attributes=True)
 
 class CompetencyLevelGrouped(BaseModel):
     name: str = Field(..., description="Name of the competency", example="Leadership")

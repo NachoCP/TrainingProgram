@@ -44,8 +44,13 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
         return instances
 
     def get_all_by_employee(self, employee_id: int) -> List[EmployeeCompetency]:
-        feedbacks = self.db.query(EmployeeCompetency).filter_by(employee_id=employee_id).all()
-        return feedbacks
+        result = (self.db.query(Competency.name, EmployeeCompetency.current_level)
+                  .join(Competency,Competency.id == EmployeeCompetency.competency_id)
+                  .filter(EmployeeCompetency.employee_id==employee_id).all()
+                  )
+        result = [{"name": name, "required_level": required_level}
+                  for name, required_level in result]
+        return result
 
     def group_competency_level_by_employee_ids(self, department_id: int) -> List[Any]:
         result = (self.db.query(Competency.name, EmployeeCompetency.current_level,
