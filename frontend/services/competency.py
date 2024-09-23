@@ -8,10 +8,10 @@ from frontend.services.frontend_service import IFrontendService
 env = get_environment_variables()
 
 
-class EmployeeService(IFrontendService):
+class CompetencyService(IFrontendService):
 
     def send(self, data: List[dict[str, Any]]) -> None:
-        url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/employee/bulk"
+        url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/competency/bulk"
 
         response = requests.post(url, json=data)
         if response.status_code == 200:

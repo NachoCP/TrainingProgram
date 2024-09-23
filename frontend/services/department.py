@@ -1,35 +1,23 @@
-from typing import List
+from typing import Any, List
+
+import requests
 
 from commons.config import get_environment_variables
-from commons.constants import DEFAULT_LLM_MODEL, SYNTHETHIC_PROMPT
-from commons.enum import LLMFactory
-from commons.llm.factory import LLMProviderFactory
-from commons.models.core.department import Department
-from commons.prompts.prompt_template import PromptTemplate
-from frontend.synthetic.synthetic_llm import ISyntheticService
+from frontend.services.frontend_service import IFrontendService
 
 env = get_environment_variables()
 
 
-class DepartmentSyntheticService(ISyntheticService):
+class DepartmentService(IFrontendService):
 
-    def __init__(self,
-                 llm_model: str =DEFAULT_LLM_MODEL,
-                 llm_provider: str = LLMFactory.openai.value,
-                 prompt_path: str = SYNTHETHIC_PROMPT
-                 ):
+    def send(self, data: List[dict[str, Any]]) -> None:
+        url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/department/bulk"
 
-        self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(List[Department])
-        self._prompt = PromptTemplate(prompt_path)
-
-    def create(self, num: int, preamble: str, **kwargs) -> List[Department]:
-        content = self._prompt.text(**{"num": num,
-                                    "preamble": preamble})
-        synthetic_data = self._llm_runner.run(content=content)
-
-        return synthetic_data
-
-    def send(self, data: List[Department]) -> None:
-
-        pass
+        response = requests.post(url, json=data)
+        if response.status_code == 200:
+            print("Successfully sent data!")
+            # Optional: Print the response from the server
+            print(response.json())
+        else:
+            print(f"Failed to send data. Status code: {response.status_code}")
+            print(response.text)

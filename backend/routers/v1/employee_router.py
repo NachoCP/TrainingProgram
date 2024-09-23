@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
 from backend.services.employee_service import EmployeeService
-from commons.models.core.employee import Employee
+from commons.models.core.employee import Employee, EmployeeWithoutDates
 
 router = APIRouter(
     prefix="/employee",
@@ -57,7 +57,7 @@ def update(
 
 @router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[Employee])
 def bulk(
-    data: List[Employee],
+    data: List[EmployeeWithoutDates],
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = EmployeeService(db)

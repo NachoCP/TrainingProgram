@@ -3,7 +3,10 @@ import streamlit as st
 
 from commons.models.core.competency import Competency
 from commons.models.core.department import Department
-from commons.models.core.employee import Employee
+from commons.models.core.employee import EmployeeWithoutDates
+from frontend.services.competency import CompetencyService
+from frontend.services.department import DepartmentService
+from frontend.services.employee import EmployeeService
 from frontend.synthetic.synthetic_llm import DataSyntheticLLM
 
 
@@ -31,16 +34,16 @@ def competencies_view():
         num_departments = 5
         preamble = f"{name} \n {purpose}"
         with st.spinner('Generating synthetic data...'):
-            competencies = DataSyntheticLLM(Competency).create(num=num_competencies, preamble=preamble)
-            employees = DataSyntheticLLM(Employee).create(num=num_employees, preamble=preamble)
-            departments = DataSyntheticLLM(Department).create(num=num_departments, preamble=preamble)
+            st.session_state.competencies = DataSyntheticLLM(Competency).create(num=num_competencies, preamble=preamble)
+            st.session_state.employees = DataSyntheticLLM(EmployeeWithoutDates).create(num=num_employees, preamble=preamble)
+            st.session_state.departments = DataSyntheticLLM(Department).create(num=num_departments, preamble=preamble)
             st.session_state.data_loaded = True
 
-        st.success("Competencies successfully generated!")
+        st.success("Data successfully generated!")
 
-    df_competencies = pd.DataFrame([competency.model_dump() for competency in competencies])
-    df_employees = pd.DataFrame([employee.model_dump() for employee in employees])
-    df_departments = pd.DataFrame([department.model_dump() for department in departments])
+    df_competencies = pd.DataFrame([competency.model_dump() for competency in st.session_state.competencies])
+    df_employees = pd.DataFrame([employee.model_dump() for employee in st.session_state.employees])
+    df_departments = pd.DataFrame([department.model_dump() for department in st.session_state.departments])
 
     st.markdown("## **Competency Table**")
     edited_df_competencies = st.data_editor(df_competencies, num_rows="dynamic")
@@ -50,4 +53,7 @@ def competencies_view():
     edited_df_departments = st.data_editor(df_departments, num_rows="dynamic")
 
     if st.button("Load Config"):
-        print("LOAD")
+        EmployeeService().send(edited_df_employees.to_dict("records"))
+        DepartmentService().send(edited_df_departments.to_dict("records"))
+        CompetencyService().send(edited_df_competencies.to_dict("records"))
+        print("Loaded Successfully all the entities")

@@ -31,3 +31,4 @@ WEIGHTS_SCORING = {
         "number_of_viewers": 0.10
     }
 SEARCH_PARAMS = {"metric_type": "IP", "params": {}}
+COURSE_DEFAULT_DIR_DATA="sample/online_courses_clean.json"

@@ -1,3 +1,4 @@
+from pymilvus import MilvusClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -24,3 +25,14 @@ def get_db_connection():
         yield db
     finally:
         db.close()
+
+def get_milvus_connection():
+    if env.ENVIRONMENT=="dev":
+        client = MilvusClient(env.MILVUS_LITTLE)
+        try:
+            yield client
+        finally:
+            client.close()
+    else:
+        print("Not implemented")
+        #connections.connect("default", host=HOST, port=PORT)

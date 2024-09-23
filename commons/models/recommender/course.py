@@ -6,7 +6,7 @@ from pydantic import Field
 from commons.models.base_dynamic_model import BaseDynamicModel
 
 
-class CourseModel(BaseDynamicModel):
+class CourseModelLLM(BaseDynamicModel):
     title: str = Field(..., description="The course title.")
     matching_competencies: List[str] = Field(
         default_factory=list,

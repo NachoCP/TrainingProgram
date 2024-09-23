@@ -14,6 +14,7 @@ class EnvironmentSettings(BaseSettings):
     API_VERSION: str
     APP_NAME: str
     ENVIRONMENT: str
+    BACKEND_HOSTNAME: str
     BACKEND_PORT: int
     DATABASE_DIALECT: str
     DATABASE_HOSTNAME: str

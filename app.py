@@ -2,7 +2,7 @@ import streamlit as st
 
 from frontend.ui.add_course import add_course
 from frontend.ui.configure_company import company_view
-from frontend.ui.configure_competencies import competencies_view
+from frontend.ui.configure_entities import competencies_view
 from frontend.ui.manager_view import manager_options
 
 
