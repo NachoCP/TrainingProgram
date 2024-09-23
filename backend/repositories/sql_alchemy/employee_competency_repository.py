@@ -39,3 +39,7 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
         self.db.bulk_save_objects(instances)
         self.db.commit()
         return instances
+
+    def get_all_by_employee(self, employee_id: id) -> List[EmployeeCompetency]:
+        feedbacks = self.db.query(EmployeeCompetency).filter_by(employee_id=employee_id).all()
+        return feedbacks

@@ -33,3 +33,6 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
     def bulk(self, schemas: List[EmployeeCompetencySchema]) -> List[EmployeeCompetency]:
         schema_objects = [EmployeeCompetency(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
+
+    def get_all_by_employee(self, employee_id: id) -> List[EmployeeCompetency]:
+        return self.repository.get_all_by_employee(employee_id)

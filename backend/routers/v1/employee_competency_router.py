@@ -62,3 +62,11 @@ def bulk(
 ):
     _service = EmployeeCompetencyService(db)
     return _service.bulk(data)
+
+@router.get("/employee_id/{id}", status_code=status.HTTP_200_OK, response_model=EmployeeCompetency)
+def get_all_by_employee(
+    id: int,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeCompetencyService(db)
+    return _service.get_all_by_employee(id)
