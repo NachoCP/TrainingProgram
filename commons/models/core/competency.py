@@ -9,9 +9,8 @@ class Competency(BaseModel):
     description: str = Field(..., description="Description of the competency", example="Ability to lead teams effectively")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_schema_extra={
-            "orm_mode": True,
             "examples": [
                 {"id": 1, "name": "Leadership", "description": "Ability to lead teams, inspire others, and drive projects to success."},
                 {"id": 2, "name": "Creativity", "description": "The ability to generate new ideas and approaches to solve problems effectively."},

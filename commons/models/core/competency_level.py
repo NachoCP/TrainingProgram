@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from commons.enum import RequiredLevelEnum
 
@@ -12,16 +12,14 @@ class CompetencyLevel(BaseModel):
     required_level: RequiredLevelEnum = Field(..., description="Required level of competency", example="Advanced")
     num_workers: int = Field(..., description="Number of people required with this competency", example=5)
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CompetencyLevelOutput(BaseModel):
     name: str = Field(..., description="Name of the competency", example="Leadership")
     required_level: RequiredLevelEnum = Field(..., description="Required level of competency", example="Advanced")
     num_workers: int = Field(..., description="Number of people required with this competency", example=5)
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class CompetencyLevelGrouped(BaseModel):
@@ -29,5 +27,4 @@ class CompetencyLevelGrouped(BaseModel):
     required_level: RequiredLevelEnum = Field(..., description="Required level of competency", example="Advanced")
     num_workers: int = Field(..., description="Number of people required with this competency", example=5)
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

@@ -12,7 +12,7 @@ class Feedback(BaseModel):
     effective_date: str = Field(..., description="Date when the feedback was given", example="2024-09-20")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_schema_extra = {
             "examples": [
                 {
