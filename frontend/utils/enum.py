@@ -3,6 +3,10 @@ from enum import Enum
 
 class BackendEndpoints(str, Enum):
     bulk = "bulk"
+    department = "department"
+    employee = "employee"
+    group_department = "group/department"
+    recommend_course = "recommend_course"
 
 
 class RouterEndpoint(str, Enum):

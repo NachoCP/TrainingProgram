@@ -52,7 +52,7 @@ class CompetencyPipeline(IPipeline):
         department_competency_level_text = "\n".join([f"- Competency: {company_competency.name}, Level: {company_competency.required_level.value}, Num_workers: {company_competency.num_workers}"
                                       for company_competency in department_competency_level])
 
-        employee_competency_text = "\n".join([f"- Competency: {company_competency.name}, Level: {company_competency.required_level.value}"
+        employee_competency_text = "\n".join([f"- Competency: {company_competency.name}, Level: {company_competency.current_level.value}"
                                       for company_competency in employee_competency])
 
 
@@ -63,5 +63,4 @@ class CompetencyPipeline(IPipeline):
                                        })
         competencies_output = self._llm_runner.run(content=content)
 #
-        print(competencies_output)
         return competencies_output

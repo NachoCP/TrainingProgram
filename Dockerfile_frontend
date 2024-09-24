@@ -1,0 +1,14 @@
+# Use an official Python image as the base (can also use python:3.12 if required)
+FROM python:3.12-slim
+
+RUN pip install poetry
+
+COPY ./frontend /app/frontend
+COPY ./commons /app/commons
+COPY ./app.py /app/app.py
+COPY poetry.lock pyproject.toml /app/
+
+ENV PATH="/root/.local/bin:$PATH"
+
+WORKDIR /app
+RUN poetry install --no-interaction --no-ansi

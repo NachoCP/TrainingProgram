@@ -4,6 +4,7 @@ from typing import List, Literal, Optional
 from pydantic import Field
 
 from commons.models.base_dynamic_model import BaseDynamicModel
+from commons.models.recommender.comptency import CompetencyModelLLM
 
 
 class CourseModelLLM(BaseDynamicModel):
@@ -25,7 +26,6 @@ class CourseModelLLM(BaseDynamicModel):
                 "course_level": "Intermediate"
             }
         }
-
 
 class CourseModelOutput(BaseDynamicModel):
     metric_coefficient: Optional[float]
@@ -49,3 +49,29 @@ class CourseModelOutput(BaseDynamicModel):
     title: Optional[str]
     url: Optional[str]
     final_score: Optional[float] = Field(default=0.0)
+
+class CourseAPPOutput(BaseDynamicModel):
+    metric_coefficient: Optional[float]
+    query_string: Optional[str]
+    category: Optional[str]
+    course_type: Optional[str]
+    instructors: Optional[str]
+    language: Optional[str]
+    level: Optional[str]
+    matching_competencies: Optional[str]
+    number_of_reviews: Optional[int]
+    number_of_viewers: Optional[int]
+    prequisites: Optional[str]
+    rating: Optional[float]
+    short_intro: Optional[str]
+    site: Optional[str]
+    skills: Optional[str]
+    sub_category: Optional[str]
+    subtitle_languages: Optional[str]
+    title: Optional[str]
+    url: Optional[str]
+    final_score: Optional[float] = Field(default=0.0)
+
+class CourseMatching(BaseDynamicModel):
+    courses: List[CourseAPPOutput]
+    priority: List[CompetencyModelLLM]

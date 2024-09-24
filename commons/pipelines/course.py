@@ -70,24 +70,6 @@ class CoursePipeline(IPipeline):
                 except Exception as exc:
                     print(f"Generated an exception: {exc}")
                     raise exc
-            #for course in data:
-        #    input_text = (f"Title: {course['title']}, Category: {course['category']},"
-        #                  f"Sub-Category: {course['sub_category']}, Short Intro: {course['short_intro']}"
-        #                  f", Skills: {course['skills']}")
-        #    content = self._prompt.text(**{"competencies": self._competencies,
-        #                             "courses": input_text})
-        #    enrich_course = self._llm_runner.run(content=content)
-        #    enrich_course = enrich_course.model_dump()
-#
-        #    if len(enrich_course["matching_competencies"]) == 0:
-        #        continue
-        #    enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
-#
-        #    data_output.append(Course(**preprocess_data({**course, **enrich_course})))
-        #    batch += 1
-#
-        #    if batch % 50 == 0:
-        #        print(f"Number batch {batch}")
         return data_output
 
     def _enrich_course(self,

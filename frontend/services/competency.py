@@ -3,6 +3,7 @@ from typing import Any, List
 import requests
 
 from commons.config import get_environment_variables
+from commons.models.core.competency import Competency
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 
@@ -24,3 +25,8 @@ class CompetencyService(IFrontendService):
         else:
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)
+
+    def get_list(self) -> List[Competency]:
+
+        response = requests.get(self._base_url)
+        return [Competency(**r) for r in response.json()]

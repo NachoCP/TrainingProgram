@@ -24,6 +24,11 @@ class FeedbackService(IFrontendService):
                     "Do not use other ids rather than the others provided"
                     f"List of ids: {ids}")
         data = DataSyntheticLLM(Feedback).create(num=30, preamble=preamble)
+        data.extend(DataSyntheticLLM(Feedback).create(num=30, preamble=preamble + "\n Start id=30 for the feedback_id parameter"))
+        index = 0
+        for d in data:
+            d.id=index
+            index += 1
         response = requests.post(url, json=[d.model_dump() for d in data])
         if response.status_code == 200:
             print("Successfully sent data! Feedback")
@@ -31,3 +36,9 @@ class FeedbackService(IFrontendService):
         else:
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)
+
+    def get_all_by_employee(self,
+                            employee_id: int) -> List[Feedback]:
+        url = f"{self._base_url}/{BackendEndpoints.employee.value}/{employee_id}"
+        response = requests.get(url)
+        return [Feedback(**r) for r in response.json()]

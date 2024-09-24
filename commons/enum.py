@@ -14,6 +14,16 @@ class RequiredLevelEnum(str, Enum):
     advanced = "advanced"  # Proficient with advanced understanding
     expert = "expert"  # Mastery in the competency
 
+    @classmethod
+    def list_values(cls):
+        return [c.value for c in cls]
+
+class RequiredLevelEnumNoBasic(str, Enum):
+    # Enum for the competency levels
+    intermediate = "intermediate"  # Mid-level competency
+    advanced = "advanced"  # Proficient with advanced understanding
+    expert = "expert"  # Mastery in the competency
+
 required_level_weights = {
     RequiredLevelEnum.basic: 1,
     RequiredLevelEnum.intermediate: 2,

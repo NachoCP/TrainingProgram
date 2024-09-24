@@ -5,7 +5,11 @@ from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
 from backend.services.employee_competency_service import EmployeeCompetencyService
-from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
+from commons.models.core.competency_level import (
+    CompetencyLevelDepartmentOutput,
+    CompetencyLevelEmployeeOutput,
+    CompetencyLevelOutput,
+)
 from commons.models.core.employee_competency import EmployeeCompetency, EmployeeCompetencyWithoutDates
 
 router = APIRouter(
@@ -64,7 +68,7 @@ def bulk(
     _service = EmployeeCompetencyService(db)
     return _service.bulk(data)
 
-@router.get("/employee/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevelEmployeeOutput)
+@router.get("/employee/{id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelEmployeeOutput])
 def get_all_by_employee(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
@@ -80,7 +84,7 @@ def group_competency_level_by_employee_ids(
     _service = EmployeeCompetencyService(db)
     return _service.group_competency_level_by_employee_ids(department_id)
 
-@router.get("/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelEmployeeOutput])
+@router.get("/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelDepartmentOutput])
 def get_all_by_department(
     department_id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008

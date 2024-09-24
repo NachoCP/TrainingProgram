@@ -1,9 +1,11 @@
 import streamlit as st
 
+from frontend.services.department import DepartmentService
+from frontend.services.employee import EmployeeService
 from frontend.ui.add_course import add_course
-from frontend.ui.configure_company import company_view
-from frontend.ui.configure_entities import competencies_view
-from frontend.ui.manager_view import manager_options
+from frontend.ui.configure_company_view import company_view
+from frontend.ui.configure_entities_view import entities_view
+from frontend.ui.employee_view import employee_view
 
 
 def main():
@@ -18,17 +20,24 @@ def main():
     if not st.session_state.config_done:
         if st.session_state.page == "company_view":
             company_view()
-        elif st.session_state.page == "competencies_view":
-            competencies_view()
+        elif st.session_state.page == "entities_view":
+            entities_view()
     else:
-        st.sidebar.title("Navegación")
-        options = ["Dashboard de Empleados", "Opciones del Manager"]
-        choice = st.sidebar.selectbox("Selecciona una página", options)
+        st.sidebar.title("Navigate")
+        departments = DepartmentService().get_list()
 
-        if choice == "Add Course":
-            add_course()
-        elif choice == "Opciones del Manager":
-            manager_options()
+        options_dep = [department.name for department in departments]
+        choice_department = st.sidebar.selectbox("Select the department", options_dep)
+
+        st.session_state.department = next((item for item in departments if item.name == choice_department), None)
+        employees = EmployeeService().get_list_by_department(st.session_state.department.id)
+
+        options_employee = [employee.name for employee in employees]
+        choice_employee = st.sidebar.selectbox("Select the employee", options_employee)
+
+        st.session_state.employee = next((item for item in employees if item.name == choice_employee), None)
+
+        employee_view()
 
 # Llama a la función principal al iniciar la aplicación
 if __name__ == "__main__":

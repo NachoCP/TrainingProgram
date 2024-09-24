@@ -23,7 +23,22 @@ services:
         depends_on:
             - db
 #            - milvus
-
+    frontend:
+        hostname: frontend
+        build:
+            context: .
+            dockerfile: Dockerfile_frontend
+        container_name: frontend
+        command: poetry run streamlit run app.py
+        volumes:
+          - ./frontend:/app/frontend
+        ports:
+            - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+        env_file:
+            - .env
+        restart: always
+        depends_on:
+            - backend
     db:
         hostname: db
         image: postgres:15

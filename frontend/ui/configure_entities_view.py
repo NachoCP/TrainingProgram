@@ -24,7 +24,7 @@ def update_competency(competency_id, new_name, new_description):
             comp.description = new_description
             break
 
-def competencies_view():
+def entities_view():
 
     st.title("Competencies View")
     st.markdown("""Format table will all the competencies, deparments and employees that has been synthetic generated
@@ -34,13 +34,13 @@ def competencies_view():
 
     if "data_loaded" not in st.session_state:
     # Simulamos la generación de competencias con datos sintéticos
-        name = st.session_state['company_name']
-        purpose =st.session_state['company_purpose']
+        name = st.session_state["company_name"]
+        purpose =st.session_state["company_purpose"]
         num_competencies = 10
         num_employees = 20
         num_departments = 5
         preamble = f"{name} \n {purpose}"
-        with st.spinner('Generating synthetic data...'):
+        with st.spinner("Generating synthetic data..."):
             st.session_state.competencies = DataSyntheticLLM(Competency).create(num=num_competencies, preamble=preamble)
             st.session_state.employees = DataSyntheticLLM(EmployeeWithoutDates).create(num=num_employees, preamble=preamble)
             st.session_state.departments = DataSyntheticLLM(Department).create(num=num_departments, preamble=preamble)
@@ -64,7 +64,8 @@ def competencies_view():
         employee_ids = [employee["id"] for employee in edited_df_employees.to_dict("records")]
         competency_ids = [competency["id"] for competency in edited_df_competencies.to_dict("records")]
 
-        with st.spinner('Inserting synthetic data...'):
+        with st.spinner("Inserting synthetic data..."
+                        "This may take a few minutes  🕛 🕛"):
                 EmployeeService().send_bulk(edited_df_employees.to_dict("records"))
                 DepartmentService().send_bulk(edited_df_departments.to_dict("records"))
                 CompetencyService().send_bulk(edited_df_competencies.to_dict("records"))
@@ -76,3 +77,5 @@ def competencies_view():
                 EmployeeDepartmentService().send_bulk(department_ids, employee_ids)
 
         st.success("Loaded Successfully all the entities")
+        st.session_state.config_done = True
+        st.rerun()

@@ -3,6 +3,7 @@ from typing import Any, List
 import requests
 
 from commons.config import get_environment_variables
+from commons.models.core.employee import EmployeeWithoutDates
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 
@@ -24,3 +25,9 @@ class EmployeeService(IFrontendService):
         else:
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)
+
+    def get_list_by_department(self,
+                               department_id: int) -> List[EmployeeWithoutDates]:
+        url = f"{self._base_url}/{BackendEndpoints.department.value}/{department_id}"
+        response = requests.get(url)
+        return [EmployeeWithoutDates(**r) for r in response.json()]

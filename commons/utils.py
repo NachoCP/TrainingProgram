@@ -2,6 +2,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List
 
+from commons.enum import RequiredLevelEnum
+
 
 def read_text_file(path: str) -> str:
     """Helper function to read a prompt file based on the type."""
@@ -59,3 +61,13 @@ def merge_candidates_by_id(list1: List[Dict[str, Any]],
             merged_dict[candidate_id] = candidate
 
     return list(merged_dict.values())
+
+
+def map_level_to_value(level):
+    level_mapping = {
+        RequiredLevelEnum.basic: 0,
+        RequiredLevelEnum.intermediate: 1,
+        RequiredLevelEnum.advanced: 2,
+        RequiredLevelEnum.expert: 3
+    }
+    return level_mapping[level]

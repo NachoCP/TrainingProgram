@@ -16,6 +16,7 @@ class EnvironmentSettings(BaseSettings):
     ENVIRONMENT: str
     BACKEND_HOSTNAME: str
     BACKEND_PORT: int
+    FRONTEND_PORT: int
     DATABASE_DIALECT: str
     DATABASE_HOSTNAME: str
     DATABASE_PORT: int

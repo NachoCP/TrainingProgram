@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from backend.config.database import get_db_connection
 from backend.services.employee_service import EmployeeService
 from commons.models.core.employee import Employee, EmployeeWithoutDates
-from commons.models.recommender.course import CourseModelOutput
 
 router = APIRouter(
     prefix="/employee",
@@ -64,10 +63,12 @@ def bulk(
     _service = EmployeeService(db)
     return _service.bulk(data)
 
-@router.get("/recommend_course/{id}", status_code=201, response_model=List[CourseModelOutput])
-def recommend_courses(
-    id: int,
+
+
+@router.get("/department/{department_id}", status_code=201, response_model=List[EmployeeWithoutDates])
+def get_all_by_department(
+    department_id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = EmployeeService(db)
-    return _service.recommend_courses(id)
+    return _service.get_all_by_department(department_id)

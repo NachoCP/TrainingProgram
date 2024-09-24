@@ -10,8 +10,8 @@ def company_view():
 
 
     # Guardar automáticamente los inputs en el session_state
-    st.session_state['company_name'] = name
-    st.session_state['company_purpose'] = purpose
+    st.session_state["company_name"] = name
+    st.session_state["company_purpose"] = purpose
 
     # Help icon with an expandable text for additional information
     with st.expander("ℹ️ Why is this important?"):
@@ -27,7 +27,11 @@ def company_view():
     # Botón para guardar la configuración
     if st.button("Generate Competencies"):
         if name and purpose:
-            st.session_state.page = "competencies_view"
+            st.session_state.page = "entities_view"
             st.rerun()
         else:
             st.error("Please, fill all the fields in order to continue with the configuration")
+
+    if st.button("Already Configure"):
+        st.session_state.config_done = True
+        st.rerun()
