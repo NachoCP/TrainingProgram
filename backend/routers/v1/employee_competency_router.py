@@ -6,11 +6,11 @@ from sqlalchemy.orm import Session
 from backend.config.database import get_db_connection
 from backend.services.employee_competency_service import EmployeeCompetencyService
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
-from commons.models.core.employee_competency import EmployeeCompetency
+from commons.models.core.employee_competency import EmployeeCompetency, EmployeeCompetencyWithoutDates
 
 router = APIRouter(
-    prefix="/employee_competencies",
-    tags=["employee-competency"]
+    prefix="/employee_competency",
+    tags=["employee_competency"]
 )
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=EmployeeCompetency)
@@ -56,15 +56,15 @@ def update(
     _service = EmployeeCompetencyService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeCompetency])
+@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeCompetencyWithoutDates])
 def bulk(
-    data: List[EmployeeCompetency],
+    data: List[EmployeeCompetencyWithoutDates],
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = EmployeeCompetencyService(db)
     return _service.bulk(data)
 
-@router.get("/employee_id/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevelEmployeeOutput)
+@router.get("/employee/{id}", status_code=status.HTTP_200_OK, response_model=CompetencyLevelEmployeeOutput)
 def get_all_by_employee(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
@@ -72,7 +72,7 @@ def get_all_by_employee(
     _service = EmployeeCompetencyService(db)
     return _service.get_all_by_employee(id)
 
-@router.get("/department_id/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
+@router.get("/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
 def group_competency_level_by_employee_ids(
     department_id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008

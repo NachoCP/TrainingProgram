@@ -9,16 +9,18 @@ from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 env = get_environment_variables()
 
 
-class DepartmentService(IFrontendService):
-    def __init__(self):
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.department.value}"
+class CourseService(IFrontendService):
 
-    def send_bulk(self, data: List[dict[str, Any]]) -> None:
+    def __init__(self):
+        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.course.value}"
+
+    def send_bulk(self, data: List[dict[str, Any]] = None) -> None:
+
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
-        response = requests.post(url, json=data)
+        response = requests.post(url)
         if response.status_code == 200:
-            print("Successfully sent data! Department")
+            print("Successfully sent data! Course")
             # Optional: Print the response from the server
         else:
             print(f"Failed to send data. Status code: {response.status_code}")

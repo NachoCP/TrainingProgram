@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 import streamlit as st
 
@@ -5,8 +7,13 @@ from commons.models.core.competency import Competency
 from commons.models.core.department import Department
 from commons.models.core.employee import EmployeeWithoutDates
 from frontend.services.competency import CompetencyService
+from frontend.services.competency_level import CompetencyLevelService
+from frontend.services.course import CourseService
 from frontend.services.department import DepartmentService
 from frontend.services.employee import EmployeeService
+from frontend.services.employee_competency import EmployeeCompetencyService
+from frontend.services.employee_department import EmployeeDepartmentService
+from frontend.services.feedback import FeedbackService
 from frontend.synthetic.synthetic_llm import DataSyntheticLLM
 
 
@@ -53,7 +60,19 @@ def competencies_view():
     edited_df_departments = st.data_editor(df_departments, num_rows="dynamic")
 
     if st.button("Load Config"):
-        EmployeeService().send(edited_df_employees.to_dict("records"))
-        DepartmentService().send(edited_df_departments.to_dict("records"))
-        CompetencyService().send(edited_df_competencies.to_dict("records"))
-        print("Loaded Successfully all the entities")
+        department_ids =[department["id"] for department in edited_df_departments.to_dict("records")]
+        employee_ids = [employee["id"] for employee in edited_df_employees.to_dict("records")]
+        competency_ids = [competency["id"] for competency in edited_df_competencies.to_dict("records")]
+
+        with st.spinner('Inserting synthetic data...'):
+                EmployeeService().send_bulk(edited_df_employees.to_dict("records"))
+                DepartmentService().send_bulk(edited_df_departments.to_dict("records"))
+                CompetencyService().send_bulk(edited_df_competencies.to_dict("records"))
+                time.sleep(10)
+                CourseService().send_bulk()
+                FeedbackService().send_bulk(employee_ids)
+                CompetencyLevelService().send_bulk(competency_ids, department_ids)
+                EmployeeCompetencyService().send_bulk(competency_ids, employee_ids)
+                EmployeeDepartmentService().send_bulk(department_ids, employee_ids)
+
+        st.success("Loaded Successfully all the entities")

@@ -4,20 +4,23 @@ import requests
 
 from commons.config import get_environment_variables
 from frontend.services.frontend_service import IFrontendService
+from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 
 env = get_environment_variables()
 
 
 class EmployeeService(IFrontendService):
 
-    def send(self, data: List[dict[str, Any]]) -> None:
-        url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/employee/bulk"
+    def __init__(self):
+        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee.value}"
+
+    def send_bulk(self, data: List[dict[str, Any]]) -> None:
+        url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
         response = requests.post(url, json=data)
         if response.status_code == 200:
-            print("Successfully sent data!")
+            print("Successfully sent data! Employee")
             # Optional: Print the response from the server
-            print(response.json())
         else:
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)

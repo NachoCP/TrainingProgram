@@ -63,7 +63,7 @@ def bulk(
     _service = FeedbackService(db)
     return _service.bulk(data)
 
-@router.get("/employee_id/{id}", status_code=status.HTTP_200_OK, response_model=List[Feedback])
+@router.get("/employee/{id}", status_code=status.HTTP_200_OK, response_model=List[Feedback])
 def get_all_by_employee(
     id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008

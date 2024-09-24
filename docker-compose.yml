@@ -30,7 +30,7 @@ services:
         container_name: database
         volumes:
             - ./data/db:/var/lib/postgresql/data
-            - ./sql/marketing_company:/docker-entrypoint-initdb.d
+#            - ./sql/marketing_company:/docker-entrypoint-initdb.d
         ports:
             - "${DATABASE_PORT}:5432"
         env_file:

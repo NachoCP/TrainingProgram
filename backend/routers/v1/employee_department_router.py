@@ -5,11 +5,11 @@ from sqlalchemy.orm import Session
 
 from backend.config.database import get_db_connection
 from backend.services.employee_department_service import EmployeeDepartmentService
-from commons.models.core.employee_department import EmployeeDepartment
+from commons.models.core.employee_department import EmployeeDepartment, EmployeeDepartmentWithoutDates
 
 router = APIRouter(
-    prefix="/employee-competencies",
-    tags=["employee-competency"]
+    prefix="/employee_department",
+    tags=["employee_department"]
 )
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=EmployeeDepartment)
@@ -55,9 +55,9 @@ def update(
     _service = EmployeeDepartmentService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeDepartment])
+@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeDepartmentWithoutDates])
 def bulk(
-    data: List[EmployeeDepartment],
+    data: List[EmployeeDepartmentWithoutDates],
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = EmployeeDepartmentService(db)

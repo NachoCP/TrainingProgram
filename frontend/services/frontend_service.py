@@ -7,6 +7,10 @@ class IFrontendService( ABC):
     Abstract base embedding to declare the embedder
     """
 
+    #@abstractmethod
+    #def send(self, data: List[Any]) -> None:
+    #    pass
+
     @abstractmethod
-    def send(self, data: List[Any]) -> None:
+    def send_bulk(self, data: List[Any]) -> None:
         pass
