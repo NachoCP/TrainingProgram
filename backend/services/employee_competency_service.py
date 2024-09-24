@@ -35,6 +35,9 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
         schema_objects = [EmployeeCompetency(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
 
+    def get_all_by_department(self, department_id: int) -> List[CompetencyLevelEmployeeOutput]:
+        return [CompetencyLevelEmployeeOutput(**d) for d in self.repository.get_all_by_department(department_id)]
+
     def get_all_by_employee(self, employee_id: id) -> List[CompetencyLevelEmployeeOutput]:
         return [CompetencyLevelEmployeeOutput(**d) for d in self.repository.get_all_by_employee(employee_id)]
 

@@ -62,3 +62,4 @@ def bulk(
 ):
     _service = EmployeeDepartmentService(db)
     return _service.bulk(data)
+

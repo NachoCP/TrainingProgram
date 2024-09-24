@@ -1,9 +1,10 @@
-from typing import Any, List
+from typing import Any, Dict, List
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from backend.models.competency import Competency
+from backend.models.employee import Employee
 from backend.models.employee_competency import EmployeeCompetency
 from backend.models.employee_department import EmployeeDepartment
 from commons.interfaces.repository import IRepository
@@ -43,7 +44,21 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
         self.db.commit()
         return instances
 
-    def get_all_by_employee(self, employee_id: int) -> List[EmployeeCompetency]:
+    def get_all_by_department(self, department_id: int) -> List[Dict[str, Any]]:
+        result = (self.db.query(Competency.name, Employee.id, Employee.name, EmployeeCompetency.current_level)
+                  .join(Competency,Competency.id == EmployeeCompetency.competency_id)
+                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.department_id)
+                  .join(Employee, Employee.id == EmployeeCompetency.employee_id)
+                  .filter(EmployeeDepartment.department_id==department_id).all()
+                  )
+        result = [{"competency_name": competency_name,
+                   "employee_name": employee_name,
+                   "employee_id": employee_id,
+                   "required_level": required_level}
+                  for competency_name, employee_id, employee_name, required_level in result]
+        return result
+
+    def get_all_by_employee(self, employee_id: int) -> List[Dict[str, Any]]:
         result = (self.db.query(Competency.name, EmployeeCompetency.current_level)
                   .join(Competency,Competency.id == EmployeeCompetency.competency_id)
                   .filter(EmployeeCompetency.employee_id==employee_id).all()

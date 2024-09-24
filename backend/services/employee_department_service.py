@@ -34,5 +34,3 @@ class EmployeeDepartmentService(IService[EmployeeDepartment, EmployeeDepartmentS
         schema_objects = [EmployeeDepartment(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
 
-    def get_id_by_employee(self, employee_id: id) -> int:
-        return self.repository.get_id_by_employee(employee_id)

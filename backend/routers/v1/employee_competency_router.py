@@ -72,10 +72,18 @@ def get_all_by_employee(
     _service = EmployeeCompetencyService(db)
     return _service.get_all_by_employee(id)
 
-@router.get("/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
+@router.get("/group/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelOutput])
 def group_competency_level_by_employee_ids(
     department_id: int,
     db: Session = Depends(get_db_connection)  # noqa: B008
 ):
     _service = EmployeeCompetencyService(db)
     return _service.group_competency_level_by_employee_ids(department_id)
+
+@router.get("/department/{department_id}", status_code=status.HTTP_200_OK, response_model=List[CompetencyLevelEmployeeOutput])
+def get_all_by_department(
+    department_id: int,
+    db: Session = Depends(get_db_connection)  # noqa: B008
+):
+    _service = EmployeeCompetencyService(db)
+    return _service.get_all_by_department(department_id)
