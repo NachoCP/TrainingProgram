@@ -1,7 +1,12 @@
-Generate {num} synthetic entities with realistic attributes. It is mandatory to generate that number of entities
-Always generate the ids and they should be unique and incremental.
-Ensure that the data includes diverse and representative characteristics appropriate to the context, without revealing any personally identifiable information.
+Task: Generate {num} synthetic entities with realistic attributes. 
+The number of entities must be exactly {num}.
 
-This is the company name and description
+Requirements:
 
-{preamble}
+1. Unique Incremental IDs: Each entity must have a unique and incremental ID.
+2. Diverse and Representative Data: Ensure the attributes reflect diversity and are representative of the context.
+3. Privacy: No personally identifiable information (PII) should be included.
+
+Company Information:
+
+Company Name and Description: {preamble}

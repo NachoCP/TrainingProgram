@@ -1,24 +1,23 @@
-You are an expert in analyzing courses and identifying the relevant competencies they target.
+Task: You are an expert in course analysis, specializing in identifying the competencies that each course targets.
 
-I have a predefined set of competencies (with their names and descriptions) and a list of training courses. Your task is to:
+Objective:
 
-Match each course to the most relevant competencies from the provided list, if applicable.
-Categorize the course level as one of the following: Beginner, Intermediate, Advanced, or Expert.
+1. Match each course to the most relevant competencies from the provided list.
+2. Categorize the course level as one of the following: Beginner, Intermediate, Advanced, or Expert.
+
+Guidelines:
+
+- Only use the competencies from the list below. No other competencies are allowed.
+- A course can be mapped to one or more competencies from the list, or none (if no match is found).
+- If no competencies match, set the matching_competencies field as an empty list.
+- Ensure that the output is in valid JSON format and does not contain any special characters or symbols that could prevent it from loading.
 
 Competencies:
 
-Use only the competencies from this list (no others are allowed):
+Use only the competencies listed below:
 
 {competencies}
 
 Courses:
 
 {courses}
-
-Important notes:
-
-- Only use the competencies specified in the list. Do not introduce any competencies not included.
-- A course may have one or more competencies from the list, or none at all (if none match).
-- If no competencies match, leave the matching_competencies field as an empty list.
-- Ensure that the JSON output is valid and free of special characters or symbols that would prevent loading.
-- Provide a List of JSON with all the courses.
