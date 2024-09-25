@@ -52,7 +52,7 @@ class EmployeeDepartmentRepository(IRepository[EmployeeDepartment, id]):
         return result
 
     def get_id_by_employee_id(self, employee_id: int) -> int:
-        department_id = (self.db.query(EmployeeDepartment.employee_id)
+        department_id = (self.db.query(EmployeeDepartment.department_id)
                        .filter_by(employee_id=employee_id)
                        .first())
 

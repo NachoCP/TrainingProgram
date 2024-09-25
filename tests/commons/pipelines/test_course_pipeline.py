@@ -1,5 +1,3 @@
-import pytest
-
 from commons.models.core.competency import Competency
 from commons.models.core.course import Course
 from commons.pipelines.course import CoursePipeline

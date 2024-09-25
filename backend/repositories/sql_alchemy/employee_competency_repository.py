@@ -67,11 +67,11 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
                   for name, current_level in result]
         return result
 
-    def group_competency_level_by_employee_ids(self, department_id: int) -> List[Any]:
+    def group_competency_level_by_employee_ids(self, department_id: int) -> List[Dict[str, Any]]:
         result = (self.db.query(Competency.name, EmployeeCompetency.current_level,
-                                func.count(EmployeeCompetency.id).label("num_workers"))
+                                func.count().label("num_workers"))
                   .join(Competency,Competency.id == EmployeeCompetency.competency_id)
-                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.department_id)
+                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.employee_id)
                   .filter(EmployeeDepartment.department_id == department_id)
                   .group_by(Competency.name, EmployeeCompetency.current_level)
                   .all())

@@ -53,7 +53,6 @@ class CourseService():
     def recommend_courses(self,
                           id: id) -> CourseMatching:
         department_id = self.employee_department_repository.get_id_by_employee_id(id)
-        print(department_id)
 
         # Extracting all the data from the different services
 

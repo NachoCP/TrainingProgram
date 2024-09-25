@@ -1,5 +1,3 @@
-import pytest
-
 from commons.enum import PriorityType, RequiredLevelEnum
 from commons.models.core.competency import Competency
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
