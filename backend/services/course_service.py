@@ -10,6 +10,7 @@ from backend.services.competency_level_service import CompetencyLevelService
 from backend.services.competency_service import CompetencyService
 from backend.services.employee_competency_service import EmployeeCompetencyService
 from backend.services.employee_service import EmployeeService
+from commons.config import get_environment_variables
 from commons.constants import (
     COURSE_DEFAULT_DIR_DATA,
     DEFAULT_EMBEDDING_MODEL,
@@ -21,6 +22,8 @@ from commons.models.recommender.course import CourseAPPOutput, CourseMatching, C
 from commons.pipelines.competency import CompetencyPipeline
 from commons.pipelines.course import CoursePipeline
 from commons.ranking.ranking import CourseRanking
+
+env = get_environment_variables()
 
 
 class CourseService():
