@@ -2,12 +2,8 @@ import concurrent.futures
 import json
 from typing import Any, Dict, List
 
-from pymilvus import MilvusClient
-
-from backend.models.milvus.courses import get_course_schema
 from commons.config import get_environment_variables
 from commons.constants import (
-    COURSE_COLLECTION,
     COURSE_PROMPT,
     DEFAULT_EMBEDDING_MODEL,
     DEFAULT_LLM_MODEL,
@@ -46,7 +42,6 @@ class CoursePipeline(IPipeline):
         self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model,
                                                                                            env.EMBEDDING_DIMENSION)
         self._prompt = PromptTemplate(prompt_path)
-        self._milvus_client = MilvusClient(env.MILVUS_LITTLE)
         self._parallel_processing = 10
 
     def extract(self, path) -> list[dict[str, Any]]:
@@ -89,32 +84,3 @@ class CoursePipeline(IPipeline):
 
         return Course(**preprocess_data({**course, **enrich_course}))
 
-    def load(self,
-             data: list[dict[str, Any]],
-             **kwargs) -> Any:
-
-        if not self._milvus_client.has_collection(COURSE_COLLECTION):
-            self._milvus_client.create_collection(
-                collection_name=COURSE_COLLECTION,
-                schema=get_course_schema(env.EMBEDDING_DIMENSION)
-            )
-
-        self._milvus_client.insert(
-            collection_name=COURSE_COLLECTION,
-            data=data
-        )
-
-        #Create index after each load in order to refresh it
-        index_params = self._milvus_client.prepare_index_params()
-        index_params.add_index(
-            field_name="embedding",
-            metric_type="IP",
-            index_type="FLAT",
-            index_name="vector_index",
-            params={ "nlist": 128 }
-        )
-
-        self._milvus_client.create_index(
-            collection_name=COURSE_COLLECTION,
-            index_params=index_params
-        )

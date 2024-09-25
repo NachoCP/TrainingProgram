@@ -1,8 +1,6 @@
 import re
 from pathlib import Path
-from typing import Any, Dict, List
-
-from commons.enum import RequiredLevelEnum
+from typing import Any
 
 
 def read_text_file(path: str) -> str:
@@ -36,38 +34,3 @@ def preprocess_data(record: dict[str, Any]):
     record["course_level"] = record["course_level"] if record["course_level"] is not None else ""
 
     return record
-
-
-def normalize(list_values):
-    min_value = min(list_values)
-    max_value = max(list_values)
-    return [(x - min_value) / (max_value - min_value) for x in list_values]
-
-
-
-def merge_candidates_by_id(list1: List[Dict[str, Any]],
-                                     list2: List[Dict[str, Any]],
-                                     column_to_join: str) -> List[Dict[str, Any]]:
-
-    merged_dict = {candidate['id']: candidate for candidate in list1}
-
-    for candidate in list2:
-        candidate_id = candidate['id']
-        if candidate_id in merged_dict:
-            merged_dict[candidate_id][column_to_join] = list(
-                set(merged_dict[candidate_id].get(column_to_join, [])) | set(candidate.get(column_to_join, []))
-            )
-        else:
-            merged_dict[candidate_id] = candidate
-
-    return list(merged_dict.values())
-
-
-def map_level_to_value(level):
-    level_mapping = {
-        RequiredLevelEnum.basic: 0,
-        RequiredLevelEnum.intermediate: 1,
-        RequiredLevelEnum.advanced: 2,
-        RequiredLevelEnum.expert: 3
-    }
-    return level_mapping[level]

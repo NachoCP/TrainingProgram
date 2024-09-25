@@ -21,6 +21,13 @@ class CompetencyLevelOutput(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class CompetencyLevelCompare(BaseModel):
+    name: str = Field(..., description="Name of the competency", example="Leadership")
+    required_level: RequiredLevelEnum = Field(..., description="Required level of competency", example="advanced")
+    real_num_workers: int = Field(..., description="Number of people required with this competency", example=5)
+    expected_num_workers: int = Field(..., description="Number of people required with this competency", example=5)
+    model_config = ConfigDict(from_attributes=True)
+
 class CompetencyLevelDepartmentOutput(BaseModel):
     competency_name: str = Field(..., description="Name of the competency", example="Leadership")
     employee_name: str = Field(..., description="Name of the employee assigned to this competency")

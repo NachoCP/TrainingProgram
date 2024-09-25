@@ -24,9 +24,9 @@ class RequiredLevelEnumNoBasic(str, Enum):
     advanced = "advanced"  # Proficient with advanced understanding
     expert = "expert"  # Mastery in the competency
 
-required_level_weights = {
-    RequiredLevelEnum.basic: 1,
-    RequiredLevelEnum.intermediate: 2,
-    RequiredLevelEnum.advanced: 3,
-    RequiredLevelEnum.expert: 4
-}
+level_mapping = {
+        RequiredLevelEnum.basic: 0,
+        RequiredLevelEnum.intermediate: 1,
+        RequiredLevelEnum.advanced: 2,
+        RequiredLevelEnum.expert: 3
+    }

@@ -40,10 +40,11 @@ SYSTEM_MESSAGE_COURSE=("You are a world class AI that excels at identifying topi
                        "You are about to be given a list of competencies as topics and a text snippet describing a course "
                        "and asked to identify which competencies are present in the course."
                        "Make sure to chose only competencies that are present in the list.")
-SYSTEM_MESSAGE_COMPETENCY=("You are a world class AI that excels at improve patterns from descriptions"
+SYSTEM_MESSAGE_COMPETENCY=("You are a world class AI that excel at detecting competencies to be improve by a person"
                        "You are about to be given a list of competencies as the pattern and a text snippet describing an employee performance which "
-                       "will include feedback review, company rules about competencies per department, competencies of the department and competencies of the employee"
+                       "will include feedback review and the needs of the company for its department (Competency, Number of workers needed)"
                        "Your task is to identify which competenies needs to be improved by the employee."
                        "Provide them ordered by priority"
-                       "Make sure to chose only competencies that are present in the list.")
+                       "Make sure to chose only competencies that are present in the list."
+                       "All the competency needed by the company should always be returned")
 MAX_PRIORITY=4

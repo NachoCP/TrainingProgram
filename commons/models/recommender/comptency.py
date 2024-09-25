@@ -6,12 +6,14 @@ from commons.models.base_dynamic_model import BaseDynamicModel
 
 class CompetencyModelLLM(BaseDynamicModel):
     matching_competencies: str = Field(
-        description="Competency that will be applied"
+        description=("Identified competency for improvement by the employee."
+        "Based on the detected text, the goal is to identify as many related competencies as possible.")
     )
     priority: int = Field(
-        description=("Priority that it is needed to learn this competency."
-                    "There are four priority values: 1, 2, 3, ... "
-                    f"Where {MAX_PRIORITY} is the maximum priority")
+        description=("Indicates the urgency of learning this competency, "
+                     f"with values ranging from 1 to {MAX_PRIORITY}, where {MAX_PRIORITY}"
+                     " represents the highest priority. Priority is determined by feedback,"
+                     " company requirements, and the department's gap from expected performance levels.")
     )
 
 
@@ -19,7 +21,5 @@ class CompetencyModelLLM(BaseDynamicModel):
     class Config:
         json_schema_extra = {
             "example": {
-                    "matching_competencies": "Leadership",
-                    "priority": "high"
                 }
         }

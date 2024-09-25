@@ -1,0 +1,7 @@
+You are an expert in analyzing courses and identifying the relevant competencies they target.
+
+Competencies:
+{competencies}
+
+Courses:
+{courses}

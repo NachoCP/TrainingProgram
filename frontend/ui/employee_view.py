@@ -2,17 +2,10 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from commons.enum import RequiredLevelEnum
+from commons.enum import level_mapping
 from frontend.services.course import CourseService
 from frontend.services.employee_competency import EmployeeCompetencyService
 from frontend.services.feedback import FeedbackService
-
-level_mapping = {
-        RequiredLevelEnum.basic: 0,
-        RequiredLevelEnum.intermediate: 1,
-        RequiredLevelEnum.advanced: 2,
-        RequiredLevelEnum.expert: 3
-    }
 
 
 def employee_view():

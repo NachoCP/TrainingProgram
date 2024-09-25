@@ -1,20 +1,39 @@
-Giving all the data, please calculate all the competencies with their priority and 
-if the decision of the competency comes from the feedback, company or both.
+Task: Based on the provided data, calculate the priority of each competency.
 
-Feedback
+Feedback Data:
+
+- Comments: Notes and feedback comments received.
+- Score: The numerical score assigned to this feedback (lower scores indicate more negative feedback).
+
+Company Competency Levels:
+
+- Competency Name: The name of the competency that needs improvement.
+- Diff Workers: The number of additional employees required in the department for this competency.
+
+Priority Criteria:
+
+1. Higher Diff Workers: Competencies requiring more workers should be given higher priority.
+2. More Negative Feedback: Competencies receiving more negative feedback (lower scores) should also be prioritized.
+
+Important:
+
+Only use the competencies listed in the following section. No other competencies should be considered.
+Use only the competencies in this list that are applicable for the feedback and the competency gaps.
+
+Competencies:
+
+{competencies}
+
+If no data from feedback or competencies return empty.
+
+---------------------
+
+Feedback Reviews:
 
 {feedback_reviews}
 
-Company Competencies Rules Levels
+----------------------
 
-{competency_level_text}
+Competency Gaps (Lack of Employees):
 
-Department Actual Competencies
-
-{department_competency_level_text}
-
-Employee Actual Competencies Levels
-
-{employee_competency_text}
-
-
+{competency__levels}
