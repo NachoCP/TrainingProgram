@@ -2,20 +2,11 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 
-class IRecommender(ABC):
+class IRanking(ABC):
     """
     Abstract base class for a recommendation system with steps for candidate generation,
     filtering, scoring, and ordering.
     """
-
-    @abstractmethod
-    def candidate_generation(self, input_data: str) -> Any:
-        """
-        Generate candidate items from the input data.
-        :param input_data: The input data to generate candidates from.
-        :return: A list or set of candidate items.
-        """
-        pass
 
     @abstractmethod
     def filtering(self, candidates: Any) -> Any:

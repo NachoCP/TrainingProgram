@@ -10,12 +10,17 @@ from backend.services.competency_level_service import CompetencyLevelService
 from backend.services.competency_service import CompetencyService
 from backend.services.employee_competency_service import EmployeeCompetencyService
 from backend.services.employee_service import EmployeeService
-from commons.constants import COURSE_DEFAULT_DIR_DATA
+from commons.constants import (
+    COURSE_DEFAULT_DIR_DATA,
+    DEFAULT_EMBEDDING_MODEL,
+)
+from commons.embeddings.factory import EmbeddingProviderFactory
+from commons.enum import EmbeddingFactory
 from commons.models.core.course import Course
 from commons.models.recommender.course import CourseAPPOutput, CourseMatching, CourseModelOutput
 from commons.pipelines.competency import CompetencyPipeline
 from commons.pipelines.course import CoursePipeline
-from commons.recommender.recommender import CourseRecommender
+from commons.ranking.ranking import CourseRanking
 
 
 class CourseService():
@@ -30,6 +35,7 @@ class CourseService():
         self.competency_level_service = CompetencyLevelService(db)
         self.competency_service = CompetencyService(db)
         self.employee_department_repository = EmployeeDepartmentRepository(db)
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(EmbeddingFactory.openai.value)(DEFAULT_EMBEDDING_MODEL, env.EMBEDDING_DIMENSION)
 
     def bulk(self) -> List[Course]:
         competency_data = self.competency_service.list()
@@ -70,11 +76,12 @@ class CourseService():
                                        employee_competency=employee_competency)
 
         # Recommender algorithm
-        recommender = CourseRecommender()
+        ranking = CourseRanking()
         input_data = ",".join(c.matching_competencies for c  in competencies_output)
-        results = recommender.candidate_generation(input_data)
+        query_embedding = self._embeddign_runner.get_embedding(input_data)
+        results = self.repository.search(query_embedding)
         competencies_priority = {c.matching_competencies: c.priority for c in competencies_output}
-        scoring_results = recommender.scoring(competencies_priority, results)
-        courses_sorted = recommender.ordering(scoring_results)
+        scoring_results = ranking.scoring(competencies_priority, results)
+        courses_sorted = ranking.ordering(scoring_results)
         return CourseMatching(courses=[self._convert_model_to_app_output(course) for course in courses_sorted],
                        priority=competencies_output)

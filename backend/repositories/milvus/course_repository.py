@@ -4,8 +4,14 @@ from pymilvus import MilvusClient
 
 from backend.models.milvus.courses import get_course_schema
 from commons.config import get_environment_variables
-from commons.constants import COURSE_COLLECTION
+from commons.constants import (
+    COURSE_COLLECTION,
+    COURSE_OUTPUT_FIELDS,
+    EMBEDDING_COLUMN,
+    SEARCH_PARAMS,
+)
 from commons.models.core.course import Course
+from commons.models.recommender.course import CourseModelOutput
 
 env = get_environment_variables()
 
@@ -42,3 +48,23 @@ class CourseRepository():
         )
 
         return instances
+
+    def search(self, query_embedding: list[float], query_string: str) -> list[CourseModelOutput]:
+
+        self.client.load_collection(COURSE_COLLECTION)
+
+        results = self.client.search(
+            collection_name=COURSE_COLLECTION,
+            data=[query_embedding],
+            anns_field=EMBEDDING_COLUMN,
+            search_params=SEARCH_PARAMS,
+            limit=30,
+            output_fields=list(COURSE_OUTPUT_FIELDS)
+        )
+        query_properties = {
+            "query_embedding": query_embedding,
+            "query_string":  query_string
+        }
+        output = [CourseModelOutput(**{**{"metric_coefficient": result["distance"]}, **query_properties, **result["entity"]}) for result in results[0]]
+
+        return output

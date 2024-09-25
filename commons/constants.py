@@ -26,10 +26,9 @@ DEFAULT_LLM_MODEL="gpt-3.5-turbo"
 DEFAULT_EMBEDDING_MODEL="text-embedding-3-small"
 WEIGHTS_SCORING = {
         "coeff_priority": 0.30,
-        "matching_competencies": 0.20,
+        "matching_competencies": 0.30,
         "matching_skills": 0.20,
-        "rating": 0.15,
-        "number_of_reviews": 0.05,
+        "rating": 0.10,
         "number_of_viewers": 0.10
     }
 SEARCH_PARAMS = {"metric_type": "IP", "params": {}}
