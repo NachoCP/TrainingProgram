@@ -1,6 +1,6 @@
 import pytest
 
-from commons.enum import RequiredLevelEnum
+from commons.enum import PriorityType, RequiredLevelEnum
 from commons.models.core.competency import Competency
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
 from commons.models.core.feedback import Feedback
@@ -13,7 +13,7 @@ feedbacks = [
     Feedback(id=1,
              employee_id=1,
              feedback_by=1,
-             comments="Your understanding of machine learning algorithms is currently below expectations.",
+             comments="Your are bad at machine learning algorithms.",
              score="2.5",
              effective_date="2024-01-12")
 ]
@@ -73,6 +73,7 @@ def test_competency_pipeline_feedback():
     priority = pipeline.transform(feedbacks, [], [], competency_employee)
 
     assert len(priority) == 1
+    assert priority[0].competency_from == PriorityType.feedback
     assert priority[0].matching_competencies == competency_machine_learning
 
 def test_competency_pipeline_rules():
@@ -83,6 +84,7 @@ def test_competency_pipeline_rules():
                                   competency_employee)
 
     assert len(priority) == 1
+    assert priority[0].competency_from == PriorityType.company
     assert priority[0].matching_competencies == competency_creative_expression
 
 def test_competency_pipeline_rules_non_priority():

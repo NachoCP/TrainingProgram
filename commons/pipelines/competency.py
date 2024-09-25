@@ -5,7 +5,7 @@ import pandas as pd
 
 from commons.config import get_environment_variables
 from commons.constants import COMPETENCY_PROMPT, DEFAULT_LLM_MODEL, SYSTEM_MESSAGE_COMPETENCY
-from commons.enum import LLMFactory, level_mapping
+from commons.enum import LLMFactory, PriorityType, level_mapping
 from commons.interfaces.pipeline import IPipeline
 from commons.llm.factory import LLMProviderFactory
 from commons.models.core.competency import Competency
@@ -51,6 +51,8 @@ class CompetencyPipeline(IPipeline):
         employee_competency_dict = {c.name: level_mapping[c.current_level] for c in employee_competency}
         df_competency_level = pd.DataFrame([d.model_dump() for d in company_competency_level])
         df_department_level = pd.DataFrame([d.model_dump() for d in department_competency_level])
+        competency_levels = ""
+        competency_names = {}
         if len(df_competency_level) > 0:
             df_merged_levels = df_competency_level.merge(df_department_level,
                                                         on=["name", "required_level"],
@@ -67,13 +69,23 @@ class CompetencyPipeline(IPipeline):
             df_merged_level_results = df_merged_levels_filtered.groupby("name")["diff_num_workers"].sum()
 
             competency_levels = "\n".join([f"- Competency: {name}, Workers_needed: {abs(diff)}" for name, diff in df_merged_level_results.items()])
-        else:
-            competency_levels = ""
+            competency_names = {name for name, _ in df_merged_level_results.items()}
 
         content = self._prompt.text(**{"feedback_reviews": feedback_reviews,
                                        "competencies": self._competencies,
                                        "competency__levels": competency_levels
                                        })
+
+        if (len(feedback_reviews) == 0 and len(competency_names) == 0):
+            return []
         competencies_output = self._llm_runner.run(content=content)
-#
+
+        for competency_output in competencies_output:
+            if len(feedback_reviews) == 0:
+                competency_output.competency_from = PriorityType.company
+            elif competency_output.matching_competencies in competency_names:
+                competency_output.competency_from = PriorityType.both
+            else:
+                competency_output.competency_from = PriorityType.feedback
+
         return competencies_output

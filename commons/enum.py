@@ -24,6 +24,12 @@ class RequiredLevelEnumNoBasic(str, Enum):
     advanced = "advanced"  # Proficient with advanced understanding
     expert = "expert"  # Mastery in the competency
 
+class PriorityType(str, Enum):
+    # Enum for the competency levels
+    company = "company"  # Mid-level competency
+    feedback = "feedback"  # Proficient with advanced understanding
+    both = "both"  # Mastery in the competency
+
 level_mapping = {
         RequiredLevelEnum.basic: 0,
         RequiredLevelEnum.intermediate: 1,

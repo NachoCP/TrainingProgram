@@ -20,8 +20,8 @@ def employee_view():
     else:
         employee_id = st.session_state.employee.id
         employee_name = st.session_state.employee.name
-    st.title(f"Employee: {employee_name}")
-    st.write(f"Department: {st.session_state.department.name}")
+    st.title(f"{employee_name}")
+    st.write(f"{st.session_state.department.name}")
 
     feedback_service = FeedbackService()
     employee_competency_service = EmployeeCompetencyService()
@@ -57,7 +57,7 @@ def employee_view():
             courses = matching_courses.courses
             st.subheader("Competencies to improve")
             for comp in matching_courses.priority:
-                st.write(f"**Name**: {comp.matching_competencies}, **Priority**: {comp.priority}")
+                st.write(f"**Name**: {comp.matching_competencies}, **Priority**: {comp.priority}, **Coming**: {comp.competency_from.value}")
             st.write("---")
         for course in courses:
             st.write(f"**Tittle**: {course.title}")
