@@ -1,5 +1,4 @@
-from config.database import engine
-
+from backend.config.database import engine
 from backend.models.base import Base
 from backend.models.competency import Competency
 from backend.models.competency_level import CompetencyLevel
@@ -10,7 +9,7 @@ from backend.models.employee_department import EmployeeDepartment
 from backend.models.feedback import Feedback
 
 
-def create_tables():
+def drop_tables():
     Base.metadata.drop_all(bind=engine)
     Competency.metadata.drop_all(bind=engine)
     Employee.metadata.drop_all(bind=engine)

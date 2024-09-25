@@ -28,7 +28,7 @@ def get(
     _service = DepartmentService(db)
     return _service.get(id)
 
-@router.get("", status_code=201, response_model=List[Department])
+@router.get("", status_code=status.HTTP_200_OK, response_model=List[Department])
 def list(
     pageSize: int = 100,
     startIndex: int = 0,
@@ -55,7 +55,7 @@ def update(
     _service = DepartmentService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[Department])
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[Department])
 def bulk(
     data: List[Department],
     db: Session = Depends(get_db_connection)  # noqa: B008

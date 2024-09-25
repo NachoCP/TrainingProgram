@@ -17,7 +17,6 @@ from backend.models.employee_competency import EmployeeCompetency
 from backend.models.employee_department import EmployeeDepartment
 from backend.models.feedback import Feedback
 from backend.routers.api import router
-from backend.utils.init_db import create_tables
 
 engine = create_engine(
     "sqlite:///:memory:",
@@ -34,15 +33,6 @@ def test_init_db() -> None:
     EmployeeDepartment.metadata.create_all(bind=engine)
     Feedback.metadata.create_all(bind=engine)
 
-def start_app():
-    app = FastAPI()
-    app.include_router(router)
-
-@pytest.fixture()
-def app() -> Generator:
-    create_tables()
-    _app = start_app()
-    yield _app
 
 @pytest.fixture
 def test_get_db():
@@ -64,12 +54,16 @@ def test_milvus_client():
         os.remove("./testing.db")
 
 
-
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+@pytest.fixture(scope="function")
+def start_app():
+    app = FastAPI()
+    app.include_router(router)
+    yield app
 
 @pytest.fixture(scope="function")
-def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]: # type: ignore
+def db_session() -> Generator[SessionTesting, Any, None]: # type: ignore
     connection = engine.connect()
     transaction = connection.begin()
     session = SessionTesting(bind=connection)
@@ -87,7 +81,9 @@ def milvus_client() -> Generator[MilvusClient, Any, None]:
 
 @pytest.fixture(scope="function")
 def client(
-        app: FastAPI, db_session: SessionTesting, milvus_client: MilvusClient # type: ignore
+        start_app: FastAPI,
+        db_session: SessionTesting, # type: ignore
+        milvus_client: MilvusClient
 ) -> Generator[TestClient, Any, None]:
     """
     Create a new FastAPI TestClient that uses the `db_session` fixture to override
@@ -101,6 +97,6 @@ def client(
         finally:
             pass
 
-    app.dependency_overrides[get_db_connection] = _get_test_db
-    with TestClient(app) as client:
+    start_app.dependency_overrides[get_db_connection] = _get_test_db
+    with TestClient(start_app) as client:
         yield client, db_session, milvus_client

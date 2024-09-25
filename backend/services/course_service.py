@@ -34,7 +34,7 @@ class CourseService():
         self.competency_level_service = CompetencyLevelService(db)
         self.competency_service = CompetencyService(db)
         self.employee_department_repository = EmployeeDepartmentRepository(db)
-        self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)()
 
     def bulk(self) -> List[Course]:
         competency_data = self.competency_service.list()
@@ -76,9 +76,9 @@ class CourseService():
 
         # Recommender algorithm
         ranking = CourseRanking()
-        input_data = ",".join(c.matching_competencies for c  in competencies_output)
-        query_embedding = self._embeddign_runner.get_embedding(input_data)
-        results = self.repository.search(query_embedding)
+        query_string = ",".join(c.matching_competencies for c  in competencies_output)
+        query_embedding = self._embeddign_runner.get_embedding(query_string)
+        results = self.repository.search(query_embedding, query_string)
         competencies_priority = {c.matching_competencies: c.priority for c in competencies_output}
         scoring_results = ranking.scoring(competencies_priority, results)
         courses_sorted = ranking.ordering(scoring_results)

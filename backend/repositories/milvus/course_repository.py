@@ -23,6 +23,19 @@ class CourseRepository():
                 collection_name=COURSE_COLLECTION,
                 schema=get_course_schema(env.EMBEDDING_DIMENSION)
             )
+            index_params = self.client.prepare_index_params()
+            index_params.add_index(
+                field_name="embedding",
+                metric_type="IP",
+                index_type="FLAT",
+                index_name="vector_index",
+                params={ "nlist": 128 }
+            )
+
+            self.client.create_index(
+                collection_name=COURSE_COLLECTION,
+                index_params=index_params
+            )
 
     def bulk(self, instances: List[Course]) -> List[Course]:
 

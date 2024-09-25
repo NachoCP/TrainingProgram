@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[Course])
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[Course])
 def bulk(
     db: Session = Depends(get_db_connection),  # noqa: B008
     client: MilvusClient = Depends(get_milvus_connection)  # noqa: B008
@@ -23,7 +23,7 @@ def bulk(
     _service = CourseService(db, client)
     return _service.bulk()
 
-@router.get("/recommend_course/{id}", status_code=201, response_model=CourseMatching)
+@router.get("/recommend_course/{id}", status_code=status.HTTP_200_OK, response_model=CourseMatching)
 def recommend_courses(
     id: int,
     db: Session = Depends(get_db_connection), # noqa: B008

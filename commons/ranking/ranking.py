@@ -28,12 +28,17 @@ class CourseRanking(IRanking):
                 competencies_priority: dict[str, int],
                 filtered_data: list[CourseModelOutput]) -> list[dict[ str, Any]]:
 
+        if len(filtered_data) == 0:
+            return filtered_data
         ratings = [course.rating for course in filtered_data]
         viewers = [course.number_of_viewers for course in filtered_data]
 
         max_rating, min_rating = max(ratings), min(ratings)
         max_viewers, min_viewers = max(viewers), min(viewers)
         max_possible_score = len(competencies_priority) * MAX_PRIORITY
+
+        if len(filtered_data) == 0:
+            return filtered_data
 
         for course in filtered_data:
 

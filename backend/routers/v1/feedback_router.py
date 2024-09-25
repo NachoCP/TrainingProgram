@@ -28,7 +28,7 @@ def get(
     _service = FeedbackService(db)
     return _service.get(id)
 
-@router.get("", status_code=201, response_model=List[Feedback])
+@router.get("", status_code=status.HTTP_202_ACCEPTED, response_model=List[Feedback])
 def list(
     pageSize: int = 100,
     startIndex: int = 0,
@@ -55,7 +55,7 @@ def update(
     _service = FeedbackService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[Feedback])
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[Feedback])
 def bulk(
     data: List[Feedback],
     db: Session = Depends(get_db_connection)  # noqa: B008

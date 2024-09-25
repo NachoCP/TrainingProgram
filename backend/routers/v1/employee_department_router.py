@@ -28,7 +28,7 @@ def get(
     _service = EmployeeDepartmentService(db)
     return _service.get(id)
 
-@router.get("", status_code=201, response_model=List[EmployeeDepartment])
+@router.get("", status_code=status.HTTP_200_OK, response_model=List[EmployeeDepartment])
 def list(
     pageSize: int = 100,
     startIndex: int = 0,
@@ -46,7 +46,7 @@ def delete(
     _service = EmployeeDepartmentService(db)
     return _service.delete(id)
 
-@router.put("/{id}", status_code=201, response_model=EmployeeDepartment)
+@router.put("/id/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=EmployeeDepartment)
 def update(
     id: int,
     data: EmployeeDepartment,
@@ -55,7 +55,7 @@ def update(
     _service = EmployeeDepartmentService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeDepartmentWithoutDates])
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[EmployeeDepartmentWithoutDates])
 def bulk(
     data: List[EmployeeDepartmentWithoutDates],
     db: Session = Depends(get_db_connection)  # noqa: B008

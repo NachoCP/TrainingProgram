@@ -33,7 +33,7 @@ def get(
     _service = EmployeeCompetencyService(db)
     return _service.get(id)
 
-@router.get("", status_code=201, response_model=List[EmployeeCompetency])
+@router.get("", status_code=status.HTTP_200_OK, response_model=List[EmployeeCompetency])
 def list(
     pageSize: int = 100,
     startIndex: int = 0,
@@ -51,7 +51,7 @@ def delete(
     _service = EmployeeCompetencyService(db)
     return _service.delete(id)
 
-@router.put("/id/{id}", status_code=201, response_model=EmployeeCompetency)
+@router.put("/id/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=EmployeeCompetency)
 def update(
     id: int,
     data: EmployeeCompetency,
@@ -60,7 +60,7 @@ def update(
     _service = EmployeeCompetencyService(db)
     return _service.update(id, data)
 
-@router.post("/bulk", status_code=status.HTTP_200_OK, response_model=List[EmployeeCompetencyWithoutDates])
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[EmployeeCompetencyWithoutDates])
 def bulk(
     data: List[EmployeeCompetencyWithoutDates],
     db: Session = Depends(get_db_connection)  # noqa: B008
