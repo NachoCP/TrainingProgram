@@ -49,7 +49,7 @@ class CourseRepository():
 
         return instances
 
-    def search(self, query_embedding: list[float], query_string: str) -> list[CourseModelOutput]:
+    def search(self, query_embedding: list[float], query_string: str, number_entities: int = 30) -> list[CourseModelOutput]:
 
         self.client.load_collection(COURSE_COLLECTION)
 
@@ -58,7 +58,7 @@ class CourseRepository():
             data=[query_embedding],
             anns_field=EMBEDDING_COLUMN,
             search_params=SEARCH_PARAMS,
-            limit=30,
+            limit=number_entities,
             output_fields=list(COURSE_OUTPUT_FIELDS)
         )
         query_properties = {

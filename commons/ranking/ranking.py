@@ -5,6 +5,7 @@ from commons.constants import (
     MAX_PRIORITY,
     WEIGHTS_SCORING,
 )
+from commons.embeddings.factory import EmbeddingProviderFactory
 from commons.interfaces.ranking import IRanking
 from commons.math import cosine_similarity, normalize
 from commons.models.recommender.course import CourseModelOutput
@@ -14,6 +15,9 @@ env = get_environment_variables()
 
 class CourseRanking(IRanking):
 
+    def __init__(self):
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(
+            env.EMBEDDING_PROVIDER_MODEL)()
     def filtering(self,
                   candidates: list[CourseModelOutput],
                   courses_title: list[str]) -> list[dict[str, Any]]:

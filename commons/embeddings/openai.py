@@ -1,17 +1,15 @@
-from dotenv import load_dotenv
 from openai import OpenAI
 
+from commons.config import get_environment_variables
 from commons.interfaces.embedding import IEmbedding
 
-load_dotenv()
+env = get_environment_variables()
 
 class OpenAIEmbeddingProvider(IEmbedding):
-    def __init__(self,
-                 model: str = "text-embedding-3-small",
-                 embedding_dimension: int = 1536):
-        self._client = OpenAI()
-        self._model = model
-        self._embedding_dimension = embedding_dimension
+    def __init__(self):
+        self._client = OpenAI(api_key=env.EMBEDDING_KEY)
+        self._model = env.EMBEDDING_MODEL
+        self._embedding_dimension = env.EMBEDDING_DIMENSION
 
     def get_embedding(self, text: str) -> list:
         text = text.replace("\n", " ")

@@ -6,6 +6,7 @@ class EmbeddingFactory(str, Enum):
 
 class LLMFactory(str, Enum):
     openai = "openai"
+    anthropic = "anthropic"
 
 class RequiredLevelEnum(str, Enum):
     # Enum for the competency levels

@@ -29,10 +29,10 @@ def get_db_connection():
 def get_milvus_connection():
     if env.ENVIRONMENT=="dev":
         client = MilvusClient(env.MILVUS_LITTLE)
-        try:
-            yield client
-        finally:
-            client.close()
     else:
         print("Not implemented")
-        #connections.connect("default", host=HOST, port=PORT)
+        client = MilvusClient(uri=f"http://{env.MILVUS_HOSTNAME}:{env.MILVUS_PORT}")
+    try:
+        yield client
+    finally:
+        client.close()

@@ -1,8 +1,10 @@
+import os
 from typing import Any, Generator
 
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from pymilvus import MilvusClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -52,6 +54,16 @@ def test_get_db():
         db.close()
         engine.dispose()
 
+@pytest.fixture
+def test_milvus_client():
+    try:
+        client = MilvusClient("./testing.db")
+        yield client
+    finally:
+        client.close()
+        os.remove("./testing.db")
+
+
 
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -68,8 +80,14 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]: # type: ig
 
 
 @pytest.fixture(scope="function")
+def milvus_client() -> Generator[MilvusClient, Any, None]:
+    client = MilvusClient("testing.db")
+    yield client
+    client.close()
+
+@pytest.fixture(scope="function")
 def client(
-        app: FastAPI, db_session: SessionTesting # type: ignore
+        app: FastAPI, db_session: SessionTesting, milvus_client: MilvusClient # type: ignore
 ) -> Generator[TestClient, Any, None]:
     """
     Create a new FastAPI TestClient that uses the `db_session` fixture to override
@@ -85,4 +103,4 @@ def client(
 
     app.dependency_overrides[get_db_connection] = _get_test_db
     with TestClient(app) as client:
-        yield client, db_session
+        yield client, db_session, milvus_client

@@ -25,9 +25,19 @@ class EnvironmentSettings(BaseSettings):
     DATABASE_USERNAME: str
 
     MILVUS_LITTLE: str
-    EMBEDDING_DIMENSION: int
+    MILVUS_HOSTNAME: str
+    MILVUS_PORT: int
 
-    OPENAI_API_KEY: str
+    EMBEDDING_PROVIDER_MODEL: str
+    EMBEDDING_DIMENSION: int
+    EMBEDDING_MODEL: str
+
+    EMBEDDING_KEY: str
+
+    LLM_PROVIDER_MODEL: str
+    LLM_MODEL: str
+
+    LLM_KEY: str
 
     @property
     def database_url(self) -> str:

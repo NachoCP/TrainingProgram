@@ -11,12 +11,8 @@ from backend.services.competency_service import CompetencyService
 from backend.services.employee_competency_service import EmployeeCompetencyService
 from backend.services.employee_service import EmployeeService
 from commons.config import get_environment_variables
-from commons.constants import (
-    COURSE_DEFAULT_DIR_DATA,
-    DEFAULT_EMBEDDING_MODEL,
-)
+from commons.constants import COURSE_DEFAULT_DIR_DATA
 from commons.embeddings.factory import EmbeddingProviderFactory
-from commons.enum import EmbeddingFactory
 from commons.models.core.course import Course
 from commons.models.recommender.course import CourseAPPOutput, CourseMatching, CourseModelOutput
 from commons.pipelines.competency import CompetencyPipeline
@@ -38,7 +34,7 @@ class CourseService():
         self.competency_level_service = CompetencyLevelService(db)
         self.competency_service = CompetencyService(db)
         self.employee_department_repository = EmployeeDepartmentRepository(db)
-        self._embeddign_runner = EmbeddingProviderFactory.get_provider(EmbeddingFactory.openai.value)(DEFAULT_EMBEDDING_MODEL, env.EMBEDDING_DIMENSION)
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)
 
     def bulk(self) -> List[Course]:
         competency_data = self.competency_service.list()

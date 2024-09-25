@@ -5,12 +5,9 @@ from typing import Any, Dict, List
 from commons.config import get_environment_variables
 from commons.constants import (
     COURSE_PROMPT,
-    DEFAULT_EMBEDDING_MODEL,
-    DEFAULT_LLM_MODEL,
     SYSTEM_MESSAGE_COURSE,
 )
 from commons.embeddings.factory import EmbeddingProviderFactory
-from commons.enum import EmbeddingFactory, LLMFactory
 from commons.interfaces.pipeline import IPipeline
 from commons.llm.factory import LLMProviderFactory
 from commons.models.core.competency import Competency
@@ -26,21 +23,15 @@ class CoursePipeline(IPipeline):
 
     def __init__(self,
                  competencies_data: list[Competency],
-                 llm_model: str =DEFAULT_LLM_MODEL,
-                 llm_provider: str = LLMFactory.openai.value,
-                 embedding_provider: str = EmbeddingFactory.openai.value,
-                 embedding_model: str = DEFAULT_EMBEDDING_MODEL,
                  prompt_path: str = COURSE_PROMPT
                  ):
 
         dynamic_competencies = [c.name for c in competencies_data]
         CourseModelLLM.set_dynamic_example("matching_competencies", dynamic_competencies)
         self._competencies = '\n'.join([f"- {c.name}: {c.description}" for c in competencies_data])
-        self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(model=CourseModelLLM,
+        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(model=CourseModelLLM,
                                                                          system_message=SYSTEM_MESSAGE_COURSE)
-        self._embeddign_runner = EmbeddingProviderFactory.get_provider(embedding_provider)(embedding_model,
-                                                                                           env.EMBEDDING_DIMENSION)
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)()
         self._prompt = PromptTemplate(prompt_path)
         self._parallel_processing = 10
 

@@ -4,8 +4,8 @@ from typing import Any, List
 import pandas as pd
 
 from commons.config import get_environment_variables
-from commons.constants import COMPETENCY_PROMPT, DEFAULT_LLM_MODEL, SYSTEM_MESSAGE_COMPETENCY
-from commons.enum import LLMFactory, PriorityType, level_mapping
+from commons.constants import COMPETENCY_PROMPT, SYSTEM_MESSAGE_COMPETENCY
+from commons.enum import PriorityType, level_mapping
 from commons.interfaces.pipeline import IPipeline
 from commons.llm.factory import LLMProviderFactory
 from commons.models.core.competency import Competency
@@ -20,15 +20,12 @@ env = get_environment_variables()
 class CompetencyPipeline(IPipeline):
 
     def __init__(self,
-                 competencies_data: list[Competency],
-                 llm_model: str =DEFAULT_LLM_MODEL,
-                 llm_provider: str = LLMFactory.openai.value):
+                 competencies_data: list[Competency]):
 
         dynamic_competencies = [c.name for c in competencies_data]
         CompetencyModelLLM.set_dynamic_example("matching_competencies", dynamic_competencies)
         self._competencies = '\n'.join([f"- {c.name}" for c in competencies_data])
-        self._llm_model = llm_model
-        self._llm_runner = LLMProviderFactory.get_provider(llm_provider)(List[CompetencyModelLLM],
+        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(List[CompetencyModelLLM],
                                                                          SYSTEM_MESSAGE_COMPETENCY)
         self._prompt = PromptTemplate(COMPETENCY_PROMPT)
 
