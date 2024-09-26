@@ -52,7 +52,9 @@ class EnvironmentSettings(BaseSettings):
 
 @lru_cache
 def get_environment_variables():
-    return EnvironmentSettings()
+    env = EnvironmentSettings()
+    env.BACKEND_HOSTNAME = "0.0.0.0"
+    return env
 
 
 index_params_milvus = {

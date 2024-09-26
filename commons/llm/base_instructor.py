@@ -34,6 +34,7 @@ class InstructorLLM(ILLM):
         return self._client.chat.completions.create(
             model=self._llm_model_name,
             response_model=self._model,
+            max_tokens=2000,
             messages=[
                 {"role": "system", "content": self._system_message},
                 {"role": role, "content": content},

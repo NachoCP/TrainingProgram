@@ -8,7 +8,7 @@ class Feedback(BaseModel):
     employee_id: int = Field(..., description="Unique identifier for the employee receiving the feedback", example=1001)
     feedback_by: int = Field(..., description="Unique identifier for the person giving the feedback (peer, subordinate, or superior)", example=2001)
     comments: str = Field(..., description="Textual feedback describing the performance of the employee", example="Great teamwork and leadership shown during the project.")
-    score: Optional[float] = Field(None, description="Optional numeric score associated with the feedback", example=4.5)
+    score: float = Field(None, lt=5.0, description="Optional numeric score associated with the feedback", example=4.5)
     effective_date: str = Field(..., description="Date when the feedback was given", example="2024-09-20")
 
     class Config:

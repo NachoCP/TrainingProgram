@@ -1,4 +1,5 @@
-Task: Based on the provided data, calculate the priority of each competency.
+Task: Based on the provided data, calculate the competency and the priority associated.
+Provide a list where each element is one competency and its priority.
 
 Feedback Data:
 

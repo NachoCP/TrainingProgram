@@ -1,8 +1,12 @@
 import streamlit as st
 
+from frontend.utils.enum import ViewEnum
+
 
 def company_view():
     st.title("Configure Company")
+
+
 
     # Inputs para ingresar el nombre y propósito de la compañía
     name = st.text_input("Introduce a company name")
@@ -23,15 +27,17 @@ def company_view():
     if "config_none" not in st.session_state:
         st.session_state.config_done = False
 
-
+    col1, col2 = st.columns(2)
     # Botón para guardar la configuración
-    if st.button("Generate Competencies"):
-        if name and purpose:
-            st.session_state.page = "entities_view"
+    with col1:
+        if st.button("Generate Data"):
+            if name and purpose:
+                st.session_state.page = ViewEnum.strong_entities_view.value
+                st.rerun()
+            else:
+                st.error("Please, fill all the fields in order to continue with the configuration")
+    with col2:
+        if st.button("**Already Configure**"):
+            st.session_state.page = ViewEnum.employee_view.value
             st.rerun()
-        else:
-            st.error("Please, fill all the fields in order to continue with the configuration")
 
-    if st.button("Already Configure"):
-        st.session_state.config_done = True
-        st.rerun()

@@ -1,12 +1,10 @@
-import random
-from typing import List
+from typing import Any, List
 
 import requests
 
 from commons.config import get_environment_variables
 from commons.enum import RequiredLevelEnum
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
-from commons.models.core.employee_competency import EmployeeCompetencyWithoutDates
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 
@@ -25,38 +23,11 @@ class EmployeeCompetencyService(IFrontendService):
     def __init__(self):
         self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee_competency.value}"
 
-
-    def _assign_random_level(self):
-        levels = list(LEVEL_PROBABLITIES.keys())
-        probabilities = list(LEVEL_PROBABLITIES.values())
-        return random.choices(levels, probabilities)[0]
-
-    def _generate_employee_competencies(self,
-                                       employee_ids: List[int],
-                                       competency_ids: List[int]) -> List[EmployeeCompetencyWithoutDates]:
-        employee_competency_data = []
-        id_num = 1
-        for employee in employee_ids:
-            for competency in competency_ids:
-                level = self._assign_random_level()
-                employee_competency_data.append(EmployeeCompetencyWithoutDates(id = id_num,
-                                               employee_id = employee,
-                                               competency_id=competency,
-                                               current_level=level.value))
-                id_num += 1
-
-        return employee_competency_data
-
-    def send_bulk(self,
-                  competency_ids: List[int],
-                  employee_ids: List[int]) -> None:
+    def send_bulk(self, data: List[dict[str, Any]]) -> None:
 
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
-        data = self._generate_employee_competencies(employee_ids,
-                                                   competency_ids)
-        print(data)
-        response = requests.post(url, json=[d.model_dump() for d in data])
+        response = requests.post(url, json=data)
         if response.status_code == 200:
             print("Successfully sent data! Employee Competency")
             # Optional: Print the response from the server

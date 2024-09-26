@@ -6,7 +6,7 @@ def get_course_schema(embedding_dimension: int) -> CollectionSchema:
         # Campos de metadatos
         FieldSchema(name="title", is_primary=True, dtype=DataType.VARCHAR, max_length=255),
         FieldSchema(name="url", dtype=DataType.VARCHAR, max_length=512),
-        FieldSchema(name="short_intro", dtype=DataType.VARCHAR, max_length=2048),
+        FieldSchema(name="short_intro", dtype=DataType.VARCHAR, max_length=4000),
         FieldSchema(name="category", dtype=DataType.VARCHAR, max_length=255),
         FieldSchema(name="sub_category", dtype=DataType.VARCHAR, max_length=255),
         FieldSchema(name="course_type", dtype=DataType.VARCHAR, max_length=255),

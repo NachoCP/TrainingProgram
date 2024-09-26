@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import requests
 
@@ -38,17 +38,11 @@ class EmployeeDepartmentService(IFrontendService):
 
         return department_assignments
 
-    def send_bulk(self,
-                  department_ids: List[int],
-                  employee_ids: List[int]) -> None:
+    def send_bulk(self, data: List[dict[str, Any]]) -> None:
 
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
-        data = self.distribute_employees(department_ids,
-                                        employee_ids)
-        print(len(data))
-        print([d.model_dump() for d in data])
-        response = requests.post(url, json=[d.model_dump() for d in data])
+        response = requests.post(url, json=data)
         if response.status_code == 200:
             print("Successfully sent data! Employee Department")
             # Optional: Print the response from the server

@@ -10,9 +10,6 @@ from frontend.services.feedback import FeedbackService
 
 def employee_view():
     # Verificar si la configuración está completa
-    if not st.session_state.get("config_done", False):
-        st.error("First you have to configure all the data")
-        st.stop()
 
     if not st.session_state.get("employee", False):
         st.error("Select the employee before continue")
@@ -30,42 +27,50 @@ def employee_view():
     df = pd.DataFrame([d.model_dump() for d in employee_competencies])
     df["level_value"] = df["current_level"].map(level_mapping)
     chart = alt.Chart(df).mark_circle(size=150).encode(
-            x=alt.X("level_value:Q", sort="-y", axis=alt.Axis(title="Competency Level", tickCount=4), scale=alt.Scale(domain=[0, 3])),
-            y=alt.Y("name:N", title="Competency"),
+            x=alt.X("level_value:Q", sort="-y", axis=alt.Axis(title="",tickCount=4), scale=alt.Scale(domain=[0, 3])),
+            y=alt.Y("name:N", title=""),
             color=alt.Color("current_level:N", scale=alt.Scale(domain=["basic", "intermediate", "advanced", "expert"],
                                                     range=["#f94144", "#f9c74f", "#90be6d", "#577590"])),
                 tooltip=["name", "current_level"]
             ).properties(
-                width=700,
-                height=400
+                width=600,
+                height=300
             )
-    tab1, tab2, tab3 = st.tabs(["Employee Competency", "Feedback Reviews", "Course Recommender"])
-    with tab1:
-        st.altair_chart(chart, use_container_width=True)
 
     feedbacks = feedback_service.get_all_by_employee(employee_id)
     df_feedback = pd.DataFrame([d.model_dump() for d in feedbacks])
+    if "priority_data" not in st.session_state:
+        st.session_state["priority_data"] = []
+    tab1, tab2 = st.tabs(["Employee View", "Course Recommender"])
+    with tab1:
+        cols = st.columns(2)
+        with cols[0].container(height=400):
+            st.subheader("Competencies")
+            st.altair_chart(chart, use_container_width=True)
+
+        with cols[1].container(height=400):
+            for _, row in df_feedback.iterrows():
+                st.markdown(f"**Date**: {row["effective_date"]}")
+                st.markdown(f"**Score**: {row["score"]}")
+                st.markdown(f"{row["comments"]}")
+                st.write("---")
+
     with tab2:
-        for _, row in df_feedback.iterrows():
-            st.write(f"**Date**: {row["effective_date"]}")
-            st.write(f"**Score**: {row["score"]}")
-            st.write(f"**Comments**: {row["comments"]}")
-            st.write("---")
-    with tab3:
+
         with st.spinner("Getting course recomendations"):
             matching_courses = course_service.recommend_course(employee_id)
             courses = matching_courses.courses
-            st.subheader("Competencies to improve")
-            for comp in matching_courses.priority:
-                st.write(f"**Name**: {comp.matching_competencies}, **Priority**: {comp.priority}, **Coming**: {comp.competency_from.value}")
-            st.write("---")
-        for course in courses:
-            st.write(f"**Tittle**: {course.title}")
-            st.write(f"**Competencies**: {course.matching_competencies}")
-            st.write("**Rating**:", f"{round(course.rating, 2)}/5.0")
-            st.write(f"**Number Reviews**: {course.number_of_reviews}")
-            st.write(f"**Number Views**: {course.number_of_viewers}")
-            st.write("**Short descrition**:")
-            st.write(course.short_intro)
-            st.write(f"[Click here]({course.url})")
-            st.write("---")
+        with st.container(height=200):
+            st.markdown("**Competencies needed to improve**")
+            for priority in matching_courses.priority:
+                st.markdown(f"**{priority.matching_competencies}** priority {priority.priority}")
+        with st.container(height=1000):
+            for course in courses:
+                st.markdown(f"## {course.title}")
+                st.markdown(f"{round(course.rating, 2)}★     {course.number_of_viewers}👁")
+                st.markdown(f"{course.matching_competencies.replace(","," | ")}")
+                st.markdown(course.short_intro)
+                st.markdown(f"[URL]({course.url})")
+                st.write("---")
+
+
