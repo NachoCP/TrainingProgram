@@ -6,8 +6,6 @@ from frontend.utils.enum import ViewEnum
 def company_view():
     st.title("Configure Company")
 
-
-
     # Inputs para ingresar el nombre y propósito de la compañía
     name = st.text_input("Introduce a company name")
     purpose = st.text_area("Enter the purpose of the company")

@@ -46,4 +46,4 @@ SYSTEM_MESSAGE_COMPETENCY=("You are a world class AI that excel at detecting com
                        "Provide them ordered by priority"
                        "Make sure to chose only competencies that are present in the list."
                        "All the competency needed by the company should always be returned")
-MAX_PRIORITY=4
+MAX_PRIORITY=3
