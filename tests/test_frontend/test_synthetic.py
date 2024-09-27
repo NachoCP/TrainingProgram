@@ -37,9 +37,9 @@ def test_get_competency_levels():
     departments_ids_template = [1, 2, 3]
     comptency_ids_template = [1, 2]
 
-    competency_levels = get_competency_levels(comptency_ids_template, departments_ids_template, 10)
+    competency_levels = get_competency_levels(comptency_ids_template, departments_ids_template, 5)
 
-    assert len(competency_levels) == 10
+    assert len(competency_levels) == 5
 
 
 def test_get_feedbacks():

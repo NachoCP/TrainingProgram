@@ -1,6 +1,7 @@
 DOCKER_COMPOSE = docker-compose
 PYTHON = python3
 DATA_DIR = ./data
+MILVUS_FILE = "milvus_little.db"
 
 .PHONY: run stop test lint checks clean
 
@@ -13,6 +14,7 @@ stop:
 
 test:
 	$(PYTHON) -m pytest
+	rm -rf $(MILVUS_FILE)
 
 lint:
 	black .

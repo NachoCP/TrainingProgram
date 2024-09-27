@@ -55,7 +55,7 @@ class EnvironmentSettings(BaseSettings):
 @lru_cache
 def get_environment_variables():
     env = EnvironmentSettings()
-    env.BACKEND_HOSTNAME = "0.0.0.0"
+#    env.BACKEND_HOSTNAME = "0.0.0.0"
     return env
 
 
