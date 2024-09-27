@@ -7,3 +7,4 @@ milvs*
 *.db*
 volumes*
 .DS_STORE*
+logs

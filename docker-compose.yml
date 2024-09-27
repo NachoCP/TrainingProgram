@@ -15,6 +15,7 @@ services:
             start_period: 30s
         volumes:
           - ./backend:/app/backend
+          - ./logs/:app/logs
         ports:
             - "${BACKEND_PORT}:${BACKEND_PORT}"
         env_file:

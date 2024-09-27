@@ -8,6 +8,7 @@ from commons.constants import COMPETENCY_PROMPT, SYSTEM_MESSAGE_COMPETENCY
 from commons.enum import PriorityType, level_mapping
 from commons.interfaces.pipeline import IPipeline
 from commons.llm.factory import LLMProviderFactory
+from commons.logging import logger
 from commons.models.core.competency import Competency
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
 from commons.models.core.feedback import Feedback
@@ -48,13 +49,14 @@ class CompetencyPipeline(IPipeline):
         feedback_reviews = "\n".join(
             [f"- Score: {feedback.score}, Comments: {feedback.comments}" for feedback in feedback_reviews]
         )
-
+        logger.info("Start the extraction of the competencies")
         employee_competency_dict = {c.name: level_mapping[c.current_level] for c in employee_competency}
         df_competency_level = pd.DataFrame([d.model_dump() for d in company_competency_level])
         df_department_level = pd.DataFrame([d.model_dump() for d in department_competency_level])
         competency_levels = ""
         competency_names = {}
         if len(df_competency_level) > 0:
+            logger.info(f"Detected the following number of rules {len(df_competency_level)}")
             df_merged_levels = df_competency_level.merge(
                 df_department_level, on=["name", "required_level"], how="outer", suffixes=('_expected', '_real')
             )
@@ -78,6 +80,7 @@ class CompetencyPipeline(IPipeline):
                 [f"- Competency: {name}, Workers_needed: {abs(diff)}" for name, diff in df_merged_level_results.items()]
             )
             competency_names = {name for name, _ in df_merged_level_results.items()}
+            logger.info(f"Number of competencies rules that affect the employee {len(df_merged_level_results)}")
 
         content = self._prompt.text(
             **{
@@ -88,6 +91,7 @@ class CompetencyPipeline(IPipeline):
         )
 
         if len(feedback_reviews) == 0 and len(competency_names) == 0:
+            logger.info("No competency or feedback information")
             return []
         competencies_output = self._llm_runner.run(content=content)
 
@@ -98,5 +102,5 @@ class CompetencyPipeline(IPipeline):
                 competency_output.competency_from = PriorityType.both
             else:
                 competency_output.competency_from = PriorityType.feedback
-
+        logger.info(f"Extracted the following number of competencies {len(competencies_output)}")
         return competencies_output

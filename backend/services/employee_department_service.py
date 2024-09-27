@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from backend.models.employee_department import EmployeeDepartment
 from backend.repositories.sql_alchemy.employee_department_repository import EmployeeDepartmentRepository
 from commons.interfaces.service import IService
+from commons.logging import logger
 from commons.models.core.employee_department import EmployeeDepartment as EmployeeDepartmentSchema
 
 
@@ -31,5 +32,6 @@ class EmployeeDepartmentService(IService[EmployeeDepartment, EmployeeDepartmentS
         return self.repository.update(id, department_employee)
 
     def bulk(self, schemas: List[EmployeeDepartmentSchema]) -> List[EmployeeDepartment]:
+        logger.info(f"Dumping the following number of employee department {len(schemas)}")
         schema_objects = [EmployeeDepartment(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)

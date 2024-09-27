@@ -3,6 +3,7 @@ from typing import Any, List
 import requests
 
 from commons.config import get_environment_variables
+from commons.logging import logger
 from commons.models.core.feedback import Feedback
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
@@ -21,15 +22,17 @@ class FeedbackService(IFrontendService):
 
         response = requests.post(url, json=data)
         if response.status_code == 201:
-            print("Successfully sent data! Feedback")
-            # Optional: Print the response from the server
+            logger.info("Successfully sent data! Feedbacks")
         else:
-            print(f"Failed to send data. Status code: {response.status_code}")
-            print(response.text)
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
 
     def get_all_by_employee(self, employee_id: int) -> List[Feedback]:
         url = f"{self._base_url}/{BackendEndpoints.employee.value}/{employee_id}"
         response = requests.get(url)
-        if response.status_code == 201:
-            print("Successfully sent data! Feedback")
+        if response.status_code == 200:
+            logger.info(f"Successfully get all the feedback from this employee {employee_id}")
+        else:
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
         return [Feedback(**r) for r in response.json()]

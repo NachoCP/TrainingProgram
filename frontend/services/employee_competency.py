@@ -4,6 +4,7 @@ import requests
 
 from commons.config import get_environment_variables
 from commons.enum import RequiredLevelEnum
+from commons.logging import logger
 from commons.models.core.competency_level import CompetencyLevelEmployeeOutput, CompetencyLevelOutput
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
@@ -31,24 +32,38 @@ class EmployeeCompetencyService(IFrontendService):
 
         response = requests.post(url, json=data)
         if response.status_code == 201:
-            print("Successfully sent data! Employee Competency")
-            # Optional: Print the response from the server
+            logger.info("Successfully sent data! Employee Competency")
         else:
-            print(f"Failed to send data. Status code: {response.status_code}")
-            print(response.text)
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
 
     def get_all_by_department(self, department_id: int) -> List[CompetencyLevelEmployeeOutput]:
         url = f"{self._base_url}/{BackendEndpoints.department.value}/{department_id}"
         response = requests.get(url)
+        if response.status_code == 200:
+            logger.info(f"Successfully extract all the competencies from the department {department_id}")
+        else:
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
         return [CompetencyLevelEmployeeOutput(**r) for r in response.json()]
 
     def get_all_group_department(self, department_id: int) -> List[CompetencyLevelOutput]:
 
         url = f"{self._base_url}/{BackendEndpoints.group_department.value}/{department_id}"
         response = requests.get(url)
+        if response.status_code == 200:
+            logger.info(f"Successfully extract all the grouped competencies from the department {department_id}")
+        else:
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
         return [CompetencyLevelOutput(**r) for r in response.json()]
 
     def get_all_by_employee(self, employee_id: int) -> List[CompetencyLevelEmployeeOutput]:
         url = f"{self._base_url}/{BackendEndpoints.employee.value}/{employee_id}"
         response = requests.get(url)
+        if response.status_code == 200:
+            logger.info(f"Successfully extract all the competencies from the employee {employee_id}")
+        else:
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
         return [CompetencyLevelEmployeeOutput(**r) for r in response.json()]

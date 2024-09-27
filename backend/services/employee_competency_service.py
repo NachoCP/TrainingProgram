@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from backend.models.employee_competency import EmployeeCompetency
 from backend.repositories.sql_alchemy.employee_competency_repository import EmployeeCompetencyRepository
 from commons.interfaces.service import IService
+from commons.logging import logger
 from commons.models.core.competency_level import (
     CompetencyLevelDepartmentOutput,
     CompetencyLevelEmployeeOutput,
@@ -36,16 +37,20 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
         return self.repository.update(id, employee_competency)
 
     def bulk(self, schemas: List[EmployeeCompetencySchema]) -> List[EmployeeCompetency]:
+        logger.info(f"Dumping the following number of employee competencies {len(schemas)}")
         schema_objects = [EmployeeCompetency(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
 
     def get_all_by_department(self, department_id: int) -> List[CompetencyLevelDepartmentOutput]:
+        logger.info(f"Extracting all the employee competencies from this department: {department_id}")
         return [CompetencyLevelDepartmentOutput(**d) for d in self.repository.get_all_by_department(department_id)]
 
     def get_all_by_employee(self, employee_id: id) -> List[CompetencyLevelEmployeeOutput]:
+        logger.info(f"Extracting all the employee competencies for this employee: {employee_id}")
         return [CompetencyLevelEmployeeOutput(**d) for d in self.repository.get_all_by_employee(employee_id)]
 
     def group_competency_level_by_employee_ids(self, department_id: id) -> List[CompetencyLevelOutput]:
+        logger.info(f"Getting all the competencies from all the employees of this department: {department_id}")
         return [
             CompetencyLevelOutput(**d) for d in self.repository.group_competency_level_by_employee_ids(department_id)
         ]

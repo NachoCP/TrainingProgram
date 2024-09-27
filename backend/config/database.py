@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from commons.config import get_environment_variables
+from commons.logging import logger
 
 # Runtime Environment Configuration
 env = get_environment_variables()
@@ -25,9 +26,10 @@ def get_db_connection():
 
 def get_milvus_connection():
     if env.ENVIRONMENT == "dev":
+        logger.info(f"Connecting Milvus Little and sync in the following file {env.MILVUS_LITTLE}")
         client = MilvusClient(env.MILVUS_LITTLE)
     else:
-        print("Not implemented")
+        logger.info(f"Connecting Milvus Client to the following host http://{env.MILVUS_HOSTNAME}:{env.MILVUS_PORT}")
         client = MilvusClient(uri=f"http://{env.MILVUS_HOSTNAME}:{env.MILVUS_PORT}")
     try:
         yield client

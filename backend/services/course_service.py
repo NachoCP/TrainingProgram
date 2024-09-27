@@ -13,6 +13,7 @@ from backend.services.employee_service import EmployeeService
 from commons.config import get_environment_variables
 from commons.constants import COURSE_DEFAULT_DIR_DATA
 from commons.embeddings.factory import EmbeddingProviderFactory
+from commons.logging import logger
 from commons.models.core.course import Course
 from commons.models.recommender.course import CourseAPPOutput, CourseMatching, CourseModelOutput
 from commons.pipelines.competency import CompetencyPipeline
@@ -38,10 +39,14 @@ class CourseService:
     def bulk(self) -> List[Course]:
         competency_data = self.competency_service.list()
         pipeline = CoursePipeline(competencies_data=competency_data)
+        logger.info("Loading the courses data")
         input_data = pipeline.extract(path=COURSE_DEFAULT_DIR_DATA)
+        logger.info(f"Transforming the following number of courses {len(input_data)}")
         transformed_data = pipeline.transform(input_data)
-
-        return self.repository.bulk([d for d in transformed_data if d is not None])
+        logger.info("Bulking all the courses in the vectorial database")
+        courses_bulk= self.repository.bulk([d for d in transformed_data if d is not None])
+        logger.info("Successfully bulked")
+        return courses_bulk
 
     def _convert_model_to_app_output(self, course_model_output: CourseModelOutput) -> CourseAPPOutput:
         # Convertir el objeto CourseModelOutput a un diccionario
@@ -54,9 +59,11 @@ class CourseService:
         return CourseAPPOutput(**course_model_dict)
 
     def recommend_courses(self, id: id) -> CourseMatching:
+        logger.info(f"Start the recomendation process for this employee {id}")
         department_id = self.employee_department_repository.get_id_by_employee_id(id)
 
         # Extracting all the data from the different services
+        logger.info("Extracting all the required data")
 
         feedback_reviews = self.feedback_repository.get_all_by_employee(id)
         company_competency_level = self.competency_level_service.get_all_by_department(department_id)
@@ -67,6 +74,7 @@ class CourseService:
         competency_data = self.competency_service.list()
 
         # Calculate the competencies to improve
+        logger.info("Calculating the competencies to improve")
         pipeline = CompetencyPipeline(competency_data)
         competencies_output = pipeline.transform(
             feedback_reviews=feedback_reviews,
@@ -74,15 +82,18 @@ class CourseService:
             department_competency_level=department_competency_level,
             employee_competency=employee_competency,
         )
-
+        logger.info(f"Number of competencies to improve {len(competencies_output)}")
         # Recommender algorithm
         ranking = CourseRanking()
         query_string = ",".join(c.matching_competencies for c in competencies_output)
         query_embedding = self._embeddign_runner.get_embedding(query_string)
+        logger.info("Generating the candidates ")
         results = self.repository.search(query_embedding, query_string)
         competencies_priority = {c.matching_competencies: c.priority for c in competencies_output}
+        logger.info(f"Ranking the following number of courses {len(results)}")
         scoring_results = ranking.scoring(competencies_priority, results)
         courses_sorted = ranking.ordering(scoring_results)
+        logger.info("Sending back the courses sorted")
         return CourseMatching(
             courses=[self._convert_model_to_app_output(course) for course in courses_sorted],
             priority=competencies_output,

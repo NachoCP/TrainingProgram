@@ -3,6 +3,7 @@ from typing import Any, List
 import requests
 
 from commons.config import get_environment_variables
+from commons.logging import logger
 from commons.models.core.competency import Competency
 from frontend.services.frontend_service import IFrontendService
 from frontend.utils.enum import BackendEndpoints, RouterEndpoint
@@ -20,13 +21,17 @@ class CompetencyService(IFrontendService):
 
         response = requests.post(url, json=data)
         if response.status_code == 201:
-            print("Successfully sent data! Competency")
-            # Optional: Print the response from the server
+            logger.info("Successfully sent data! Competency")
         else:
-            print(f"Failed to send data. Status code: {response.status_code}")
-            print(response.text)
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
 
     def get_list(self) -> List[Competency]:
 
         response = requests.get(self._base_url)
+        if response.status_code == 200:
+            logger.info(f"Successfully extracted all the competencies {len(response.json())}")
+        else:
+            logger.info(f"Failed to send data. Status code: {response.status_code}")
+            logger.info(response.text)
         return [Competency(**r) for r in response.json()]

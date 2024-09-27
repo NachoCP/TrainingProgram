@@ -6,6 +6,7 @@ from backend.models.employee import Employee
 from backend.repositories.sql_alchemy.employee_department_repository import EmployeeDepartmentRepository
 from backend.repositories.sql_alchemy.employee_repository import EmployeeRepository
 from commons.interfaces.service import IService
+from commons.logging import logger
 from commons.models.core.employee import Employee as EmployeeSchema
 from commons.models.core.employee import EmployeeWithoutDates
 
@@ -34,10 +35,12 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
         return self.repository.update(id, employee)
 
     def bulk(self, schemas: List[EmployeeSchema]) -> List[Employee]:
+        logger.info(f"Dumping the following number of employees {len(schemas)}")
         schema_objects = [Employee(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
 
     def get_all_by_department(self, department_id: int) -> List[EmployeeWithoutDates]:
+        logger.info(f"Getting all the employees from the following department {department_id}")
         return [
             EmployeeWithoutDates(**d) for d in self.employee_department_repository.get_all_by_department(department_id)
         ]
