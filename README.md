@@ -44,6 +44,7 @@ Each project document will try to have this information, where applicable:
 ## Index
 
 1. [HOW TO](docs/0100_how_to.md)
+   1. [Application](docs/0101_application.md)
 2. [Architecture](docs/0200_architecture.md)
    1. [Backend](docs/0201_backend.md)
    2. [Frontend](docs/0202_frontend.md)
