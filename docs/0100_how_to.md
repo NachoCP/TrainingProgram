@@ -6,10 +6,10 @@ The idea of this document is to provide a guide through the different steps of t
 
 Mandatory to have installed docker and docker-compose.
 
+You should create a *.env* file in the root directory of the project to load all the environment variables required. There is [template file](../.env_template) with all the necessary information.
+
 <details>
   <summary>Configure environment variabls</summary>
-
-You should create a *.env* file in the root directory of the project to load all the environment variables required. There is [template file](../.env_template) with all the necessary information.
 
 - **API_VERSION**: version of the API.
 - **APP_NAME**: name of the app.
@@ -34,13 +34,16 @@ You should create a *.env* file in the root directory of the project to load all
 - **MILVUS_HOSTNAME**: hostname of the Milvus container, this hostname should be the same as that in the [docker-compose](../docker-compose.yml).
 - **MILVUS_PORT**: port of the Milvus container, this port should be the same as that in the [docker-compose](../docker-compose.yml).
 
->> NOTE: It is very important to **configure the correct parameters** for the EMBEDDING and LLM attributes. Check the provider's proper names to set up all the ENV variables.
->> NOTE: It is important to rename this file from **.env_template** to **.env**
+
 </details>
+
+>> NOTE: It is very important to **configure the correct parameters** for the EMBEDDING and LLM attributes. Check the provider's proper names to set up all the ENV variables.
+
+>> NOTE: It is important to rename this file from **.env_template** to **.env**
 
 ## Commands
 
-Once the prerequisites have been done, there are two main commands for launching everythin
+Once the prerequisites have been done, there are two main commands for launching everything
 
 It will launch everything using docker-compose to set up all the services. Wait a few seconds before accessing the app.
 
@@ -56,4 +59,4 @@ make stop
 
 Once everything is ready, please go to [Application Documentation](0101_application.md) to check the documentation.
 
-The application will be ready in http://localhost:8501/
+The application will be ready at http://localhost:8501/

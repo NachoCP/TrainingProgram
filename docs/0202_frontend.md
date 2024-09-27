@@ -11,12 +11,12 @@ The backend service is trying to use a Domain-Driven Design (DDD) approach. Belo
 - **UI Layer (Views/Presentation Layer)**: The UI (views) layer is responsible for:
   - Rendering the application’s interface and managing user interactions.
   - Display data fetched by the service or synthetic layer.
-  - Updating the state to swithc between differents views.
+  - Updating the state to switch between differents views.
 
 
 ## Architecture/Diagram
 
-The system works as folows:
+The system works as follows:
 
 - **(1) (2)**, The client/user interacts with the app layer, which uses the **Factory Pattern** to load the appropriate view based on the current state.
 
@@ -30,4 +30,4 @@ The system works as folows:
 
 The current design of the UI Layer introduces significant technical debt due to its violation of the Single Responsibility Principle (SRP), one of the key tenets of clean architecture and maintainable code. The UI layer is handling multiple responsibilities, such as data presentation, managing user interactions, generating synthetic data, and handling state changes.
 
-To address this, the responsibilities should be refactored into more distinct layers or components. For example, integrating the data synthetic generation in the backend service and serve it to the view part through the services without having any data manipulation.
+To address this, the responsibilities should be refactored into more distinct layers or components. For example, integrating the data synthetic generation in the backend service and serving it to the view part through the services without having any data manipulation.

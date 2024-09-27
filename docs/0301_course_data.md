@@ -3,7 +3,7 @@
 
 For this project, I am using [Online Courses Dataset](https://www.kaggle.com/datasets/khaledatef1/online-courses) from Kaggle, which contains extensive information on a variety of courses.
 
-A first analyis has been performed in this [notebook](../data-analysis.ipynb).
+A first analysis has been performed in this [notebook](../data-analysis.ipynb).
 
 The dataset will undergo cleaning, and a sample of 300 courses will be selected to prevent overwhelming the application.
 

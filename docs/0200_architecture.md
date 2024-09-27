@@ -2,7 +2,7 @@
 
 One of the core premises of the entire architecture is that, wherever possible, every component will be implemented using Python.
 
-The system architecture will be rely in the following components:
+The system architecture will rely upon the following components:
 - **Frontend service**: This service will handle interaction with the user, loading all necessary configurations and delivering data to the client through communication with the backend service.
 - **Backend service**, This service will communicate with the data storage systems to retrieve and serve data to the **frontend service**. Additionally, it will manage all the business logic required for the recommendation system.
 - **PostgreSQL**: A PostgreSQL database will be responsible for storing all structured data.
@@ -22,7 +22,7 @@ The diagram illustrates the architecture of the system, breaking down its compon
 
 ### PostgreSQL
 
-PostgreSQL is a powerful, open source object-relational database management system (ORDBMS) known for its reliability, data integrity, and extensive feature set. It can be easy integrated with every service and can handdle complex queries. Moreover, it supports JSON data in case it is needed to handled these without using a NoSQL databases.
+PostgreSQL is a powerful, open-source object-relational database management system (ORDBMS) known for its reliability, data integrity, and extensive feature set. It can be easily integrated with every service and can handle complex queries. Moreover, it supports JSON data in case it is needed to handle these without using NoSQL databases.
 
 The decision to use PostgreSQL was based on the need for a robust database capable of handling relational data, with quick integration across all services. Its advanced features and scalability make it a perfect choice for this system.
 
@@ -44,7 +44,7 @@ Streamlit is an open-source framework designed to make it easy to create and sha
 
 ## Technical Debt
 
-- **Scalability and performance with Streamlit**: Streamlit is primarily designed for rapid prototyping and small to medium-scale applications. This is not scalable for production application.
-- **Monolithic structure**: Currently, the backend service operates as a monothilic combining all business logic and the data manipulation. Over time, this could make the backend service harder to maintain and scale as more features are added. Breaking down the backend into microservices or serverless functions will allow better maintainability and scalability.
+- **Scalability and performance with Streamlit**: Streamlit is primarily designed for rapid prototyping and small to medium-scale applications. This is not scalable for production applications.
+- **Monolithic structure**: Currently, the backend service operates as a monothilic combining all business logic and data manipulation. Over time, this could make the backend service harder to maintain and scale as more features are added. Breaking down the backend into microservices or serverless functions will allow better maintainability and scalability.
 - **Data Storage Layer**: It is important to verify whether the current data storage layer (PostgreSQL and Milvus) can scale effectively as the amount of data grows. If not properly optimized, this could lead to bottlenecks and performance degradation.
 - **Cache Layer**: The absence of a cache layer means all requests are being processed in real-time, which could lead to performance issues as the system scales.

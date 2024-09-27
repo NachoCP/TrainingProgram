@@ -2,7 +2,7 @@
 
 The project aims to build a **training recommendation system** for managers to improve the competencies of their employees based on performance data and predefined competency requirements.
 
-Predefined competency requirements define the number of employees that are required to have the desired level of competency. The competencies requirements can be global (company level) or local (department / team level).
+Predefined competency requirements define the number of employees that are required to have the desired level of competency. The competencies requirements can be global (company level) or local (department/team level).
 Examples: **Public Speaking** *Expert* 2, **Leadership** *Advanced* 1, etc.
 
 You may assume that the following data is available:
@@ -13,10 +13,10 @@ You may assume that the following data is available:
 
 ## System Design
 
-Given these requirements, the system will be focus the following points:
+Given these requirements, the system will focus the following points:
 
 1. **Course Recommendation Based on Competency Requirements**: Given a set of competencies requirements defined, recommend the courses align with those specific needs.
-2. **Course Recommendation Based on Feedback**: Analyzing all the available feedback (notes, scores, 360-degree feedback), identify the competencies reflected in them and recommend courses to improve those competencies.
+2. **Course Recommendation Based on Feedback**: Analyzing all the available feedback (notes, scores, 360-degree feedback), identifying the competencies reflected in them and recommending courses to improve those competencies.
 
 The combination of these two approaches will be the baseline for the entire system.
 
@@ -24,7 +24,7 @@ The system will rely on LLM to support various functionalities, including:
 
 - Generate structured data from unstructured data.
 - Feature transformation.
-- Data synthethic generation.
+- Data synthetic generation.
 
 With all of this in mind, the system must be capable of:
 1. **Providing a software solution** that follows best practices for recommending algorithms and manipulating data.
