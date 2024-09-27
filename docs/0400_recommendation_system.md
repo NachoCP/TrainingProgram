@@ -5,8 +5,9 @@ As mentioned in the README, the recommendation system will focus on addressing t
 1. **Course Recommendation Based on Competency Requirements**
 2. **Course Recommendation Based on Feedback**
 
-## Diagram
+This system is going to part from a [Cold Start](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)) point. There is no prior recommendation data.
 
+## Diagram
 
 
 The workflow of the recommend system goes as follow:
@@ -44,3 +45,8 @@ $final\_score = 0.3*cp + 0.3*mc + 0.2 *ms + 0.1*r + 0.1*nv$
 
 ## Technical Dept
 
+- **Complexity of the competency extractor**: It relies heavily on an LLM, normally they can generate great restults, they are often hard to debug, explain, or verify, especially when priorities are being calculated dynamically. One possible solution could be to break down the problem in two queries: the first one focuse on feedback and the second one on the competencies extracted from the department.
+- **Filtering step**: As the data model it is not storing any information about the courses done or recommended, this is not implemented yet.
+- **Scoring and ranking limitation**: The scoring algorithms applies a static weights ranking. The static weights may not be suitable for all scenarios. For example, some users may prioritize ratings over matching competencies, while others might value popularity (number of viewers).
+- **Milvus and cosine similarity**: The index created in Milvus is just one plain but as the dataset start growing, It is going to need a more proper index. Also, cosine similarity works best for mediium datasets but if the dataset grows it may need other technique (approximate nearest neighbors).
+- **Visibility of the recommendation**: The algorithm produces a single score but there is no clear mechanism explaining why a courses is recommend. Add all the metrics to the output can give more reliability in the algorithm.
