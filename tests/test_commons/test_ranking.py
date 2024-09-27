@@ -6,27 +6,27 @@ def test_ranking():
     ranking = CourseRanking()
 
     course_1 = CourseModelOutput(
-    title="Introduction to AI",
-    url="https://example.com/ai-course",
-    short_intro="A beginner-friendly introduction to artificial intelligence.",
-    category="Technology",
-    sub_category="Artificial Intelligence",
-    course_type="video",
-    language="English",
-    subtitle_languages="Spanish, French",
-    skills="AI basics, Machine Learning",
-    instructors="Andrew Ng",
-    rating=4.8,
-    number_of_viewers=10000,
-    site="Coursera",
-    level="beginner",
-    number_of_reviews=2000,
-    prequisites="None",
-    matching_competencies="AI,Machine Learning",
-    course_level="beginner",
-    query_embedding=[0.0] * 1536,
-    query_string="AI,Machine Learning",
-    metric_coefficient=0
+        title="Introduction to AI",
+        url="https://example.com/ai-course",
+        short_intro="A beginner-friendly introduction to artificial intelligence.",
+        category="Technology",
+        sub_category="Artificial Intelligence",
+        course_type="video",
+        language="English",
+        subtitle_languages="Spanish, French",
+        skills="AI basics, Machine Learning",
+        instructors="Andrew Ng",
+        rating=4.8,
+        number_of_viewers=10000,
+        site="Coursera",
+        level="beginner",
+        number_of_reviews=2000,
+        prequisites="None",
+        matching_competencies="AI,Machine Learning",
+        course_level="beginner",
+        query_embedding=[0.0] * 1536,
+        query_string="AI,Machine Learning",
+        metric_coefficient=0,
     )
 
     course_2 = CourseModelOutput(
@@ -50,7 +50,7 @@ def test_ranking():
         course_level="advanced",
         query_embedding=[0.5] * 1536,
         query_string="AI,Machine Learning",
-        metric_coefficient=10
+        metric_coefficient=10,
     )
 
     courses = [course_1, course_2]

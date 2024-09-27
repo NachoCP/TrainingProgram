@@ -13,7 +13,7 @@ env = get_environment_variables()
 class EmployeeService(IFrontendService):
 
     def __init__(self):
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee.value}"
+        self._base_url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee.value}"
 
     def send_bulk(self, data: List[dict[str, Any]]) -> None:
 
@@ -26,8 +26,7 @@ class EmployeeService(IFrontendService):
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)
 
-    def get_list_by_department(self,
-                               department_id: int) -> List[EmployeeWithoutDates]:
+    def get_list_by_department(self, department_id: int) -> List[EmployeeWithoutDates]:
         url = f"{self._base_url}/{BackendEndpoints.department.value}/{department_id}"
         response = requests.get(url)
         return [EmployeeWithoutDates(**r) for r in response.json()]

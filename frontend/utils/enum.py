@@ -19,6 +19,7 @@ class RouterEndpoint(str, Enum):
     employee_department = "employee_department"
     employee = "employee"
 
+
 class ViewEnum(str, Enum):
     company_view = "company_view"
     strong_entities_view = "strong_entities_view"

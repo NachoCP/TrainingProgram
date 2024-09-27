@@ -13,7 +13,7 @@ env = get_environment_variables()
 class CompetencyService(IFrontendService):
 
     def __init__(self):
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.competency.value}"
+        self._base_url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.competency.value}"
 
     def send_bulk(self, data: List[dict[str, Any]]) -> None:
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"

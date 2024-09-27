@@ -6,9 +6,7 @@ from pydantic import BaseModel
 class BaseDynamicModel(BaseModel):
 
     class Config:
-        json_schema_extra = {
-            "example": {}
-        }
+        json_schema_extra = {"example": {}}
 
     @classmethod
     def set_dynamic_example(cls, name_attribute: str, dynamic_values: List[str]):

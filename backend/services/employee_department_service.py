@@ -33,4 +33,3 @@ class EmployeeDepartmentService(IService[EmployeeDepartment, EmployeeDepartmentS
     def bulk(self, schemas: List[EmployeeDepartmentSchema]) -> List[EmployeeDepartment]:
         schema_objects = [EmployeeDepartment(**schema.model_dump(exclude_none=True)) for schema in schemas]
         return self.repository.bulk(schema_objects)
-

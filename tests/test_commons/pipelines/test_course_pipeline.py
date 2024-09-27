@@ -19,7 +19,7 @@ course_1 = {
     "number_of_reviews": None,
     "site": None,
     "prequisites": None,
-    "course_level": None
+    "course_level": None,
 }
 
 course_2 = {
@@ -39,7 +39,7 @@ course_2 = {
     "number_of_reviews": None,
     "site": None,
     "prequisites": None,
-    "course_level": None
+    "course_level": None,
 }
 
 course_not_matching = {
@@ -59,15 +59,22 @@ course_not_matching = {
     "number_of_reviews": None,
     "site": None,
     "prequisites": None,
-    "course_level": None
+    "course_level": None,
 }
 
 competencies = [
-    Competency(id=1, name="Creative Expression",
-               description="The ability to express thoughts, emotions, and ideas creatively through written forms."),
-    Competency(id=2, name="Machine Learning Algorithms",
-               description="Understanding and implementation of various machine learning algorithms for predictive modeling and problem-solving.")
+    Competency(
+        id=1,
+        name="Creative Expression",
+        description="The ability to express thoughts, emotions, and ideas creatively through written forms.",
+    ),
+    Competency(
+        id=2,
+        name="Machine Learning Algorithms",
+        description="Understanding and implementation of various machine learning algorithms for predictive modeling and problem-solving.",
+    ),
 ]
+
 
 def test_course_pipeline_first_data():
     pipeline = CoursePipeline(competencies)
@@ -78,6 +85,7 @@ def test_course_pipeline_first_data():
     assert output_data.number_of_reviews == 0
     assert output_data.prequisites == ""
 
+
 def test_course_pipeline_second_data():
     pipeline = CoursePipeline(competencies)
     output_data = pipeline._enrich_course(course=course_2)
@@ -87,17 +95,23 @@ def test_course_pipeline_second_data():
     assert output_data.number_of_reviews == 0
     assert output_data.prequisites == ""
 
+
 def test_course_pipeline_unmatch_data():
     pipeline = CoursePipeline(competencies)
     output_data = pipeline._enrich_course(course=course_not_matching)
 
     assert output_data is None
 
+
 def test_course_pipeline_full():
     pipeline = CoursePipeline(competencies)
-    output_data = pipeline.transform([course_1 ,course_2 ,course_not_matching])
+    output_data = pipeline.transform([course_1, course_2, course_not_matching])
     non_none_data = [x for x in output_data if x is not None]
     assert len(output_data) == 3
-    assert len([d for d in output_data if d is None])== 1
-    assert [d.matching_competencies for d in non_none_data if d.title=="Introduction to Machine Learning"][0] == "Machine Learning Algorithms"
-    assert [d.matching_competencies for d in non_none_data if d.title=="Creative Writing for Beginners"][0] == "Creative Expression"
+    assert len([d for d in output_data if d is None]) == 1
+    assert [d.matching_competencies for d in non_none_data if d.title == "Introduction to Machine Learning"][
+        0
+    ] == "Machine Learning Algorithms"
+    assert [d.matching_competencies for d in non_none_data if d.title == "Creative Writing for Beginners"][
+        0
+    ] == "Creative Expression"

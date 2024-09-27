@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IEmbedding( ABC):
+class IEmbedding(ABC):
     """
     Abstract base embedding to declare the embedder
     """

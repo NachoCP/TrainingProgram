@@ -21,96 +21,114 @@ from commons.models.core.course import Course
 @pytest.fixture(scope="function")
 def employee(client):
     _, db_session, _ = client
-    entity_model_def = [Employee(id=1, name="Gandalf the White"),
-                Employee(id=2, name="Saruman of Many Colours"),
-                Employee(id=3, name="Radagast the Green")]
+    entity_model_def = [
+        Employee(id=1, name="Gandalf the White"),
+        Employee(id=2, name="Saruman of Many Colours"),
+        Employee(id=3, name="Radagast the Green"),
+    ]
     repository = EmployeeRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def competency(client):
     _, db_session, _ = client
-    entity_model_def = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    entity_model_def = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     repository = CompetencyRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def department(client):
     _, db_session, _ = client
-    entity_model_def = [Department(id=1, name="Defense Against the Dark Arts"),
-                  Department(id=2, name="Wild and fantastic Animals")]
+    entity_model_def = [
+        Department(id=1, name="Defense Against the Dark Arts"),
+        Department(id=2, name="Wild and fantastic Animals"),
+    ]
     repository = DepartmenteRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def employee_department(client):
     _, db_session, _ = client
-    entity_model_def = [EmployeeDepartment(id=1, employee_id = 1, department_id=1),
-                           EmployeeDepartment(id=2, employee_id = 2, department_id=1),
-                           EmployeeDepartment(id=3, employee_id = 3, department_id=2)]
+    entity_model_def = [
+        EmployeeDepartment(id=1, employee_id=1, department_id=1),
+        EmployeeDepartment(id=2, employee_id=2, department_id=1),
+        EmployeeDepartment(id=3, employee_id=3, department_id=2),
+    ]
     repository = EmployeeDepartmentRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def employee_competency(client):
     _, db_session, _ = client
-    entity_model_def = [EmployeeCompetency(id=1,
-                                       employee_id=1,
-                                       competency_id=1,
-                                       current_level=RequiredLevelEnum.advanced.value),
-                        EmployeeCompetency(id=2,
-                                       employee_id=2,
-                                       competency_id=2,
-                                       current_level=RequiredLevelEnum.advanced.value),
-                        EmployeeCompetency(id=3,
-                                       employee_id=3,
-                                       competency_id=2,
-                                       current_level=RequiredLevelEnum.advanced.value)]
+    entity_model_def = [
+        EmployeeCompetency(id=1, employee_id=1, competency_id=1, current_level=RequiredLevelEnum.advanced.value),
+        EmployeeCompetency(id=2, employee_id=2, competency_id=2, current_level=RequiredLevelEnum.advanced.value),
+        EmployeeCompetency(id=3, employee_id=3, competency_id=2, current_level=RequiredLevelEnum.advanced.value),
+    ]
     repository = EmployeeCompetencyRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def competency_level(client):
     _, db_session, _ = client
-    entity_model_def = [CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5),
-                        CompetencyLevel(id=2,
-                                       competency_id=2,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.intermediate.value,
-                                       num_workers=8)]
+    entity_model_def = [
+        CompetencyLevel(
+            id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+        ),
+        CompetencyLevel(
+            id=2, competency_id=2, department_id=1, required_level=RequiredLevelEnum.intermediate.value, num_workers=8
+        ),
+    ]
     repository = CompetencyLevelRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
 
+
 @pytest.fixture(scope="function")
 def feedback(client):
     _, db_session, _ = client
-    entity_model_def = [Feedback(id=1, employee_id=1, feedback_by=2,
-                                comments="He should improve in Potions", score=3.1,
-                                effective_date="2024-01-01"),
-                             Feedback(id=2, employee_id=1, feedback_by=3,
-                                comments="Very good at Defense against dark magic", score=5.0,
-                                effective_date="2024-01-02")]
+    entity_model_def = [
+        Feedback(
+            id=1,
+            employee_id=1,
+            feedback_by=2,
+            comments="He should improve in Potions",
+            score=3.1,
+            effective_date="2024-01-01",
+        ),
+        Feedback(
+            id=2,
+            employee_id=1,
+            feedback_by=3,
+            comments="Very good at Defense against dark magic",
+            score=4.9,
+            effective_date="2024-01-02",
+        ),
+    ]
     repository = CompetencyLevelRepository(db_session)
     entity_def = entity_model_def
     entity = repository.bulk(entity_def)
     return entity
+
 
 @pytest.fixture(scope="function")
 def course(client):
@@ -134,7 +152,7 @@ def course(client):
         prequisites="Defense Against the Dark Arts",
         matching_competencies="Dark Arts",
         course_level="expert",
-        embedding=[0.0] * 1536
+        embedding=[0.0] * 1536,
     )
 
     course_2 = Course(
@@ -156,7 +174,7 @@ def course(client):
         prequisites="Introduction to Potions",
         matching_competencies="Potions",
         course_level="advanced",
-        embedding=[0.5] * 1536
+        embedding=[0.5] * 1536,
     )
     repository = CourseRepository(milvus_client)
     courses = repository.bulk([course_1, course_2])

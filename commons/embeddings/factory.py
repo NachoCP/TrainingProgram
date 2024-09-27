@@ -4,9 +4,8 @@ from commons.embeddings.openai import OpenAIEmbeddingProvider
 from commons.enum import EmbeddingFactory
 from commons.interfaces.embedding import IEmbedding
 
-FACTORY = {
-        EmbeddingFactory.openai.value: OpenAIEmbeddingProvider
-    }
+FACTORY = {EmbeddingFactory.openai.value: OpenAIEmbeddingProvider}
+
 
 class EmbeddingProviderFactory:
 

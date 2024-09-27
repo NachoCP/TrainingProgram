@@ -16,17 +16,15 @@ env = get_environment_variables()
 class CourseRanking(IRanking):
 
     def __init__(self):
-        self._embeddign_runner = EmbeddingProviderFactory.get_provider(
-            env.EMBEDDING_PROVIDER_MODEL)()
-    def filtering(self,
-                  candidates: list[CourseModelOutput],
-                  courses_title: list[str]) -> list[dict[str, Any]]:
+        self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)()
+
+    def filtering(self, candidates: list[CourseModelOutput], courses_title: list[str]) -> list[dict[str, Any]]:
         # Filter candidates (e.g., remove items the user has already seen)
         return [candidate for candidate in candidates if candidate.title not in courses_title]
 
-    def scoring(self,
-                competencies_priority: dict[str, int],
-                filtered_data: list[CourseModelOutput]) -> list[dict[ str, Any]]:
+    def scoring(
+        self, competencies_priority: dict[str, int], filtered_data: list[CourseModelOutput]
+    ) -> list[dict[str, Any]]:
 
         if len(filtered_data) == 0:
             return filtered_data
@@ -42,9 +40,13 @@ class CourseRanking(IRanking):
 
         for course in filtered_data:
 
-            coeff_priority = sum([competencies_priority[competency] for competency in
-                                     course.matching_competencies.split(",")
-                                     if competency in competencies_priority])
+            coeff_priority = sum(
+                [
+                    competencies_priority[competency]
+                    for competency in course.matching_competencies.split(",")
+                    if competency in competencies_priority
+                ]
+            )
 
             coeff_priority = normalize(coeff_priority, 0, max_possible_score)
 
@@ -56,11 +58,11 @@ class CourseRanking(IRanking):
             normalized_viewers = normalize(course.number_of_viewers, min_viewers, max_viewers)
 
             final_score = (
-                WEIGHTS_SCORING["coeff_priority"] * coeff_priority +
-                WEIGHTS_SCORING["matching_competencies"] * course.metric_coefficient +
-                WEIGHTS_SCORING["rating"] * normalized_rating +
-                WEIGHTS_SCORING["number_of_viewers"] * normalized_viewers +
-                WEIGHTS_SCORING["matching_skills"] * skills_similarity
+                WEIGHTS_SCORING["coeff_priority"] * coeff_priority
+                + WEIGHTS_SCORING["matching_competencies"] * course.metric_coefficient
+                + WEIGHTS_SCORING["rating"] * normalized_rating
+                + WEIGHTS_SCORING["number_of_viewers"] * normalized_viewers
+                + WEIGHTS_SCORING["matching_skills"] * skills_similarity
             )
             course.final_score = final_score
         return filtered_data

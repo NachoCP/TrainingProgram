@@ -38,4 +38,6 @@ class EmployeeService(IService[Employee, EmployeeSchema]):
         return self.repository.bulk(schema_objects)
 
     def get_all_by_department(self, department_id: int) -> List[EmployeeWithoutDates]:
-        return [EmployeeWithoutDates(**d) for d in self.employee_department_repository.get_all_by_department(department_id)]
+        return [
+            EmployeeWithoutDates(**d) for d in self.employee_department_repository.get_all_by_department(department_id)
+        ]

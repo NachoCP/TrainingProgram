@@ -12,17 +12,17 @@ def test_success_create_entity_object(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    entity_model_def = CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5)
-    repository=CompetencyLevelRepository(test_get_db)
+    entity_model_def = CompetencyLevel(
+        id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+    )
+    repository = CompetencyLevelRepository(test_get_db)
     entity_def = entity_model_def
     entity = repository.create(entity_def)
     assert entity.num_workers == entity_def.num_workers
@@ -34,20 +34,21 @@ def test_success_list_entitys_objects(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    entity_model_def = CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5)
+    entity_model_def = CompetencyLevel(
+        id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+    )
     repository = CompetencyLevelRepository(test_get_db)
     repository.create(entity_model_def)
     entities = repository.list(limit=10, start=0)
     assert len(entities) == 1
+
 
 def test_success_get_entitys_objects(test_get_db) -> None:
 
@@ -55,20 +56,21 @@ def test_success_get_entitys_objects(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    entity_model_def = CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5)
+    entity_model_def = CompetencyLevel(
+        id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+    )
     repository = CompetencyLevelRepository(test_get_db)
     d = repository.create(entity_model_def)
     entity = repository.get(1)
     assert entity.num_workers == d.num_workers
+
 
 def test_success_update_entity(test_get_db) -> None:
 
@@ -76,16 +78,16 @@ def test_success_update_entity(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    entity_model_def = CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5)
+    entity_model_def = CompetencyLevel(
+        id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+    )
     repository = CompetencyLevelRepository(test_get_db)
     entity = repository.create(entity_model_def)
     entity.num_workers = 8
@@ -99,21 +101,22 @@ def test_success_delete_entity(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    entity_model_def = CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5)
+    entity_model_def = CompetencyLevel(
+        id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+    )
     repository = CompetencyLevelRepository(test_get_db)
     created_entity = repository.create(entity_model_def)
     repository.delete(created_entity.id)
     entity = repository.get(1)
     assert entity is None
+
 
 def test_success_bulk_entity_object(test_get_db) -> None:
 
@@ -121,48 +124,51 @@ def test_success_bulk_entity_object(test_get_db) -> None:
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.create(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    list_entity_model_def = [CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5),
-                   CompetencyLevel(id=2,
-                                       competency_id=2,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.intermediate.value,
-                                       num_workers=8)]
+    list_entity_model_def = [
+        CompetencyLevel(
+            id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+        ),
+        CompetencyLevel(
+            id=2, competency_id=2, department_id=1, required_level=RequiredLevelEnum.intermediate.value, num_workers=8
+        ),
+    ]
     repository = CompetencyLevelRepository(test_get_db)
     entities = repository.bulk(list_entity_model_def)
     entities_list = repository.list(limit=10, start=0)
     assert len(entities) == len(entities_list)
 
+
 def test_get_all_by_department(test_get_db) -> None:
 
-    department = [Department(id=1, name="Defense Against the Dark Arts"),
-                  Department(id=2, name="Wild and fantastic Animals")]
+    department = [
+        Department(id=1, name="Defense Against the Dark Arts"),
+        Department(id=2, name="Wild and fantastic Animals"),
+    ]
     department_repository = DepartmenteRepository(test_get_db)
     department_repository.bulk(department)
 
-    competencies = [Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
-                Competency(id=2, name="Potions", description="Lorem Ipsum")]
+    competencies = [
+        Competency(id=1, name="Dark Arts", description="Lorem Ipsum"),
+        Competency(id=2, name="Potions", description="Lorem Ipsum"),
+    ]
     competencies_repository = CompetencyRepository(test_get_db)
     competencies_repository.bulk(competencies)
 
-    list_entity_model_def = [CompetencyLevel(id=1,
-                                       competency_id=1,
-                                       department_id=1,
-                                       required_level=RequiredLevelEnum.advanced.value,
-                                       num_workers=5),
-                   CompetencyLevel(id=2,
-                                       competency_id=2,
-                                       department_id=2,
-                                       required_level=RequiredLevelEnum.intermediate.value,
-                                       num_workers=8)]
+    list_entity_model_def = [
+        CompetencyLevel(
+            id=1, competency_id=1, department_id=1, required_level=RequiredLevelEnum.advanced.value, num_workers=5
+        ),
+        CompetencyLevel(
+            id=2, competency_id=2, department_id=2, required_level=RequiredLevelEnum.intermediate.value, num_workers=8
+        ),
+    ]
     repository = CompetencyLevelRepository(test_get_db)
     repository.bulk(list_entity_model_def)
 

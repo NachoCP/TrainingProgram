@@ -28,12 +28,13 @@ def test_missing_variable():
     with pytest.raises(AttributeError, match=r"Missing the following variable"):
         template.text(competencies="Leadership, Communication")
 
+
 # Test invalid file path for the prompt template
 def test_invalid_file_path(monkeypatch):
     def mock_exists(path):
         return False
+
     monkeypatch.setattr(os.path, "exists", mock_exists)
 
     with pytest.raises(ValueError, match=r"File does not exist"):
         PromptTemplate('invalid_path.txt')
-

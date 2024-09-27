@@ -10,13 +10,9 @@ env = get_environment_variables()
 # Generate Database URL
 
 # Create Database Engine
-engine = create_engine(
-    env.database_url, future=True
-)
+engine = create_engine(env.database_url, future=True)
 
-SessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine
-)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db_connection():
@@ -26,8 +22,9 @@ def get_db_connection():
     finally:
         db.close()
 
+
 def get_milvus_connection():
-    if env.ENVIRONMENT=="dev":
+    if env.ENVIRONMENT == "dev":
         client = MilvusClient(env.MILVUS_LITTLE)
     else:
         print("Not implemented")

@@ -15,13 +15,13 @@ from commons.models.recommender.course import CourseModelOutput
 
 env = get_environment_variables()
 
-class CourseRepository():
+
+class CourseRepository:
     def __init__(self, client: MilvusClient) -> None:
         self.client = client
         if not self.client.has_collection(COURSE_COLLECTION):
             self.client.create_collection(
-                collection_name=COURSE_COLLECTION,
-                schema=get_course_schema(env.EMBEDDING_DIMENSION)
+                collection_name=COURSE_COLLECTION, schema=get_course_schema(env.EMBEDDING_DIMENSION)
             )
             index_params = self.client.prepare_index_params()
             index_params.add_index(
@@ -29,22 +29,16 @@ class CourseRepository():
                 metric_type="IP",
                 index_type="FLAT",
                 index_name="vector_index",
-                params={ "nlist": 128 }
+                params={"nlist": 128},
             )
 
-            self.client.create_index(
-                collection_name=COURSE_COLLECTION,
-                index_params=index_params
-            )
+            self.client.create_index(collection_name=COURSE_COLLECTION, index_params=index_params)
 
     def bulk(self, instances: List[Course]) -> List[Course]:
 
         data = [instance.model_dump() for instance in instances]
 
-        self.client.insert(
-            collection_name=COURSE_COLLECTION,
-            data=data
-        )
+        self.client.insert(collection_name=COURSE_COLLECTION, data=data)
 
         index_params = self.client.prepare_index_params()
         index_params.add_index(
@@ -52,17 +46,16 @@ class CourseRepository():
             metric_type="IP",
             index_type="FLAT",
             index_name="vector_index",
-            params={ "nlist": 128 }
+            params={"nlist": 128},
         )
 
-        self.client.create_index(
-            collection_name=COURSE_COLLECTION,
-            index_params=index_params
-        )
+        self.client.create_index(collection_name=COURSE_COLLECTION, index_params=index_params)
 
         return instances
 
-    def search(self, query_embedding: list[float], query_string: str, number_entities: int = 15) -> list[CourseModelOutput]:
+    def search(
+        self, query_embedding: list[float], query_string: str, number_entities: int = 15
+    ) -> list[CourseModelOutput]:
 
         self.client.load_collection(COURSE_COLLECTION)
 
@@ -72,12 +65,12 @@ class CourseRepository():
             anns_field=EMBEDDING_COLUMN,
             search_params=SEARCH_PARAMS,
             limit=number_entities,
-            output_fields=list(COURSE_OUTPUT_FIELDS)
+            output_fields=list(COURSE_OUTPUT_FIELDS),
         )
-        query_properties = {
-            "query_embedding": query_embedding,
-            "query_string":  query_string
-        }
-        output = [CourseModelOutput(**{**{"metric_coefficient": result["distance"]}, **query_properties, **result["entity"]}) for result in results[0]]
+        query_properties = {"query_embedding": query_embedding, "query_string": query_string}
+        output = [
+            CourseModelOutput(**{**{"metric_coefficient": result["distance"]}, **query_properties, **result["entity"]})
+            for result in results[0]
+        ]
 
         return output

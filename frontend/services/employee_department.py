@@ -11,18 +11,19 @@ from frontend.utils.enum import BackendEndpoints, RouterEndpoint
 env = get_environment_variables()
 
 LEVEL_PROBABLITIES = {
-        RequiredLevelEnum.basic: 0.5,
-        RequiredLevelEnum.intermediate: 0.3,
-        RequiredLevelEnum.advanced: 0.15,
-        RequiredLevelEnum.expert: 0.05
-    }
+    RequiredLevelEnum.basic: 0.5,
+    RequiredLevelEnum.intermediate: 0.3,
+    RequiredLevelEnum.advanced: 0.15,
+    RequiredLevelEnum.expert: 0.05,
+}
 
 
 class EmployeeDepartmentService(IFrontendService):
 
     def __init__(self):
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee_department.value}"
-
+        self._base_url = (
+            f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.employee_department.value}"
+        )
 
     def distribute_employees(self, departments: List[str], employees: List[str]) -> Dict[str, List[str]]:
         department_assignments = []
@@ -30,9 +31,9 @@ class EmployeeDepartmentService(IFrontendService):
         for i, employee in enumerate(employees):
             department_index = i % len(departments)
             department_assignments.append(
-                EmployeeDepartmentWithoutDates(id=index,
-                                               employee_id=employee,
-                                               department_id=departments[department_index])
+                EmployeeDepartmentWithoutDates(
+                    id=index, employee_id=employee, department_id=departments[department_index]
+                )
             )
             index += 1
 

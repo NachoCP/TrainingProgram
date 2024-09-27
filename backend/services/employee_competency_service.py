@@ -46,4 +46,6 @@ class EmployeeCompetencyService(IService[EmployeeCompetency, EmployeeCompetencyS
         return [CompetencyLevelEmployeeOutput(**d) for d in self.repository.get_all_by_employee(employee_id)]
 
     def group_competency_level_by_employee_ids(self, department_id: id) -> List[CompetencyLevelOutput]:
-        return [CompetencyLevelOutput(**d) for d in self.repository.group_competency_level_by_employee_ids(department_id)]
+        return [
+            CompetencyLevelOutput(**d) for d in self.repository.group_competency_level_by_employee_ids(department_id)
+        ]

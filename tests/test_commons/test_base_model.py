@@ -18,4 +18,3 @@ def test_set_dynamic_example_for_age():
 
     assert "age" in TestModel.Config.json_schema_extra["example"]
     assert TestModel.Config.json_schema_extra["example"]["age"] == ["25", "30", "40"]
-

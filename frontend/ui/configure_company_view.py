@@ -10,17 +10,18 @@ def company_view():
     name = st.text_input("Introduce a company name")
     purpose = st.text_area("Enter the purpose of the company")
 
-
     # Guardar automáticamente los inputs en el session_state
     st.session_state["company_name"] = name
     st.session_state["company_purpose"] = purpose
 
     # Help icon with an expandable text for additional information
     with st.expander("ℹ️ Why is this important?"):
-        st.write("""
+        st.write(
+            """
             The entire description will be used for generating synthetic data, so make sure to be as explicit and detailed as possible.
             Include information like mission, vision, values, and objectives of the company.
-            """)
+            """
+        )
     # Comprobamos si se ha completado la configuración
     if "config_none" not in st.session_state:
         st.session_state.config_done = False
@@ -38,4 +39,3 @@ def company_view():
         if st.button("**Already Configure**"):
             st.session_state.page = ViewEnum.employee_view.value
             st.rerun()
-

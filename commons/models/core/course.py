@@ -13,17 +13,17 @@ class Course(BaseModel):
     course_type: Optional[str] = Field(None, description="Type of the course (e.g., video, text)")
     language: str = Field(..., description="Language of the course")
     subtitle_languages: Optional[str] = Field(None, description="Languages available for subtitles")
-    skills: Optional[str] = Field(None,  description="Skills covered in the course")
+    skills: Optional[str] = Field(None, description="Skills covered in the course")
     instructors: Optional[str] = Field(None, description="Instructors of the course")
 
     rating: Optional[float] = Field(None, description="Rating of the course")
     number_of_viewers: Optional[float] = Field(None, description="Number of viewers of the course")
 
     site: Optional[str] = Field(None, description="The platform/site hosting the course")
-    level: Optional[str] = Field(None,  description="Level of the course (beginner, intermediate, advanced)")
+    level: Optional[str] = Field(None, description="Level of the course (beginner, intermediate, advanced)")
     number_of_reviews: Optional[int] = Field(None, description="Number of reviews for the course")
     prequisites: Optional[str] = Field(None, description="Pre-requisites for the course")
-    matching_competencies: Optional[str] = Field(None,  description="Competencies matched by the course")
+    matching_competencies: Optional[str] = Field(None, description="Competencies matched by the course")
     course_level: Optional[str] = Field(None, description="Course level (e.g., beginner, expert)")
 
     embedding: List[float] = Field(..., description="Embedding vector for the course")
@@ -49,6 +49,6 @@ class Course(BaseModel):
                 "prequisites": "Basic Python knowledge",
                 "matching_competencies": "Data Analysis, AI Development",
                 "course_level": "Beginner",
-                "embedding": [0.1, 0.5, -0.2, 0.8, 0.6]
+                "embedding": [0.1, 0.5, -0.2, 0.8, 0.6],
             }
         }

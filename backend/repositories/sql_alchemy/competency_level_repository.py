@@ -42,11 +42,16 @@ class CompetencyLevelRepository(IRepository[CompetencyLevel, id]):
         return instances
 
     def get_all_by_department(self, department_id: int) -> List[dict[str, str]]:
-        competency_levels = (self.db.query(Competency.name, CompetencyLevel.required_level, CompetencyLevel.num_workers)
-                             .join(Competency,CompetencyLevel.competency_id == Competency.id)
-                             .filter(CompetencyLevel.department_id==department_id).all())
+        competency_levels = (
+            self.db.query(Competency.name, CompetencyLevel.required_level, CompetencyLevel.num_workers)
+            .join(Competency, CompetencyLevel.competency_id == Competency.id)
+            .filter(CompetencyLevel.department_id == department_id)
+            .all()
+        )
 
-        result = [{"name": name, "required_level": required_level, "num_workers": num_workers}
-                  for name, required_level, num_workers in competency_levels]
+        result = [
+            {"name": name, "required_level": required_level, "num_workers": num_workers}
+            for name, required_level, num_workers in competency_levels
+        ]
 
         return result

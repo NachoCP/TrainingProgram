@@ -21,16 +21,14 @@ env = get_environment_variables()
 
 class CoursePipeline(IPipeline):
 
-    def __init__(self,
-                 competencies_data: list[Competency],
-                 prompt_path: str = COURSE_PROMPT
-                 ):
+    def __init__(self, competencies_data: list[Competency], prompt_path: str = COURSE_PROMPT):
 
         dynamic_competencies = [c.name for c in competencies_data]
         CourseModelLLM.set_dynamic_example("matching_competencies", dynamic_competencies)
         self._competencies = '\n'.join([f"- {c.name}: {c.description}" for c in competencies_data])
-        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(model=CourseModelLLM,
-                                                                         system_message=SYSTEM_MESSAGE_COURSE)
+        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(
+            model=CourseModelLLM, system_message=SYSTEM_MESSAGE_COURSE
+        )
         self._embeddign_runner = EmbeddingProviderFactory.get_provider(env.EMBEDDING_PROVIDER_MODEL)()
         self._prompt = PromptTemplate(prompt_path)
         self._parallel_processing = 10
@@ -42,9 +40,7 @@ class CoursePipeline(IPipeline):
 
         return data_json
 
-    def transform(self,
-                  data: List[Dict[str, str]],
-                  **kwargs) -> List[Course]:
+    def transform(self, data: List[Dict[str, str]], **kwargs) -> List[Course]:
 
         data_output = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=self._parallel_processing) as executor:
@@ -58,20 +54,21 @@ class CoursePipeline(IPipeline):
                     raise exc
         return data_output
 
-    def _enrich_course(self,
-                       course: dict[str, str]) -> Course:
+    def _enrich_course(self, course: dict[str, str]) -> Course:
 
-        input_text = (f"Title: {course['title']}, Category: {course['category']},"
-                          f"Sub-Category: {course['sub_category']}, Short Intro: {course['short_intro']}"
-                          f", Skills: {course['skills']}")
-        content = self._prompt.text(**{"competencies": self._competencies,
-                                    "courses": input_text})
+        input_text = (
+            f"Title: {course['title']}, Category: {course['category']},"
+            f"Sub-Category: {course['sub_category']}, Short Intro: {course['short_intro']}"
+            f", Skills: {course['skills']}"
+        )
+        content = self._prompt.text(**{"competencies": self._competencies, "courses": input_text})
         enrich_course = self._llm_runner.run(content=content)
         enrich_course = enrich_course.model_dump()
 
         if len(enrich_course["matching_competencies"]) == 0:
             return None
-        enrich_course["embedding"] = self._embeddign_runner.get_embedding(','.join(enrich_course["matching_competencies"]))
+        enrich_course["embedding"] = self._embeddign_runner.get_embedding(
+            ','.join(enrich_course["matching_competencies"])
+        )
 
         return Course(**preprocess_data({**course, **enrich_course}))
-

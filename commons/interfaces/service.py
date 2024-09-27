@@ -7,6 +7,7 @@ from pydantic import BaseModel
 M = TypeVar("M")
 S = TypeVar("S", bound=BaseModel)
 
+
 class IService(ABC, Generic[M, S]):
 
     @abstractmethod

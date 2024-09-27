@@ -24,3 +24,5 @@ The course data will then be transformed using the following workflow:
 - **Restricted Course Data Access**: The course data is only accessible through search operations. If you need to use the course data for any other purpose, there is no direct access method available.
 
 - **Limited Data Ingestion Options**: Currently, there is only a bulk ingestion method for courses. There is no option to ingest a single course individually.
+  
+- **Data Synchronization**: A significant challenge involves maintaining synchronization between Milvus and PostgreSQL. Any update to a competency must be reflected in the Milvus database, necessitating the re-ingestion of all related courses. This process can lead to performance issues and result in unnecessary data transformations, potentially degrading the system's efficiency and responsiveness.

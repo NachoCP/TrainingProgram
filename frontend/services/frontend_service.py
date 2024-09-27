@@ -2,13 +2,13 @@ from abc import ABC, abstractmethod
 from typing import Any, List
 
 
-class IFrontendService( ABC):
+class IFrontendService(ABC):
     """
     Abstract base embedding to declare the embedder
     """
 
-    #@abstractmethod
-    #def send(self, data: List[Any]) -> None:
+    # @abstractmethod
+    # def send(self, data: List[Any]) -> None:
     #    pass
 
     @abstractmethod

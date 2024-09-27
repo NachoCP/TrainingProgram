@@ -19,14 +19,14 @@ env = get_environment_variables()
 
 class CompetencyPipeline(IPipeline):
 
-    def __init__(self,
-                 competencies_data: list[Competency]):
+    def __init__(self, competencies_data: list[Competency]):
 
         dynamic_competencies = [c.name for c in competencies_data]
         CompetencyModelLLM.set_dynamic_example("matching_competencies", dynamic_competencies)
         self._competencies = '\n'.join([f"- {c.name}" for c in competencies_data])
-        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(List[CompetencyModelLLM],
-                                                                         SYSTEM_MESSAGE_COMPETENCY)
+        self._llm_runner = LLMProviderFactory.get_provider(env.LLM_PROVIDER_MODEL)(
+            List[CompetencyModelLLM], SYSTEM_MESSAGE_COMPETENCY
+        )
         self._prompt = PromptTemplate(COMPETENCY_PROMPT)
 
     def extract(self, path) -> list[dict[str, Any]]:
@@ -36,14 +36,18 @@ class CompetencyPipeline(IPipeline):
 
         return data_json
 
-    def transform(self,
-                  feedback_reviews: List[Feedback],
-                  company_competency_level: List[CompetencyLevelOutput],
-                  department_competency_level: List[CompetencyLevelOutput],
-                  employee_competency: List[CompetencyLevelEmployeeOutput],
-                  **kwargs) -> List[CompetencyModelLLM]:
+    def transform(
+        self,
+        feedback_reviews: List[Feedback],
+        company_competency_level: List[CompetencyLevelOutput],
+        department_competency_level: List[CompetencyLevelOutput],
+        employee_competency: List[CompetencyLevelEmployeeOutput],
+        **kwargs,
+    ) -> List[CompetencyModelLLM]:
 
-        feedback_reviews = "\n".join([f"- Score: {feedback.score}, Comments: {feedback.comments}" for feedback in feedback_reviews])
+        feedback_reviews = "\n".join(
+            [f"- Score: {feedback.score}, Comments: {feedback.comments}" for feedback in feedback_reviews]
+        )
 
         employee_competency_dict = {c.name: level_mapping[c.current_level] for c in employee_competency}
         df_competency_level = pd.DataFrame([d.model_dump() for d in company_competency_level])
@@ -51,29 +55,39 @@ class CompetencyPipeline(IPipeline):
         competency_levels = ""
         competency_names = {}
         if len(df_competency_level) > 0:
-            df_merged_levels = df_competency_level.merge(df_department_level,
-                                                        on=["name", "required_level"],
-                                                        how="outer",
-                                                        suffixes=('_expected', '_real'))
+            df_merged_levels = df_competency_level.merge(
+                df_department_level, on=["name", "required_level"], how="outer", suffixes=('_expected', '_real')
+            )
             df_merged_levels["num_workers_expected"] = df_merged_levels["num_workers_expected"].fillna(0)
             df_merged_levels["num_workers_real"] = df_merged_levels["num_workers_real"].fillna(0)
-            df_merged_levels["diff_num_workers"] = (df_merged_levels["num_workers_real"] - df_merged_levels["num_workers_expected"]).astype(int)
+            df_merged_levels["diff_num_workers"] = (
+                df_merged_levels["num_workers_real"] - df_merged_levels["num_workers_expected"]
+            ).astype(int)
             df_merged_levels["level_value"] = df_merged_levels["required_level"].map(level_mapping)
-            df_merged_levels_filtered = pd.merge(df_merged_levels,
-                                pd.DataFrame(list(employee_competency_dict.items()), columns=["name", "level_limit"]), on="name") \
-                            .query("level_value > level_limit")
-            df_merged_levels_filtered = df_merged_levels_filtered[df_merged_levels_filtered["diff_num_workers"].astype(int) < 0]
+            df_merged_levels_filtered = pd.merge(
+                df_merged_levels,
+                pd.DataFrame(list(employee_competency_dict.items()), columns=["name", "level_limit"]),
+                on="name",
+            ).query("level_value > level_limit")
+            df_merged_levels_filtered = df_merged_levels_filtered[
+                df_merged_levels_filtered["diff_num_workers"].astype(int) < 0
+            ]
             df_merged_level_results = df_merged_levels_filtered.groupby("name")["diff_num_workers"].sum()
 
-            competency_levels = "\n".join([f"- Competency: {name}, Workers_needed: {abs(diff)}" for name, diff in df_merged_level_results.items()])
+            competency_levels = "\n".join(
+                [f"- Competency: {name}, Workers_needed: {abs(diff)}" for name, diff in df_merged_level_results.items()]
+            )
             competency_names = {name for name, _ in df_merged_level_results.items()}
 
-        content = self._prompt.text(**{"feedback_reviews": feedback_reviews,
-                                       "competencies": self._competencies,
-                                       "competency__levels": competency_levels
-                                       })
+        content = self._prompt.text(
+            **{
+                "feedback_reviews": feedback_reviews,
+                "competencies": self._competencies,
+                "competency__levels": competency_levels,
+            }
+        )
 
-        if (len(feedback_reviews) == 0 and len(competency_names) == 0):
+        if len(feedback_reviews) == 0 and len(competency_names) == 0:
             return []
         competencies_output = self._llm_runner.run(content=content)
 

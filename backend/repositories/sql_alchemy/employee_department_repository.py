@@ -42,18 +42,18 @@ class EmployeeDepartmentRepository(IRepository[EmployeeDepartment, id]):
         return instances
 
     def get_all_by_department(self, department_id: int) -> List[dict[str, str]]:
-        departments = (self.db.query(Employee.name, Employee.id)
-                             .join(EmployeeDepartment,Employee.id == EmployeeDepartment.employee_id)
-                             .filter(EmployeeDepartment.department_id==department_id).all())
+        departments = (
+            self.db.query(Employee.name, Employee.id)
+            .join(EmployeeDepartment, Employee.id == EmployeeDepartment.employee_id)
+            .filter(EmployeeDepartment.department_id == department_id)
+            .all()
+        )
 
-        result = [{"name": name, "id": id}
-                  for name, id in departments]
+        result = [{"name": name, "id": id} for name, id in departments]
 
         return result
 
     def get_id_by_employee_id(self, employee_id: int) -> int:
-        department_id = (self.db.query(EmployeeDepartment.department_id)
-                       .filter_by(employee_id=employee_id)
-                       .first())
+        department_id = self.db.query(EmployeeDepartment.department_id).filter_by(employee_id=employee_id).first()
 
         return department_id[0]

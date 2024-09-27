@@ -41,3 +41,10 @@ FastAPI provides all the tools necessary for building fast, lightweight APIs wit
 ### Streamlit
 
 Streamlit is an open-source framework designed to make it easy to create and share custom web applications for machine learning and data science. It offers a simple, intuitive way to rapidly build data-driven applications, making it ideal for this project.
+
+## Technical Debt
+
+- **Scalability and performance with Streamlit**: Streamlit is primarily designed for rapid prototyping and small to medium-scale applications. This is not scalable for production application.
+- **Monolithic structure**: Currently, the backend service operates as a monothilic combining all business logic and the data manipulation. Over time, this could make the backend service harder to maintain and scale as more features are added. Breaking down the backend into microservices or serverless functions will allow better maintainability and scalability.
+- **Data Storage Layer**: It is important to verify whether the current data storage layer (PostgreSQL and Milvus) can scale effectively as the amount of data grows. If not properly optimized, this could lead to bottlenecks and performance degradation.
+- **Cache Layer**: The absence of a cache layer means all requests are being processed in real-time, which could lead to performance issues as the system scales.

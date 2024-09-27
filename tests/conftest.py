@@ -24,6 +24,7 @@ engine = create_engine(
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 def test_init_db() -> None:
     Competency.metadata.create_all(bind=engine)
     Employee.metadata.create_all(bind=engine)
@@ -44,6 +45,7 @@ def test_get_db():
         db.close()
         engine.dispose()
 
+
 @pytest.fixture
 def test_milvus_client():
     try:
@@ -56,14 +58,16 @@ def test_milvus_client():
 
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 @pytest.fixture(scope="function")
 def start_app():
     app = FastAPI()
     app.include_router(router)
     yield app
 
+
 @pytest.fixture(scope="function")
-def db_session() -> Generator[SessionTesting, Any, None]: # type: ignore
+def db_session() -> Generator[SessionTesting, Any, None]:  # type: ignore
     connection = engine.connect()
     transaction = connection.begin()
     session = SessionTesting(bind=connection)
@@ -79,11 +83,10 @@ def milvus_client() -> Generator[MilvusClient, Any, None]:
     yield client
     client.close()
 
+
 @pytest.fixture(scope="function")
 def client(
-        start_app: FastAPI,
-        db_session: SessionTesting, # type: ignore
-        milvus_client: MilvusClient
+    start_app: FastAPI, db_session: SessionTesting, milvus_client: MilvusClient  # type: ignore
 ) -> Generator[TestClient, Any, None]:
     """
     Create a new FastAPI TestClient that uses the `db_session` fixture to override

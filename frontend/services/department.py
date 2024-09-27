@@ -13,7 +13,7 @@ env = get_environment_variables()
 class DepartmentService(IFrontendService):
     def __init__(self):
 
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.department.value}"
+        self._base_url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.department.value}"
 
     def send_bulk(self, data: List[dict[str, Any]]) -> None:
 

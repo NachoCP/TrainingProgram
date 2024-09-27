@@ -4,6 +4,7 @@ from typing import Generic, List, TypeVar
 M = TypeVar("M")  # Model Type
 K = TypeVar("K")  # Key Type (e.g., ID)
 
+
 class IRepository(Generic[M, K], ABC):
     """
     Abstract base repository defining CRUD methods for all entities.

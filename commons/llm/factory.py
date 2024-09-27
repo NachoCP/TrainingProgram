@@ -5,10 +5,8 @@ from commons.interfaces.llm import ILLM
 from commons.llm.anthropic import AnthropicRunner
 from commons.llm.openai import OpenAIRunner
 
-FACTORY = {
-        LLMFactory.openai.value: OpenAIRunner,
-        LLMFactory.anthropic.value: AnthropicRunner
-    }
+FACTORY = {LLMFactory.openai.value: OpenAIRunner, LLMFactory.anthropic.value: AnthropicRunner}
+
 
 class LLMProviderFactory:
 

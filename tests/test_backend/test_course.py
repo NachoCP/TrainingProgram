@@ -24,7 +24,7 @@ def test_success_course_repo(test_milvus_client) -> None:
         prequisites="None",
         matching_competencies="AI, Machine Learning",
         course_level="beginner",
-        embedding=[0.0] * 1536
+        embedding=[0.0] * 1536,
     )
 
     course_2 = Course(
@@ -46,7 +46,7 @@ def test_success_course_repo(test_milvus_client) -> None:
         prequisites="Introduction to Machine Learning",
         matching_competencies="Deep Learning, AI",
         course_level="advanced",
-        embedding=[0.5] * 1536
+        embedding=[0.5] * 1536,
     )
 
     courses = repository.bulk([course_1, course_2])

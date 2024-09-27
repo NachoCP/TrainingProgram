@@ -26,16 +26,23 @@ def employee_view():
     employee_competencies = employee_competency_service.get_all_by_employee(employee_id)
     df = pd.DataFrame([d.model_dump() for d in employee_competencies])
     df["level_value"] = df["current_level"].map(level_mapping)
-    chart = alt.Chart(df).mark_circle(size=150).encode(
-            x=alt.X("level_value:Q", sort="-y", axis=alt.Axis(title="",tickCount=4), scale=alt.Scale(domain=[0, 3])),
+    chart = (
+        alt.Chart(df)
+        .mark_circle(size=150)
+        .encode(
+            x=alt.X("level_value:Q", sort="-y", axis=alt.Axis(title="", tickCount=4), scale=alt.Scale(domain=[0, 3])),
             y=alt.Y("name:N", title=""),
-            color=alt.Color("current_level:N", scale=alt.Scale(domain=["basic", "intermediate", "advanced", "expert"],
-                                                    range=["#f94144", "#f9c74f", "#90be6d", "#577590"])),
-                tooltip=["name", "current_level"]
-            ).properties(
-                width=600,
-                height=300
-            )
+            color=alt.Color(
+                "current_level:N",
+                scale=alt.Scale(
+                    domain=["basic", "intermediate", "advanced", "expert"],
+                    range=["#f94144", "#f9c74f", "#90be6d", "#577590"],
+                ),
+            ),
+            tooltip=["name", "current_level"],
+        )
+        .properties(width=600, height=300)
+    )
 
     feedbacks = feedback_service.get_all_by_employee(employee_id)
     df_feedback = pd.DataFrame([d.model_dump() for d in feedbacks])
@@ -72,5 +79,3 @@ def employee_view():
                 st.markdown(course.short_intro)
                 st.markdown(f"[URL]({course.url})")
                 st.write("---")
-
-

@@ -9,25 +9,23 @@ from backend.services.course_service import CourseService
 from commons.models.core.course import Course
 from commons.models.recommender.course import CourseMatching
 
-router = APIRouter(
-    prefix="/course",
-    tags=["course"]
-)
+router = APIRouter(prefix="/course", tags=["course"])
 
 
 @router.post("/bulk", status_code=status.HTTP_201_CREATED, response_model=List[Course])
 def bulk(
     db: Session = Depends(get_db_connection),  # noqa: B008
-    client: MilvusClient = Depends(get_milvus_connection)  # noqa: B008
+    client: MilvusClient = Depends(get_milvus_connection),  # noqa: B008
 ):
     _service = CourseService(db, client)
     return _service.bulk()
 
+
 @router.get("/recommend_course/{id}", status_code=status.HTTP_200_OK, response_model=CourseMatching)
 def recommend_courses(
     id: int,
-    db: Session = Depends(get_db_connection), # noqa: B008
-    client: MilvusClient = Depends(get_milvus_connection)  # noqa: B008
+    db: Session = Depends(get_db_connection),  # noqa: B008
+    client: MilvusClient = Depends(get_milvus_connection),  # noqa: B008
 ):
     _service = CourseService(db, client)
     return _service.recommend_courses(id)

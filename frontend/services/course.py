@@ -13,7 +13,7 @@ env = get_environment_variables()
 class CourseService(IFrontendService):
 
     def __init__(self):
-        self._base_url =f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.course.value}"
+        self._base_url = f"http://{env.BACKEND_HOSTNAME}:{env.BACKEND_PORT}/api/v1/{RouterEndpoint.course.value}"
 
     def send_bulk(self, data: List[dict[str, Any]] = None) -> None:
 
@@ -27,8 +27,7 @@ class CourseService(IFrontendService):
             print(f"Failed to send data. Status code: {response.status_code}")
             print(response.text)
 
-    def recommend_course(self,
-                         employee_id: int) -> CourseMatching:
+    def recommend_course(self, employee_id: int) -> CourseMatching:
         url = f"{self._base_url}/{BackendEndpoints.recommend_course.value}/{employee_id}"
         response = requests.get(url)
         return CourseMatching(**response.json())

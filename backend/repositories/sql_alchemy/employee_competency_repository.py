@@ -45,38 +45,48 @@ class EmployeeCompetencyRepository(IRepository[EmployeeCompetency, id]):
         return instances
 
     def get_all_by_department(self, department_id: int) -> List[Dict[str, Any]]:
-        result = (self.db.query(Competency.name, Employee.id, Employee.name, EmployeeCompetency.current_level)
-                  .join(Competency,Competency.id == EmployeeCompetency.competency_id)
-                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.employee_id)
-                  .join(Employee, Employee.id == EmployeeCompetency.employee_id)
-                  .filter(EmployeeDepartment.department_id==department_id).all()
-                  )
-        result = [{"competency_name": competency_name,
-                   "employee_name": employee_name,
-                   "employee_id": employee_id,
-                   "required_level": required_level}
-                  for competency_name, employee_id, employee_name, required_level in result]
+        result = (
+            self.db.query(Competency.name, Employee.id, Employee.name, EmployeeCompetency.current_level)
+            .join(Competency, Competency.id == EmployeeCompetency.competency_id)
+            .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.employee_id)
+            .join(Employee, Employee.id == EmployeeCompetency.employee_id)
+            .filter(EmployeeDepartment.department_id == department_id)
+            .all()
+        )
+        result = [
+            {
+                "competency_name": competency_name,
+                "employee_name": employee_name,
+                "employee_id": employee_id,
+                "required_level": required_level,
+            }
+            for competency_name, employee_id, employee_name, required_level in result
+        ]
         return result
 
     def get_all_by_employee(self, employee_id: int) -> List[Dict[str, Any]]:
-        result = (self.db.query(Competency.name, EmployeeCompetency.current_level)
-                  .join(Competency,Competency.id == EmployeeCompetency.competency_id)
-                  .filter(EmployeeCompetency.employee_id==employee_id).all()
-                  )
-        result = [{"name": name, "current_level": current_level}
-                  for name, current_level in result]
+        result = (
+            self.db.query(Competency.name, EmployeeCompetency.current_level)
+            .join(Competency, Competency.id == EmployeeCompetency.competency_id)
+            .filter(EmployeeCompetency.employee_id == employee_id)
+            .all()
+        )
+        result = [{"name": name, "current_level": current_level} for name, current_level in result]
         return result
 
     def group_competency_level_by_employee_ids(self, department_id: int) -> List[Dict[str, Any]]:
-        result = (self.db.query(Competency.name, EmployeeCompetency.current_level,
-                                func.count().label("num_workers"))
-                  .join(Competency,Competency.id == EmployeeCompetency.competency_id)
-                  .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.employee_id)
-                  .filter(EmployeeDepartment.department_id == department_id)
-                  .group_by(Competency.name, EmployeeCompetency.current_level)
-                  .all())
+        result = (
+            self.db.query(Competency.name, EmployeeCompetency.current_level, func.count().label("num_workers"))
+            .join(Competency, Competency.id == EmployeeCompetency.competency_id)
+            .join(EmployeeDepartment, EmployeeCompetency.employee_id == EmployeeDepartment.employee_id)
+            .filter(EmployeeDepartment.department_id == department_id)
+            .group_by(Competency.name, EmployeeCompetency.current_level)
+            .all()
+        )
 
-        result = [{"name": name, "required_level": required_level, "num_workers": num_workers}
-                  for name, required_level, num_workers in result]
+        result = [
+            {"name": name, "required_level": required_level, "num_workers": num_workers}
+            for name, required_level, num_workers in result
+        ]
 
         return result

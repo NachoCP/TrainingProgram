@@ -7,11 +7,12 @@ from frontend.ui.employee_view import employee_view
 from frontend.utils.enum import ViewEnum
 
 FACTORY = {
-        ViewEnum.company_view.value: company_view,
-        ViewEnum.employee_view.value: employee_view,
-        ViewEnum.strong_entities_view.value: strong_entities_view,
-        ViewEnum.weak_entities_view.value: weak_entities_view
-    }
+    ViewEnum.company_view.value: company_view,
+    ViewEnum.employee_view.value: employee_view,
+    ViewEnum.strong_entities_view.value: strong_entities_view,
+    ViewEnum.weak_entities_view.value: weak_entities_view,
+}
+
 
 class ViewFactory:
 

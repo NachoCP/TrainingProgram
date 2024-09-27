@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 
-class ILLM( ABC):
+class ILLM(ABC):
     """
     Abstract base llm to declare the llm
     """

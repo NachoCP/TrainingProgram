@@ -19,23 +19,33 @@ from frontend.utils.enum import ViewEnum
 def strong_entities_view():
 
     st.title("Strong Entities View")
-    st.markdown("""Format table will all the competencies, deparments and employees that has been synthetic generated
+    st.markdown(
+        """Format table will all the competencies, deparments and employees that has been synthetic generated
                 using an LLM. Please feel free to add any new competency to the list or modify existing ones.
                 When you feel ready click "Next" to bulk this data and see the week entities generation view.
-                """)
+                """
+    )
 
     if "data_loaded" not in st.session_state:
 
         name = st.session_state["company_name"]
-        purpose =st.session_state["company_purpose"]
+        purpose = st.session_state["company_purpose"]
         num_competencies = 10
         num_employees = 20
         num_departments = 5
         preamble = f"{name} \n {purpose} \n"
         with st.spinner("Generating synthetic data..."):
-            st.session_state.competencies = DataSyntheticLLM(Competency).create(num=num_competencies, preamble=preamble + "Please generate competencies that are associated with the company.")
-            st.session_state.employeess = DataSyntheticLLM(EmployeeWithoutDates).create(num=num_employees, preamble=preamble + "Generate the user as Firstname Lastname.")
-            st.session_state.departments = DataSyntheticLLM(Department).create(num=num_departments, preamble=preamble + "Generate departments associated with a real use case of a company.")
+            st.session_state.competencies = DataSyntheticLLM(Competency).create(
+                num=num_competencies,
+                preamble=preamble + "Please generate competencies that are associated with the company.",
+            )
+            st.session_state.employeess = DataSyntheticLLM(EmployeeWithoutDates).create(
+                num=num_employees, preamble=preamble + "Generate the user as Firstname Lastname."
+            )
+            st.session_state.departments = DataSyntheticLLM(Department).create(
+                num=num_departments,
+                preamble=preamble + "Generate departments associated with a real use case of a company.",
+            )
             st.session_state.data_loaded = True
 
         st.success("Data successfully generated!")
@@ -52,8 +62,10 @@ def strong_entities_view():
     with tab3:
         edited_df_employees = st.data_editor(df_employees, num_rows="dynamic")
     with tab4:
-        st.write("Json information showed as table with all the courses used."
-                 "This courses are going to be enrich and ingest in the Vector Database")
+        st.write(
+            "Json information showed as table with all the courses used."
+            "This courses are going to be enrich and ingest in the Vector Database"
+        )
         with open(COURSE_DEFAULT_DIR_DATA) as f:
             data_json = json.load(f)
         st.dataframe(pd.DataFrame(data_json))

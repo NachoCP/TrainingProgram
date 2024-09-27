@@ -12,9 +12,7 @@ from backend.routers.v1 import (
     health,
 )
 
-router = APIRouter(
-    prefix="/api/v1"
-)
+router = APIRouter(prefix="/api/v1")
 
 router.include_router(competency_level_router.router)
 router.include_router(competency_router.router)

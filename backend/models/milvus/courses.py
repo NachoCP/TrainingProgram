@@ -23,7 +23,6 @@ def get_course_schema(embedding_dimension: int) -> CollectionSchema:
         FieldSchema(name="matching_competencies", dtype=DataType.VARCHAR, max_length=512),
         FieldSchema(name="course_level", dtype=DataType.VARCHAR, max_length=64),
         FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=embedding_dimension),
-
     ]
 
     return CollectionSchema(fields, description="Course information with embeddings and metadata")

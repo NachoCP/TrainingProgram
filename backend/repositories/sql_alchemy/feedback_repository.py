@@ -20,8 +20,7 @@ class FeedbackRepository(IRepository[Feedback, id]):
         return self.db.get(Feedback, id)
 
     def get_all_by_employee(self, employee_id: int) -> List[Feedback]:
-        feedbacks = (self.db.query(Feedback)
-                     .filter_by(employee_id=employee_id).all())
+        feedbacks = self.db.query(Feedback).filter_by(employee_id=employee_id).all()
         return feedbacks
 
     def list(self, limit: int, start: int) -> List[Feedback]:

@@ -7,6 +7,7 @@ def read_text_file(path: str) -> str:
     """Helper function to read a prompt file based on the type."""
     return Path(path).read_text()
 
+
 def identify_prompt_variables(text: str) -> list[str]:
     matches = re.findall(r"\{(.*?)\}", text)
     return matches
@@ -30,7 +31,9 @@ def preprocess_data(record: dict[str, Any]):
     record["level"] = record["level"] if record["level"] is not None else ""
     record["number_of_reviews"] = record["number_of_reviews"] if record["number_of_reviews"] is not None else 0
     record["prequisites"] = record["prequisites"] if record["prequisites"] is not None else ""
-    record["matching_competencies"] = ",".join(record["matching_competencies"]) if record["matching_competencies"] is not None else ""
+    record["matching_competencies"] = (
+        ",".join(record["matching_competencies"]) if record["matching_competencies"] is not None else ""
+    )
     record["course_level"] = record["course_level"] if record["course_level"] is not None else ""
 
     return record

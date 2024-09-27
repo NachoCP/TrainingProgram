@@ -11,6 +11,7 @@ def test_cosine_similarity_identical_vectors():
     result = cosine_similarity(A, B)
     assert result == np.float64(1.0)
 
+
 def test_normalize_standard_case():
     # Prueba con valores normales
     value = 5
