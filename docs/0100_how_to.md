@@ -43,6 +43,23 @@ You should create a *.env* file in the root directory of the project to load all
 
 ## Commands
 
+This is the Makefile in the current root directory.
+
+```bash
+Please use \'make <target>\' where <target> is one of
+
+  install     install packages and prepare environment
+  update      update packages and prepare environment
+  run         run the docker compose up with all the dependencies
+  stop        tear down the docker compose and delete the tmp data directories
+  clean       remove all temporary files
+  lint        run the code linters
+  format      reformat code
+  test        run all the tests
+
+Check the Makefile to know exactly what each target is doing.
+```
+
 Once the prerequisites have been done, there are two main commands for launching everything
 
 It will launch everything using docker-compose to set up all the services. Wait a few seconds before accessing the app.

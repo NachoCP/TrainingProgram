@@ -15,7 +15,7 @@ services:
             start_period: 30s
         volumes:
           - ./backend:/app/backend
-          - ./logs/:app/logs
+          - ./logs:/app/logs
         ports:
             - "${BACKEND_PORT}:${BACKEND_PORT}"
         env_file:
@@ -46,7 +46,6 @@ services:
         container_name: database
         volumes:
             - ./data/postgres/db:/var/lib/postgresql/data
-#            - ./sql/marketing_company:/docker-entrypoint-initdb.d
         ports:
             - "${DATABASE_PORT}:5432"
         env_file:

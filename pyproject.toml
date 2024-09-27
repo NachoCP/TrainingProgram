@@ -5,6 +5,12 @@ description = "Training Program including backend frontend and all the data pipe
 authors = ["nacho.corcuera <ignacio.cplatas@gmail.com>"]
 readme = "README.md"
 
+packages = [
+    { include = "backend" },
+    { include = "frontend" },
+    { include = "commons" },
+]
+
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.115.0"
@@ -24,6 +30,8 @@ streamlit = "^1.38.0"
 plotly = "^5.24.1"
 altair = "^5.4.1"
 anthropic = "^0.34.2"
+isort = "^5.13.2"
+flake8 = "^7.1.1"
 
 
 [build-system]

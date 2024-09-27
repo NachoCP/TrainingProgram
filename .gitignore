@@ -8,3 +8,5 @@ milvs*
 volumes*
 .DS_STORE*
 logs
+.install.stamp
+.coverage
