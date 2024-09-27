@@ -20,7 +20,7 @@ class CourseService(IFrontendService):
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
         response = requests.post(url)
-        if response.status_code == 200:
+        if response.status_code == 201:
             print("Successfully sent data! Course")
             # Optional: Print the response from the server
         else:

@@ -20,7 +20,7 @@ class DepartmentService(IFrontendService):
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
 
         response = requests.post(url, json=data)
-        if response.status_code == 200:
+        if response.status_code == 201:
             print("Successfully sent data! Department")
             # Optional: Print the response from the server
         else:

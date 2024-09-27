@@ -19,7 +19,7 @@ class EmployeeService(IFrontendService):
 
         url = f"{self._base_url}/{BackendEndpoints.bulk.value}"
         response = requests.post(url, json=data)
-        if response.status_code == 202:
+        if response.status_code == 201:
             print("Successfully sent data! Employee")
             # Optional: Print the response from the server
         else:
