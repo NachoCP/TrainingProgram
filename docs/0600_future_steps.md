@@ -18,6 +18,8 @@
    - Break down the UI layer into smaller, more focused components to follow the **Single Responsibility Principle (SRP)**. Separate data handling and state management from the UI presentation.
 5. **Move Synthetic Data Generation to the Backend**:
    - Shift the synthetic data generation functionality from the frontend to the backend. The backend can generate the data and send it to the frontend through API calls.
+6. **Improve Logging system**:
+    - The current logging system is a bit terrible and having a better alternative will be great.
 
 ## Data Model
 
