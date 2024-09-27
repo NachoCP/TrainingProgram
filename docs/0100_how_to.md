@@ -35,7 +35,7 @@ You should create a *.env* file in the root directory of the project to load all
 - **MILVUS_PORT**: port of the Milvus container, this port should be the same as that in the [docker-compose](../docker-compose.yml).
 
 >> NOTE: It is very important to **configure the correct parameters** for the EMBEDDING and LLM attributes. Check the provider's proper names to set up all the ENV variables.
-
+>> NOTE: It is important to rename this file from **.env_template** to **.env**
 </details>
 
 ## Commands
@@ -54,4 +54,4 @@ It will tear down all the containers plus deleting any temporal data generated d
 make stop
 ```
 
-## Applicat
+Once everything is ready, please go to (Application Docs)[0101_application.md] to check the documentation.
