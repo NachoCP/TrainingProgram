@@ -67,6 +67,7 @@ The idea is to set up a quick data model that could fulfill the requirements wit
 
 <details>
   <summary>Employee Competency Table</summary>
+  
 | Name            | Type    | Key     | Description                                                   | Example         |
 |-----------------|---------|---------|---------------------------------------------------------------|-----------------|
 | id              | Integer | PK      | Primary key, a unique identifier for each employee competency.   | 1               |
