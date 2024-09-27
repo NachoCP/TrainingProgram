@@ -5,7 +5,7 @@ from commons.enum import RequiredLevelEnum
 from commons.models.core.employee_competency import EmployeeCompetency
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tests.test_servicestests.fixtures import (
+from tests.fixtures import (
     competency,
     competency_level,
     course,

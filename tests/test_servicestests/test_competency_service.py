@@ -4,7 +4,7 @@ import sys
 from commons.models.core.competency import Competency
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tests.test_servicestests.fixtures import (
+from tests.fixtures import (
     competency,
     competency_level,
     course,
