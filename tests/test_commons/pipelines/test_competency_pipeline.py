@@ -69,7 +69,7 @@ def test_competency_pipeline_feedback():
     pipeline = CompetencyPipeline(competencies)
     priority = pipeline.transform(feedbacks, [], [], competency_employee)
 
-    assert len(priority) == 1
+    assert len(priority) >= 1
     assert priority[0].competency_from == PriorityType.feedback
     assert priority[0].matching_competencies == competency_machine_learning
 

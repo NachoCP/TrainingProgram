@@ -54,4 +54,6 @@ It will tear down all the containers plus deleting any temporal data generated d
 make stop
 ```
 
-Once everything is ready, please go to (Application Docs)[0101_application.md] to check the documentation.
+Once everything is ready, please go to [Application Documentation](0101_application.md) to check the documentation.
+
+The application will be ready in http://localhost:8501/
