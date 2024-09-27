@@ -32,7 +32,7 @@ The final score is calcualted using different different metadata or feature extr
 
 - **coeff_priority (cp)**: In the **Step 2**, all the competencies have been calculated with their corresponding priority. The score is calculated by summing the priority values of all the competencies that are both present in the course's  and listed in the extracted ones. After summing these priorities of the competencies present in both, the result is divided by the total number of competencies in the competencies_priority dictionary. This gives an average priority score based on the competencies that match between the course and the predefined priority list.
 
-$\text{coeff\_priority} = \frac{\sum \left( \text{competencies\_priority}\right) \ \text{for competency in course\_competencies} \ \text{if competency in competencies\_priority}}{\text{len(competencies\_priority)}}$
+$\text{coeff\_priority} = \frac{\sum \left( \text{competencies_priority}\right) \text{for competency in course\_competencies} \text{if competency in competencies\_priority}}{\text{len(competencies\_priority)}}$
 
 - **matching_competencies (mc)**: cosine similarity metric retrieved by Milvus database.
 - **matching_skills (ms)**: cosine similarity metric compute againts the Skills metadata of the course.

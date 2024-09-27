@@ -49,6 +49,7 @@ Each project document will try to have this information, where applicable:
    2. [Frontend](docs/0202_frontend.md)
    3. [Commons](docs/0203_commons.md)
 3. [Data Model](docs/0300_data_model.md)
+   1. [Course Data](docs/0301_course_data.md)
 4. [Recommendation System](docs/0400_recommendation_system.md)
 5. [Testing & Metrics](docs/0500_testing.md)
 6. [Future Steps](docs/0600_future_steps.md)
