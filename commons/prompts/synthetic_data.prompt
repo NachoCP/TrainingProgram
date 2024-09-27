@@ -10,3 +10,5 @@ Requirements:
 Company Information:
 
 Company Name and Description: {preamble}
+
+It is mandatory to generate this exact number of entities {num}

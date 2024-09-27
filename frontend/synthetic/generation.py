@@ -9,7 +9,7 @@ from commons.models.core.feedback import Feedback
 from frontend.synthetic.synthetic_llm import DataSyntheticLLM
 
 
-def get_feedbacks(employee_ids: List[int]) -> List[Feedback]:
+def get_feedbacks(employee_ids: List[int], num: int = 40) -> List[Feedback]:
 
     preamble = (
         "The following list of ids are from all the employees of the company."
@@ -18,8 +18,8 @@ def get_feedbacks(employee_ids: List[int]) -> List[Feedback]:
         "Generate at least 60% negative reviews"
         f"List of ids: {employee_ids}"
     )
-    data = DataSyntheticLLM(Feedback).create(num=30, preamble=preamble)
-    data.extend(DataSyntheticLLM(Feedback).create(num=30, preamble=preamble))
+    data = DataSyntheticLLM(Feedback).create(num=num, preamble=preamble)
+#    data.extend(DataSyntheticLLM(Feedback).create(num=30, preamble=preamble))
     index = 0
     for d in data:
         d.id = index
@@ -27,18 +27,17 @@ def get_feedbacks(employee_ids: List[int]) -> List[Feedback]:
     return data
 
 
-def get_competency_levels(competency_ids: List[int], department_ids: List[int]) -> List[CompetencyLevel]:
+def get_competency_levels(competency_ids: List[int], department_ids: List[int], num:int = 40) -> List[CompetencyLevel]:
     preamble = (
         "You are going to be provided with two list: competencies and departments."
         "Used them to generate the rules to set up level of competencies between the different departments"
-        "For each department generate at least 4 competencies in intermediate, 2 in advanced, 1 in expert"
+        "Try to generate them equally and dont set up to many rules for expert"
         "There is no need for basic levels"
         f"List of departments: {department_ids}"
         f"List of competencies: {competency_ids}"
-        "Generate a total of 40 outputs minimum"
     )
 
-    data = DataSyntheticLLM(CompetencyLevel).create(num=40, preamble=preamble)
+    data = DataSyntheticLLM(CompetencyLevel).create(num=num, preamble=preamble)
     return data
 
 
