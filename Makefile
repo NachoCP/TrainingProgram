@@ -15,11 +15,7 @@ test:
 	$(PYTHON) -m pytest
 
 lint:
-	ruff .
-
-checks:
-	ruff check .
-	mypy .
+	black .
 
 clean:
 	find . -name '__pycache__' -exec rm -rf {} +

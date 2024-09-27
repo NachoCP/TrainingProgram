@@ -30,7 +30,10 @@ anthropic = "^0.34.2"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-
+[tool.mypy]
+files = ["backend", "frontend", "commons"]
+exclude = "(tests|docs)"
+strict = true
 
 [tool.black]
 skip-string-normalization = true
